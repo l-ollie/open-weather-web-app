@@ -30,7 +30,7 @@ export default function AppWrapper() {
 
     useEffect(() => {
         getCurrentWeather();
-    }, []);
+    }, [selectedCity]);
 
 
     async function getCurrentWeather() {
@@ -48,6 +48,8 @@ export default function AppWrapper() {
                 measurementUnit={measurementUnit}
                 setMeasurementUnit={setMeasurementUnit}
                 setSelectedNav={setSelectedNav}
+                selectedCity={selectedCity}
+                setSelectedCity={setSelectedCity}
             />
             <Outlet context={data} />
         </>

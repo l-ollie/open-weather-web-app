@@ -15,6 +15,8 @@ function Header(props: any) {
                 <SideMenu
                     setMeasurementUnit={props.setMeasurementUnit}
                     measurementUnit={props.measurementUnit}
+                    selectedCity={props.selectedCity}
+                    setSelectedCity={props.setSelectedCity}
                 />
             </Container>
 
