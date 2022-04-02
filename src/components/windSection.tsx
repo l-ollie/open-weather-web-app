@@ -1,32 +1,41 @@
-import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import { BsArrowUp } from 'react-icons/bs';
+import windDirectBg from '../assets/icons/Wind-dir-bg.svg'
+import windDirectFg from '../assets/icons/Wind-dir-fg.svg'
 
 function WindSection(props: any) {
     const speedUnite = props.measurementUnit === "metric" ? "unite-mPerS" : "unite-mPerH";
+    const windDeg = props.currentWeather?.current.wind.deg + 180;
 
+    console.log(windDeg);
     return (
         <>
             <Container className="mt-5">
                 <Row>
-                    <Col>
-                        <span className={`${speedUnite}`}>
-                            speed:{props.data?.wind.speed}
-                        </span>
+                    <Col className="">
+                        <div className="d-flex flex-column">
+                            <h5>Speed:</h5>
+                            <h3 className={`${speedUnite}`}>
+                                {props.currentWeather?.current.wind.speed}
+                            </h3>
+                        </div>
                     </Col>
                     <Col className="text-center">
-                        North
+
                     </Col>
-                    <Col>
-                        <span className={`${speedUnite}`}>
-                            Gust:{props.data?.wind.gust}
-                        </span>
+                    <Col className="">
+                        <div className="d-flex flex-column">
+                            <h5>Gust:</h5>
+                            <h3 className={`${speedUnite}`}>
+                                {props.currentWeather?.current.wind.gust}
+                            </h3>
+                        </div>
                     </Col>
                 </Row>
                 <Container>
                     <Row>
-                        <Col className="overflow-hidden icon-centered" >
-                            <BsArrowUp className="wind-section-direction  " style={{ transform: `rotate( ${props.data?.wind.deg}deg)` }} />
+                        <Col className="overflow-hidden icon-centered wind-section-direction-bg" >
+                            <img src={windDirectBg} className="wind-direction-image" alt="Compass" />
+                            <img src={windDirectFg} className="wind-direction-image position-absolute" alt="Compass Pointer" style={{ transform: `rotate( ${windDeg}deg)` }} />
                         </Col>
                     </Row>
                 </Container>

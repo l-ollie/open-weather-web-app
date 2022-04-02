@@ -1,28 +1,35 @@
 import React from 'react';
-import { useData } from '../components/appWrapper';
 import CurrentSection from '../components/currentSection';
 import WindSection from '../components/windSection';
-import getTempColorForLeds from '../components/tempToColor'
-import Header from '../components/header';
-// import DataContext from 
-import ICurrentWeather from "../models/currentData"
+import { connect } from 'react-redux';
 
-function CurrentPage() {
-    const data = useData();
+import ICurrentWeather from '../models/ICurrentWeather';
 
-    // const temperatureColor = getTempColorForLeds(data);
-
-    // const datasdf = data;
+class CurrentPage extends React.Component<CurrentPageProps> {
 
 
+	render() {
 
-    return (
-        <>
-            <CurrentSection data={data} />
-            <WindSection data={data} />
-
-        </>
-    );
+		return (
+			<div>
+				<CurrentSection currentWeather={this.props.currentWeather} measurementUnit={this.props.measurementUnit} />
+				<WindSection currentWeather={this.props.currentWeather} measurementUnit={this.props.measurementUnit} />
+			</div>
+		);
+	}
 }
 
-export default CurrentPage;
+
+type CurrentPageProps = {
+	currentWeather: ICurrentWeather;
+	measurementUnit: string;
+};
+
+const mapStateToProps = (state: CurrentPageProps) => {
+	return {
+		currentWeather: state.currentWeather,
+		measurementUnit: state.measurementUnit
+	};
+};
+
+export default connect(mapStateToProps)(CurrentPage);

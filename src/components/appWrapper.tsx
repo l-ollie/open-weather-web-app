@@ -1,62 +1,67 @@
-import Header from "./header";
-import NavBarLink from "../models/navBarLink"
-import { Outlet, useOutletContext } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { apiKey } from "../services/data/data";
-import ICurrentWeather from "../models/currentData"
+import Header from './header/header';
+import NavBarLink from '../models/navBarLink';
+import { Outlet } from 'react-router-dom';
+import { useEffect } from 'react';
 
-// import getTempColorForLeds from "./tempToColor";
-import WeatherRepository from "../services/data/weatherRepository";
+import { connect } from 'react-redux';
+import { setMeasurementUnit, setSelectedCity } from '../services/redux/actions';
+import { fetchForecastsWeather, fetchCurrentWeather } from '../services/redux/actions';
 
+import ICurrentWeather from '../models/ICurrentWeather';
+import IFontColor from '../models/IWeatherColor';
+import navBarLink from '../models/navBarLink';
+import ISelectedCity from '../models/ISelectedCity';
 
-const navLinks = [new NavBarLink("Current", "/"), new NavBarLink("Forecast", "forecast"), new NavBarLink("5 Days", "5-days"), new NavBarLink("Pollution", "pollution"),];
+const navLinks: Array<navBarLink> = [
+	new NavBarLink('Current', '/'),
+	new NavBarLink('Forecast', 'forecast'),
+	new NavBarLink('5 Days', '5-days'),
+	new NavBarLink('Pollution', 'pollution')
+];
 
-type ContextType = {
-    data: ICurrentWeather | string;
-    // measurementUnit: string;
-};
-// type ContextType = { user: User | null };
-export default function AppWrapper() {
-    const weatherRepository = new WeatherRepository(apiKey);
-    const [data, setData] = useState(null);
-    const [measurementUnit, setMeasurementUnit] = useState("metric");
-    const [selectedNav, setSelectedNav] = useState("");
-    const [selectedCity, setSelectedCity] = useState("Leiden");
-    // const dataPackage = {
-    //     data = null,
-    //     measurementUnit = "metric"
-    // }
-
-
-    useEffect(() => {
-        getCurrentWeather();
-    }, [selectedCity]);
+type IAppWrapper = {
+	currentWeather: ICurrentWeather | null;
+	setMeasurementUnit: (unite: string) => {};
+	fetchForecastsWeather: (lat: number, lon: number, measurementUnit: string) => {}
+	fetchCurrentWeather: (lat: number, lon: number, measurementUnit: string) => {}
+	measurementUnit: string;
+	fontColor: IFontColor;
+	selectedCity: ISelectedCity;
 
 
-    async function getCurrentWeather() {
-        const response = await weatherRepository.getCurrentWeather(selectedCity, measurementUnit);
-        setData(response.data);
-    }
-
-
-
-    return (
-        <>
-            <Header
-                appNavlinks={navLinks}
-                data={data}
-                measurementUnit={measurementUnit}
-                setMeasurementUnit={setMeasurementUnit}
-                setSelectedNav={setSelectedNav}
-                selectedCity={selectedCity}
-                setSelectedCity={setSelectedCity}
-            />
-            <Outlet context={data} />
-        </>
-    )
 };
 
 
-export function useData() {
-    return useOutletContext<ContextType>();
+function AppWrapper(props: IAppWrapper) {
+
+	useEffect(() => {
+		props.fetchCurrentWeather(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit);
+		props.fetchForecastsWeather(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit);
+	}, []);
+
+	useEffect(
+		() => {
+			props.fetchCurrentWeather(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit);
+			props.fetchForecastsWeather(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit);
+		},
+		[props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit]
+	);
+
+	return (
+		<div>
+			<Header appNavlinks={navLinks} />
+			<Outlet />
+		</div>
+	);
 }
+
+const mapStateToProps = (state: any) => {
+	return {
+		measurementUnit: state.measurementUnit,
+		currentWeather: state.currentWeather,
+		fontColor: state.fontColor,
+		selectedCity: state.selectedCity
+	};
+};
+
+export default connect(mapStateToProps, { setMeasurementUnit, fetchCurrentWeather, fetchForecastsWeather, setSelectedCity })(AppWrapper);

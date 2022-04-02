@@ -6,6 +6,9 @@ import api from "./api";
 // http://api.openweathermap.org/data/2.5/weather?q=/leiden&appid=a2ed31ee07568e51c5901c4ea33082df&units=metric
 
 // http://api.openweathermap.org/data/2.5/weather?q=Leiden&appid=a2ed31ee07568e51c5901c4ea33082df&units=metric
+// api.openweathermap.org/data/2.5/weather?q={city name},{state code}&appid={API key}
+
+// https://api.openweathermap.org/data/2.5/onecall?lat=33.44&lon=-94.04&exclude=hourly,daily&appid=a2ed31ee07568e51c5901c4ea33082df
 
 export default class WeatherRepository {
     private _apiKey: string
@@ -14,9 +17,12 @@ export default class WeatherRepository {
         this._apiKey = key;
     }
 
-    async getCurrentWeather(cityName: string = "Leiden", measurementUnit: string = "metric") {
-        return await api.get(`weather?q=${cityName}&appid=${this._apiKey}&units=${measurementUnit}`)
+    async getCurrentWeather(lat: number, lon: number, measurementUnit: string = "metric") {
+        return await api.get(`weather?lat=${lat}&lon=${lon}&appid=${this._apiKey}&units=${measurementUnit}`)
     }
 
+    async getForcasts(lat: number, lon: number, measurementUnit: string) {
+        return await api.get(`onecall?lat=${lat}&lon=${lon}&exclude=minutely,current&appid=${this._apiKey}&units=${measurementUnit}`)
+    }
 
 }
