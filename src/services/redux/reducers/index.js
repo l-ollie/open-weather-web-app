@@ -3,7 +3,9 @@ import currentWeather from './currentWeatherReducer';
 import measurementUnit from './measurementUniteReducer';
 import hourlyWeather from './HourlyReducer';
 import fiveDaysWeather from './fiveDaysWeatherReducer';
-import weatherColor from './weatherColor';
+import weatherColorToday from './weatherColorToday';
+import weatherColorTomorrow from './weatherColorTomorrow';
+import weatherColorFiveDays from './weatherColorFiveDays';
 import selectedCity from './selectedCityReducer';
 import tempUnitCss from './tempUnitCssReducer';
 
@@ -12,7 +14,9 @@ const allReducers = combineReducers({
 	measurementUnit,
 	hourlyWeather,
 	fiveDaysWeather,
-	weatherColor,
+	weatherColorToday,
+	weatherColorTomorrow,
+	weatherColorFiveDays,
 	selectedCity,
 	tempUnitCss
 });

@@ -1,10 +1,11 @@
 import Moment from 'react-moment';
 import { connect } from 'react-redux';
 import IHourlyItem from '../../models/IHourlyItem';
+import { Hourly } from '../../models/IHourlyWeather';
 import './hourly.scss';
 
 interface IHourlyTempCard {
-    item: IHourlyItem,
+    item: Hourly,
     measurementUnit: string
 
 }

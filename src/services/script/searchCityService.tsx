@@ -14,7 +14,6 @@ export default class SearchCityService {
             if (simularity > 0.6)
                 return item["simularity"] = simularity;
         });
-        // console.log(filterdList);
         return this.orderBySimularity(filterdList);
     }
 

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux'
-import HourlyWeatherSection from '../components/forecast/hourlyWeatherSection';
+import HourlyWeatherSection from '../components/tomorrow/hourlyWeatherSection';
+import HourlyWindSection from '../components/tomorrow/hourlyWindSection';
 import { IHourlyWeather } from '../models/IHourlyWeather';
 
 export interface IForeCastPageProps {
@@ -13,6 +14,7 @@ class ForeCastPage extends React.Component<IForeCastPageProps> {
         return (
             <div>
                 <HourlyWeatherSection />
+                <HourlyWindSection />
             </div>
         );
     }

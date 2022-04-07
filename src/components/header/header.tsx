@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import NavBar from './navBar';
 import SideMenu from './sideMenu';
@@ -6,25 +6,44 @@ import { connect } from 'react-redux';
 import IWeatherColor from '../../models/IWeatherColor';
 import ICurrentWeather from '../../models/ICurrentWeather';
 import NavBarLink from '../../models/navBarLink';
-// import ISelectedCity from '../../models/ISelectedCity';
+import { useLocation } from 'react-router-dom';
+import { IHourlyWeather } from '../../models/IHourlyWeather';
 
 interface IHeader {
     currentWeather: ICurrentWeather,
-    weatherColor: IWeatherColor,
-    // selectedCity: ISelectedCity,
-    // setSelectedCity: (city: ISelectedCity) => void,
-    // setSelectedNav: (nav: string) => void,
-    appNavlinks: Array<NavBarLink>
+    hourlyWeather: IHourlyWeather,
+    weatherColorToday: IWeatherColor,
+    weatherColorTomorrow: IWeatherColor,
+    weatherColorFiveDays: IWeatherColor,
+    appNavlinks: Array<NavBarLink>,
 }
 
 
 function Header(props: IHeader) {
+    const [weatherColor, setWeatherColor] = useState(props.weatherColorToday);
+    const location = useLocation();
+
+    function changeHeaderColorOnURL() {
+        if (location.pathname === "/")
+            setWeatherColor(props.weatherColorToday);
+        else if (location.pathname === "/tomorrow")
+            setWeatherColor(props.weatherColorTomorrow);
+        else if (location.pathname === "/fivedays")
+            setWeatherColor(props.weatherColorFiveDays);
+    }
+
 
     useEffect(() => {
-    }, [props.currentWeather?.current.main.feels_like]);
+        changeHeaderColorOnURL()
+    }, [props.currentWeather, props.hourlyWeather, props.weatherColorFiveDays]);// eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        changeHeaderColorOnURL()
+    }, [location.pathname]);// eslint-disable-line react-hooks/exhaustive-deps
+
 
     return (
-        <div className={`header_container pt-3 sticky_nav ${props.weatherColor.fontColor}`} style={{ backgroundColor: `rgb(${props.weatherColor.r},${props.weatherColor.g},${props.weatherColor.b})` }}>
+        <div className={`header_container pt-3 sticky_nav ${weatherColor.fontColor}`} style={{ backgroundColor: `rgb(${weatherColor.r},${weatherColor.g},${weatherColor.b})` }}>
             <Container>
                 <SideMenu />
             </Container>
@@ -40,7 +59,10 @@ function Header(props: IHeader) {
 const mapStateToProps = (state: any) => {
     return {
         currentWeather: state.currentWeather,
-        weatherColor: state.weatherColor
+        weatherColorToday: state.weatherColorToday,
+        weatherColorTomorrow: state.weatherColorTomorrow,
+        weatherColorFiveDays: state.weatherColorFiveDays,
+        hourlyWeather: state.hourlyWeather,
     };
 };
 

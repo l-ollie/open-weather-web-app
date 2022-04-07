@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BsArrowDown, BsArrowUp } from 'react-icons/bs';
 import { connect } from 'react-redux';
-import './shared.css';
+import '../../assets/css/shared.css';
 
 function mapStateToProps(state: any) {
     return {
@@ -17,10 +17,10 @@ function MaxMin(props: any) {
     return (
         <div className="d-flex">
             <div className="maxMin-signle-temp me-3">
-                <span className={` ${props.tempUnitCss}`}>max {max}</span><BsArrowUp />
+                <span className={` ${props.tempUnitCss}`}>day {max}</span><BsArrowUp />
             </div>
             <div className="maxMin-signle-temp me-3">
-                <span className={` ml-1  ${props.tempUnitCss}`}>min {min}</span><BsArrowDown />
+                <span className={` ml-1  ${props.tempUnitCss}`}>night {min}</span><BsArrowDown />
             </div>
         </div>
     );

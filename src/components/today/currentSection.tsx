@@ -2,15 +2,15 @@ import { Col, Container, Row } from 'react-bootstrap';
 import Moment from 'react-moment';
 import { BsArrowDown, BsArrowUp } from 'react-icons/bs';
 
-import ICurrentWeather, { Current } from '../models/ICurrentWeather';
-import IWeatherColor from '../models/IWeatherColor';
+import ICurrentWeather, { Current } from '../../models/ICurrentWeather';
+import IWeatherColor from '../../models/IWeatherColor';
 import { connect } from 'react-redux';
-import MaxMin from './shared/maxMin';
+import MaxMin from '../shared/maxMin';
 
 interface CurrentSectionProps {
     currentWeather: ICurrentWeather;
     measurementUnit: string;
-    weatherColor: IWeatherColor;
+    weatherColorToday: IWeatherColor;
 };
 
 function CurrentSection(props: CurrentSectionProps) {
@@ -26,16 +26,16 @@ function CurrentSection(props: CurrentSectionProps) {
     const weatherIcon: string = `http://openweathermap.org/img/wn/${_weather?.weather[0].icon}.png`;
     const weatherDescription: string = _weather?.weather[0].description;
     const gradientStep = 0.5;
-    const backgroundGradient = `linear-gradient(rgba(${props.weatherColor.r}, ${props.weatherColor.g}, ${props.weatherColor.b},${gradientStep}),rgba(${props.weatherColor.r}, ${props.weatherColor.g}, ${props.weatherColor.b} ,255))`;
+    const backgroundGradient = `linear-gradient(rgba(${props.weatherColorToday.r}, ${props.weatherColorToday.g}, ${props.weatherColorToday.b},${gradientStep}),rgba(${props.weatherColorToday.r}, ${props.weatherColorToday.g}, ${props.weatherColorToday.b} ,255))`;
     const tempUnite: string = _measurementUnit === "imperial" ? "unite-fahrenheit" : "unite-celsius";
 
     return (
         <Container fluid
             style={{ backgroundImage: `${backgroundGradient}` }}
-            className={`scroll-full-page_wrapper ${props.weatherColor.fontColor} `} >
-            <Container>
+            className={`full-detail-page ${props.weatherColorToday.fontColor} `} >
+            <Container className="mt-4">
                 <Row>
-                    <span className="CurrentSection_date fw-bold fs-5 mt-2"><Moment format="D MMMM HH:mm">{dateToFormat}</Moment></span>
+                    <span className="CurrentSection_date fw-bold fs-5 "><Moment format="D MMMM HH:mm">{dateToFormat}</Moment></span>
                 </Row>
                 <Row>
                     <Col xs={6} className="pt-3  " >
@@ -67,7 +67,7 @@ function CurrentSection(props: CurrentSectionProps) {
 
 const mapStateToProps = (state: any) => {
     return {
-        weatherColor: state.weatherColor
+        weatherColorToday: state.weatherColorToday
     };
 };
 

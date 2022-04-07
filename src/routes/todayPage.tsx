@@ -1,11 +1,15 @@
 import React from 'react';
-import CurrentSection from '../components/currentSection';
-import WindSection from '../components/windSection';
+import CurrentSection from '../components/today/currentSection';
+import WindSection from '../components/today/windSection';
 import { connect } from 'react-redux';
-
 import ICurrentWeather from '../models/ICurrentWeather';
 
-class CurrentPage extends React.Component<CurrentPageProps> {
+type CurrentPageProps = {
+	currentWeather: ICurrentWeather;
+	measurementUnit: string;
+};
+
+class TodayPage extends React.Component<CurrentPageProps> {
 
 
 	render() {
@@ -19,12 +23,6 @@ class CurrentPage extends React.Component<CurrentPageProps> {
 	}
 }
 
-
-type CurrentPageProps = {
-	currentWeather: ICurrentWeather;
-	measurementUnit: string;
-};
-
 const mapStateToProps = (state: CurrentPageProps) => {
 	return {
 		currentWeather: state.currentWeather,
@@ -32,4 +30,4 @@ const mapStateToProps = (state: CurrentPageProps) => {
 	};
 };
 
-export default connect(mapStateToProps)(CurrentPage);
+export default connect(mapStateToProps)(TodayPage);

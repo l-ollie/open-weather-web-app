@@ -1,12 +1,11 @@
 import { Col, Container, Row } from 'react-bootstrap';
-import windDirectBg from '../assets/icons/Wind-dir-bg.svg'
-import windDirectFg from '../assets/icons/Wind-dir-fg.svg'
+import windDirectBg from '../../assets/icons/Wind-dir-bg.svg'
+import windDirectFg from '../../assets/icons/Wind-dir-fg.svg'
 
 function WindSection(props: any) {
     const speedUnite = props.measurementUnit === "metric" ? "unite-mPerS" : "unite-mPerH";
     const windDeg = props.currentWeather?.current.wind.deg + 180;
 
-    console.log(windDeg);
     return (
         <>
             <Container className="mt-5">

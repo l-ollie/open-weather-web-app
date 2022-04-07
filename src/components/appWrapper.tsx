@@ -13,9 +13,9 @@ import navBarLink from '../models/navBarLink';
 import ISelectedCity from '../models/ISelectedCity';
 
 const navLinks: Array<navBarLink> = [
-	new NavBarLink('Current', '/'),
-	new NavBarLink('Forecast', 'forecast'),
-	new NavBarLink('5 Days', '5-days'),
+	new NavBarLink('Today', '/'),
+	new NavBarLink('Tomorrow', 'tomorrow'),
+	new NavBarLink('5 Days', 'fivedays'),
 	new NavBarLink('Pollution', 'pollution')
 ];
 
@@ -34,17 +34,18 @@ type IAppWrapper = {
 
 function AppWrapper(props: IAppWrapper) {
 
+	// eslint-disable-line react-hooks/exhaustive-deps
 	useEffect(() => {
 		props.fetchCurrentWeather(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit);
 		props.fetchForecastsWeather(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit);
-	}, []);
+	}, []);// eslint-disable-line react-hooks/exhaustive-deps
 
 	useEffect(
 		() => {
 			props.fetchCurrentWeather(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit);
 			props.fetchForecastsWeather(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit);
 		},
-		[props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit]
+		[props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit]// eslint-disable-line react-hooks/exhaustive-deps
 	);
 
 	return (

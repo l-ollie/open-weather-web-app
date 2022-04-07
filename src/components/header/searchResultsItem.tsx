@@ -2,12 +2,19 @@
 import React from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { connect } from 'react-redux'
+import { ICurrentCityList } from '../../models/ICurrentCityList';
+import ISelectedCity from '../../models/ISelectedCity';
 import { setSelectedCity } from '../../services/redux/actions/index';
+
 interface ISearchResultsItem {
+    setShowResults: (boolean: boolean) => void;
+    setSelectedCity: (city: ISelectedCity) => void;
+    setSearchTerm: (term: string) => void;
+    city: ICurrentCityList;
 }
 
 
-function SearchResultsItem(props: any) {
+function SearchResultsItem(props: ISearchResultsItem) {
     const landCode = props.city.country.toLowerCase();
 
     return (
@@ -20,7 +27,7 @@ function SearchResultsItem(props: any) {
                 }}
             >
 
-                {props.city.name}, {props.city.country} <img src={`https://openweathermap.org/images/flags/${landCode}.png`} /> {props.city.post}
+                {props.city.name}, {props.city.country} <img src={`https://openweathermap.org/images/flags/${landCode}.png`} />
             </ListGroup.Item>
         </>
     );

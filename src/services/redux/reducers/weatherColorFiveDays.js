@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-anonymous-default-export
-export default (state = { r: 0, g: 0, b: 0, fontColor: 'light' }, action) => {
+export default (state = { r: 255, g: 255, b: 255, fontColor: 'light' }, action) => {
 	switch (action.type) {
-		case 'WEATHER_COLOR':
+		case 'WEATHER_COLOR_FIVE_DAYS':
 			return action.payload;
 		default:
 			return state;

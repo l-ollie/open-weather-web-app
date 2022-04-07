@@ -4,10 +4,11 @@ import { Row, Col, Container } from 'react-bootstrap';
 import Moment from 'react-moment';
 import { connect } from 'react-redux';
 import { IDailyWeather } from '../../models/IDailyWeather';
+import IWeatherColor from '../../models/IWeatherColor';
 import MaxMin from '../shared/maxMin';
 
 interface ITomorrow {
-    fiveDaysWeather: IDailyWeather
+    fiveDaysWeather: IDailyWeather;
 }
 
 
@@ -27,17 +28,20 @@ function Tomorrow(props: ITomorrow) {
         weatherDescription = props.fiveDaysWeather.daily[1].weather[0].description;
     }
 
+
+
+
     return (
         <Container className="" >
             <Row>
                 <Col>
-                    <Col className="mt-3">
+                    <Col className="">
                         <span className="CurrentSection_date fw-bold fs-6 mt-3"> <Moment format="D MMMM YYYY">{tomorrowDate}</Moment></span>
                     </Col>
                     <Col xs={12} className="d-flex align-items-end">
                         <MaxMin
-                            min={tomorrowMax}
-                            max={tomorrowMin}
+                            min={tomorrowMin}
+                            max={tomorrowMax}
                         />
 
                     </Col>
@@ -55,7 +59,7 @@ function Tomorrow(props: ITomorrow) {
 
 function mapStateToProps(state: any) {
     return {
-        fiveDaysWeather: state.fiveDaysWeather
+        fiveDaysWeather: state.fiveDaysWeather,
     };
 }
 

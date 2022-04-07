@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Form, ListGroup, Nav, Navbar, NavDropdown, Offcanvas } from 'react-bootstrap';
-import JsonCity from '../../services/data/current.city.list.json';
+import JsonCity from '../../services/data/current.city.list.min.json';
 import SearchCityService from '../../services/script/searchCityService';
 import SearchResultsItem from './searchResultsItem';
 
