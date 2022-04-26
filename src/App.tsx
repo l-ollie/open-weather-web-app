@@ -1,14 +1,13 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './assets/css/App.css';
 import AppWrapper from './components/appWrapper';
 import {
   BrowserRouter,
   Routes,
   Route
 } from 'react-router-dom';
-import TwoDays from './routes/twoDays';
-import Current from './routes/currentPage';
+import Forecast from './routes/tomorrowPage';
+import Today from './routes/todayPage';
+import FiveDays from './routes/fiveDaysPage';
 import PageNotFound from './routes/pageNotFound';
 
 function App() {
@@ -16,13 +15,16 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<AppWrapper />} >
-          <Route path="/" element={<Current />} />
-          <Route path="forecast" element={<TwoDays />} />
+          <Route path="/" element={<Today />} />
+          <Route path="tomorrow" element={<Forecast />} />
+          <Route path="fivedays" element={<FiveDays />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>
+
   );
 }
 
 export default App;
+

@@ -1,0 +1,29 @@
+.scrolling-wrapper{
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    scrollbar-width: none;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+}
+
+.scrolling-wrapper-flexbox {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+
+    .hourly-card {
+      flex: 0 0 auto;
+      border: 1px solid rgba(0,0,0,.125);
+      border-radius: 0.25rem;
+      padding: 1rem;
+      margin: 0.5rem;
+      min-width:10vw;
+    }
+    .selected {
+      box-sizing: border-box;
+      border: 3px solid rgba(0,0,0,.125);
+      border-radius: 0.25rem;
+    }
+  }
