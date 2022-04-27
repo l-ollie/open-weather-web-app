@@ -27,6 +27,8 @@ type IAppWrapper = {
 	measurementUnit: string;
 	fontColor: IFontColor;
 	selectedCity: ISelectedCity;
+
+
 };
 
 
