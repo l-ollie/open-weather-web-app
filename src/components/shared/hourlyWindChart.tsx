@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { Hourly, IHourlyWeather } from '../../models/IHourlyWeather';
+import BeaufortScale from '../../services/script/beaufortScale';
 
 
 interface IHourlyWindChart {
@@ -54,8 +55,9 @@ function HourlyWindChart(props: IHourlyWindChart) {
         const height = ((element.wind_speed - minimumYFromData) * charBarSteps) + charBarMinHeight;
         const x = index * props.itemWidth + charBarSidePadding;
         const y = (charBarMaxHeight - height) + iconBottomMargin + charBarNumberMargin + fontHeight + iconMaxHeight;
+        const beaufortScale = new BeaufortScale(element.wind_speed, props.measurementUnit)
         return (
-            <rect width={charBarWidth} height={height} x={x} y={y} fill="pink" />
+            <rect width={charBarWidth} height={height} x={x} y={y} fill={`${beaufortScale.color}`} />
         )
     })
 
