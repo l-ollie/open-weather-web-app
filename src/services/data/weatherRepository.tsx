@@ -1,3 +1,4 @@
+import MeasurementUnitSystem from "../../types/MeasurementUnitSystem";
 import api from "./api";
 
 
@@ -17,12 +18,12 @@ export default class WeatherRepository {
         this._apiKey = key;
     }
 
-    async getCurrentWeather(lat: number, lon: number, measurementUnit: string = "metric") {
-        return await api.get(`weather?lat=${lat}&lon=${lon}&appid=${this._apiKey}&units=${measurementUnit}`)
+    async getCurrentWeather(lat: number, lon: number, measurementUnitSystem: MeasurementUnitSystem = MeasurementUnitSystem.metric) {
+        return await api.get(`weather?lat=${lat}&lon=${lon}&appid=${this._apiKey}&units=${measurementUnitSystem}`)
     }
 
-    async getForcasts(lat: number, lon: number, measurementUnit: string) {
-        return await api.get(`onecall?lat=${lat}&lon=${lon}&exclude=minutely,current&appid=${this._apiKey}&units=${measurementUnit}`)
+    async getForcasts(lat: number, lon: number, measurementUnitSystem: MeasurementUnitSystem) {
+        return await api.get(`onecall?lat=${lat}&lon=${lon}&exclude=minutely,current&appid=${this._apiKey}&units=${measurementUnitSystem}`)
     }
 
 }

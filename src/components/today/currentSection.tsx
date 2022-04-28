@@ -6,10 +6,11 @@ import ICurrentWeather, { Current } from '../../models/ICurrentWeather';
 import IWeatherColor from '../../models/IWeatherColor';
 import { connect } from 'react-redux';
 import MaxMin from '../shared/maxMin';
+import MeasurementUnit from '../../models/MeasurementUnit';
 
 interface CurrentSectionProps {
     currentWeather: ICurrentWeather;
-    measurementUnit: string;
+    measurementUnit: MeasurementUnit;
     weatherColors: IWeatherColor;
 };
 
@@ -27,7 +28,7 @@ function CurrentSection(props: CurrentSectionProps) {
     const weatherDescription: string = _weather?.weather[0].description;
     const gradientStep = 0.5;
     const backgroundGradient = `linear-gradient(rgba(${props.weatherColors.today.r}, ${props.weatherColors.today.g}, ${props.weatherColors.today.b},${gradientStep}),rgba(${props.weatherColors.today.r}, ${props.weatherColors.today.g}, ${props.weatherColors.today.b} ,255))`;
-    const tempUnite: string = _measurementUnit === "imperial" ? "unite-fahrenheit" : "unite-celsius";
+
 
     return (
         <Container fluid
@@ -44,7 +45,7 @@ function CurrentSection(props: CurrentSectionProps) {
                 </Row>
                 <Row>
                     <Col className="">
-                        <span className={`CurrentSection_temp ${tempUnite}`} >{temp}</span>
+                        <span className={`CurrentSection_temp ${props.measurementUnit.cssUnit}`} >{temp}</span>
                     </Col>
                     <Col className="icon-centered text-center d-flex flex-column ">
                         <img src={weatherIcon} alt="Weather icon" className="width-100" />
@@ -53,7 +54,7 @@ function CurrentSection(props: CurrentSectionProps) {
                 </Row>
                 <Row>
                     <Col>
-                        <span className={`${tempUnite}`}>Feels like {feelsLike}</span>
+                        <span className={`${props.measurementUnit.cssUnit}`}>Feels like {feelsLike}</span>
                     </Col>
                 </Row>
                 <Row>

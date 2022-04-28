@@ -1,4 +1,4 @@
-import MeasurementUnit from '../../models/MeasurementUnit';
+import MeasurementUnitSystem from '../../types/MeasurementUnitSystem';
 import BeaufortColors from '../data/beaufortColors'
 const beaufort = require('beaufort-scale')
 
@@ -12,10 +12,10 @@ class BeaufortScale {
     }
 
     speedToKmh(speed: number): number {
-        if (this.measurementUnit === MeasurementUnit.metric) {
+        if (this.measurementUnit === MeasurementUnitSystem.metric) {
             const metreToKmh = speed * 18 / 5;
             return metreToKmh;
-        } else if (this.measurementUnit === MeasurementUnit.imperial) {
+        } else if (this.measurementUnit === MeasurementUnitSystem.imperial) {
             const mileToKmh = speed * 1.609344;
             return mileToKmh
         }

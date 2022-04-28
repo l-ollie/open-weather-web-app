@@ -1,15 +1,16 @@
 import moment from 'moment';
 import { Hourly, IHourlyWeather } from '../../models/IHourlyWeather';
 import BeaufortScale from '../../services/script/beaufortScale';
-import MeasurementUnit from '../../models/MeasurementUnit';
 import '../../assets/css/shared.css'
+import IMeasurementUnit from '../../models/MeasurementUnit';
+import MeasurementUnitSystem from '../../types/MeasurementUnitSystem';
 
 interface IHourlyWindChart {
     data: IHourlyWeather;
     height: number;
     itemWidth: number;
     fontColor: string;
-    measurementUnit: string;
+    measurementUnit: IMeasurementUnit;
     showToday: boolean;
 }
 
@@ -22,6 +23,7 @@ function HourlyWindChart(props: IHourlyWindChart) {
             const time = moment(element.dt * 1000).format('HH');
             if (Number(time) === 7)
                 return index;
+            return 0
         });
         forecast = props.data?.hourly.slice(0, findEndingHour)
     } else {
@@ -29,6 +31,7 @@ function HourlyWindChart(props: IHourlyWindChart) {
             const time = moment(element.dt * 1000).format('HH');
             if (Number(time) === 7)
                 return index;
+            return 0
         });
         forecast = props.data?.hourly.slice(findStartingHour, findStartingHour + 24)
     }
@@ -65,7 +68,7 @@ function HourlyWindChart(props: IHourlyWindChart) {
         const height = ((element.wind_speed - minimumYFromData) * charBarSteps) + charBarMinHeight;
         const x = index * props.itemWidth + charBarSidePadding;
         const y = (charBarMaxHeight - height) + iconBottomMargin + charBarNumberMargin + fontHeight + iconMaxHeight;
-        const beaufortScale = new BeaufortScale(element.wind_speed, props.measurementUnit)
+        const beaufortScale = new BeaufortScale(element.wind_speed, props.measurementUnit.system)
         return (
             <rect width={charBarWidth} height={height} x={x} y={y} key={index} fill={`${beaufortScale.color}`} />
         )
@@ -75,7 +78,7 @@ function HourlyWindChart(props: IHourlyWindChart) {
 
         const windSpeedKilometerH = element.wind_speed * (18 / 5);
         const windSpeedMilesH = element.wind_speed * 2.236936;
-        const windSpeed = props.measurementUnit === MeasurementUnit.metric ? windSpeedKilometerH : windSpeedMilesH;
+        const windSpeed = props.measurementUnit.system === MeasurementUnitSystem.metric ? windSpeedKilometerH : windSpeedMilesH;
 
         const height = ((element.wind_speed - minimumYFromData) * charBarSteps) + charBarMinHeight;
         const x = index * props.itemWidth + (props.itemWidth * 0.5);

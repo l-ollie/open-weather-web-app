@@ -6,7 +6,6 @@ import sevenDaysWeather from './sevenDaysWeatherReducer';
 
 import weatherColors from './weatherColors';
 import selectedCity from './selectedCityReducer';
-import tempUnitCss from './tempUnitCssReducer';
 
 const allReducers = combineReducers({
 	currentWeather,
@@ -14,8 +13,7 @@ const allReducers = combineReducers({
 	hourlyWeather,
 	sevenDaysWeather,
 	weatherColors,
-	selectedCity,
-	tempUnitCss
+	selectedCity
 });
 
 export default allReducers;

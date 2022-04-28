@@ -91,7 +91,7 @@ function SideMenu(props: any) {
                             <Nav className="justify-content-end flex-grow-1 pe-3">
                                 <Nav.Link href="#action1">Home</Nav.Link>
                                 <Nav.Link href="#action2">Link</Nav.Link>
-                                <NavDropdown title={`Measurement units: ${props.measurementUnit}`} id="offCanvasNavbarDropdown" onSelect={handleSelect}>
+                                <NavDropdown title={`Measurement units: ${props.measurementUnit.system}`} id="offCanvasNavbarDropdown" onSelect={handleSelect}>
                                     <NavDropdown.Item eventKey="metric" >Metric</NavDropdown.Item>
                                     <NavDropdown.Item eventKey="imperial" >Imperial</NavDropdown.Item>
                                 </NavDropdown>

@@ -1,5 +1,9 @@
-enum MeasurementUnit {
-    metric = 'metric',
-    imperial = 'imperial',
+import CssUnit from '../types/CssUnit';
+import MeasurementUnitSystem from '../types/MeasurementUnitSystem';
+import SpeedUnit from '../types/speedUnit';
+
+export default interface IMeasurementUnit {
+    system: MeasurementUnitSystem,
+    cssUnit: CssUnit,
+    speedUnit: SpeedUnit
 }
-export default MeasurementUnit;

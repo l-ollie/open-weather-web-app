@@ -88,21 +88,14 @@ code {
 	display: contents;
 }
 
-.unite-celsius::after {
+.unit-celsius::after {
 	content: "℃";
 }
 
-.unite-fahrenheit::after {
+.unit-fahrenheit::after {
 	content: "°F";
 }
 
-.unite-mPerS::after {
-	content: "m/s";
-}
-
-.unite-mPerH::after {
-	content: "mph";
-}
 
 .icon-centered {
 	display: flex;

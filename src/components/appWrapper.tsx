@@ -8,9 +8,11 @@ import { setMeasurementUnit, setSelectedCity } from '../services/redux/actions';
 import { fetchWeather } from '../services/redux/actions';
 
 import ICurrentWeather from '../models/ICurrentWeather';
+import MeasurementUnitSystem from '../types/MeasurementUnitSystem';
 import IFontColor from '../models/IWeatherColor';
 import navBarLink from '../models/navBarLink';
 import ISelectedCity from '../models/ISelectedCity';
+import IMeasurementUnit from '../models/MeasurementUnit';
 
 const navLinks: Array<navBarLink> = [
 	new NavBarLink('Today', '/'),
@@ -21,9 +23,8 @@ const navLinks: Array<navBarLink> = [
 
 type IAppWrapper = {
 	currentWeather: ICurrentWeather | null;
-	setMeasurementUnit: (unite: string) => {};
-	fetchWeather: (lat: number, lon: number, measurementUnit: string) => {}
-	measurementUnit: string;
+	fetchWeather: (lat: number, lon: number, measurementUnit: MeasurementUnitSystem) => {}
+	measurementUnit: IMeasurementUnit;
 	fontColor: IFontColor;
 	selectedCity: ISelectedCity;
 };
@@ -33,12 +34,12 @@ function AppWrapper(props: IAppWrapper) {
 
 	// eslint-disable-line react-hooks/exhaustive-deps
 	useEffect(() => {
-		props.fetchWeather(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit);
+		props.fetchWeather(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit.system);
 	}, []);// eslint-disable-line react-hooks/exhaustive-deps
 
 	useEffect(
 		() => {
-			props.fetchWeather(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit);
+			props.fetchWeather(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit.system);
 		},
 		[props.selectedCity, props.measurementUnit]// eslint-disable-line react-hooks/exhaustive-deps
 	);

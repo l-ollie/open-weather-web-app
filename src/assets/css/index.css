@@ -7,8 +7,7 @@ code{font-family:source-code-pro,Menlo,Monaco,Consolas,"Courier New",monospace}
 .active .NavBarLinkButton_underlines{height:5px;border-radius:50px 50px 0 0}.CurrentSection_temp{font-size:calc(6rem + 1.5vw)}
 .wind-direction-image{max-width:70vw;max-height:70vh}.wind-section-direction{font-size:calc(20rem + 1.5vw);display:inline-block}
 .scroll-full-page_wrapper{padding-top:139px;height:95vh}.display-contents{display:contents}
-.unite-celsius::after{content:"℃"}.unite-fahrenheit::after{content:"°F"}
-.unite-mPerS::after{content:"m/s"}.unite-mPerH::after{content:"mph"}
+.unit-celsius::after{content:"℃"}.unit-fahrenheit::after{content:"°F"}
 .icon-centered{display:flex;justify-content:center;align-items:center}.scale-5{scale:5}
 .width-100{width:100%}.p-absolute{position:absolute}.index-5{z-index:5}.index-1{z-index:1}
 .searcher-bar__burger{right:20px}.no-container-margin{padding-right:0;padding-left:0}

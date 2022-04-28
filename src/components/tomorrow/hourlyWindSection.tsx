@@ -15,7 +15,7 @@ interface IHourlyWindSection {
 
 function HourlyWindSection(props: IHourlyWindSection) {
     const windSpeed = Math.floor(props.sevenDaysWeather.daily[0].wind_speed);
-    const beaufortScale = new BeaufortScale(windSpeed, props.measurementUnit)
+    const beaufortScale = new BeaufortScale(windSpeed, props.measurementUnit.system)
     const deg = props.sevenDaysWeather.daily[0].wind_deg + 180;
 
     const arrow = () => {

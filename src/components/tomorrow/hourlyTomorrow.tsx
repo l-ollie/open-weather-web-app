@@ -1,10 +1,8 @@
 
-import React, { Component } from 'react';
 import { Row, Col, Container } from 'react-bootstrap';
 import Moment from 'react-moment';
 import { connect } from 'react-redux';
 import { IDailyWeather } from '../../models/IDailyWeather';
-import IWeatherColor from '../../models/IWeatherColor';
 import MaxMin from '../shared/maxMin';
 
 interface ITomorrow {
@@ -12,7 +10,7 @@ interface ITomorrow {
 }
 
 
-function Tomorrow(props: ITomorrow) {
+function HourlyTomorrow(props: ITomorrow) {
 
     const tomorrowDate = new Date();
     tomorrowDate.setDate(tomorrowDate.getDate() + 1);
@@ -28,22 +26,17 @@ function Tomorrow(props: ITomorrow) {
         weatherDescription = props.sevenDaysWeather.daily[1].weather[0].description;
     }
 
-
-
-
     return (
-        <Container className="" >
+        <Container >
             <Row>
                 <Col>
-                    <Col className="">
+                    <Col >
                         <span className="CurrentSection_date fw-bold fs-6 mt-3"> <Moment format="D MMMM YYYY">{tomorrowDate}</Moment></span>
                     </Col>
                     <Col xs={12} className="d-flex align-items-end">
                         <MaxMin
                             min={tomorrowMin}
-                            max={tomorrowMax}
-                        />
-
+                            max={tomorrowMax} />
                     </Col>
                     <Col xs={12} >
                         <h3>{weatherDescription}</h3>
@@ -65,4 +58,4 @@ function mapStateToProps(state: any) {
 
 export default connect(
     mapStateToProps,
-)(Tomorrow);
+)(HourlyTomorrow);

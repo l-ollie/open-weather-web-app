@@ -3,10 +3,11 @@ import TodayWindSection from '../components/today/todayWindSection';
 import { connect } from 'react-redux';
 import ICurrentWeather from '../models/ICurrentWeather';
 import { IDailyWeather } from '../models/IDailyWeather';
+import MeasurementUnit from '../models/MeasurementUnit';
 
 type CurrentPageProps = {
 	currentWeather: ICurrentWeather;
-	measurementUnit: string;
+	measurementUnit: MeasurementUnit;
 	sevenDaysWeather: IDailyWeather;
 };
 

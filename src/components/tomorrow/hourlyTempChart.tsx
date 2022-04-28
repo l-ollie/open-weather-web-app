@@ -9,7 +9,6 @@ interface IHourlyTempChart {
     height: number;
     itemWidth: number;
     fontColor: string;
-    showUnitHour: number;
 }
 
 function HourlyTempChart(props: IHourlyTempChart) {
@@ -20,7 +19,7 @@ function HourlyTempChart(props: IHourlyTempChart) {
             return index;
     });
 
-    const forecast = props.data?.hourly.slice(findSevenHourStart, findSevenHourStart + props.showUnitHour)
+    const forecast = props.data?.hourly.slice(findSevenHourStart, findSevenHourStart + 24)
 
     const maximumItems = forecast.length;
     const maximumYFromData = Math.max(...forecast.map((e: Hourly) => e.temp));
