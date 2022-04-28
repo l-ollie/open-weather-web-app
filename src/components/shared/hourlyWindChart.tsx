@@ -9,20 +9,31 @@ interface IHourlyWindChart {
     height: number;
     itemWidth: number;
     fontColor: string;
-    showAmountOfHours: number;
-    startingHour: number;
-    measurementUnit: string
+    measurementUnit: string;
+    showToday: boolean;
 }
 
 function HourlyWindChart(props: IHourlyWindChart) {
 
-    const findStartingHour = props.data?.hourly.findIndex((element, index) => {
-        const time = moment(new Date(element.dt * 1000)).format('HH');
-        if (Number(time) === props.startingHour)
-            return index;
-    });
+    let forecast;
 
-    const forecast = props.data?.hourly.slice(findStartingHour, findStartingHour + props.showAmountOfHours)
+    if (props.showToday) {
+        const findEndingHour = props.data?.hourly.findIndex((element, index) => {
+            const time = moment(element.dt * 1000).format('HH');
+            if (Number(time) === 7)
+                return index;
+        });
+        forecast = props.data?.hourly.slice(0, findEndingHour)
+    } else {
+        const findStartingHour = props.data?.hourly.findIndex((element, index) => {
+            const time = moment(element.dt * 1000).format('HH');
+            if (Number(time) === 7)
+                return index;
+        });
+        forecast = props.data?.hourly.slice(findStartingHour, findStartingHour + 24)
+    }
+
+
     const maximumItems = forecast.length;
     const maximumYFromData = Math.max(...forecast.map((e: Hourly) => e.wind_speed));
     const minimumYFromData = Math.min(...forecast.map((e: Hourly) => e.wind_speed));
@@ -82,7 +93,7 @@ function HourlyWindChart(props: IHourlyWindChart) {
         const y = infographicHeight;
         const forecastDate = moment(element.dt * 1000).format('HH:mm');
         return (
-            <text fontSize={fontSizeTime} x={x} y={y} key={index} textAnchor={'middle'} className="meta-text-color">
+            <text fontSize={fontSizeTime} x={x} y={y} key={index} textAnchor={'middle'} className="meta-text">
                 {forecastDate}
             </text>
         );

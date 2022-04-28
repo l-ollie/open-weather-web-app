@@ -29,7 +29,7 @@ class BeaufortScale {
 
     get description(): string {
         const windDescription = beaufort(this.speed, { int: true })
-        return BeaufortColors[windDescription.desc]
+        return windDescription.desc
     }
 
 }

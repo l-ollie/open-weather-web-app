@@ -7,13 +7,18 @@
     height: 95vh;
 }
 .width-100vw{
-width: 100vw;
+    width: 100vw;
 }
 
 .arrow-color{
     fill:#8EA5B0;
 }
 
-.meta-text-color{
+.meta-text{
+    color:#757575;
     fill:#757575;
+}
+
+.optical-font-alignments{
+    line-height: 0.75;
 }

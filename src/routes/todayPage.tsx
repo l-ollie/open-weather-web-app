@@ -1,32 +1,29 @@
-import React from 'react';
 import CurrentSection from '../components/today/currentSection';
-import WindSection from '../components/today/windSection';
+import TodayWindSection from '../components/today/todayWindSection';
 import { connect } from 'react-redux';
 import ICurrentWeather from '../models/ICurrentWeather';
+import { IDailyWeather } from '../models/IDailyWeather';
 
 type CurrentPageProps = {
 	currentWeather: ICurrentWeather;
 	measurementUnit: string;
+	sevenDaysWeather: IDailyWeather;
 };
 
-class TodayPage extends React.Component<CurrentPageProps> {
-
-
-	render() {
-
-		return (
-			<div>
-				<CurrentSection currentWeather={this.props.currentWeather} measurementUnit={this.props.measurementUnit} />
-				<WindSection currentWeather={this.props.currentWeather} measurementUnit={this.props.measurementUnit} />
-			</div>
-		);
-	}
+function TodayPage(props: CurrentPageProps) {
+	return (
+		<div>
+			{props.sevenDaysWeather !== null ? <CurrentSection currentWeather={props.currentWeather} measurementUnit={props.measurementUnit} /> : null}
+			{props.sevenDaysWeather !== null ? <TodayWindSection /> : null}
+		</div>
+	);
 }
 
 const mapStateToProps = (state: CurrentPageProps) => {
 	return {
 		currentWeather: state.currentWeather,
-		measurementUnit: state.measurementUnit
+		measurementUnit: state.measurementUnit,
+		sevenDaysWeather: state.sevenDaysWeather
 	};
 };
 
