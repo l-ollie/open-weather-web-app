@@ -9,7 +9,7 @@ const sourcemaps = require('gulp-sourcemaps');
 // prettier-ignore
 gulp.task('compileStyles',  function(cd) {
 	gulp.src('src/assets/scss/*.scss')
-        // .pipe(sourcemaps.init())
+        .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
         .pipe(autoprefixer({
             cascade: false
@@ -21,19 +21,6 @@ gulp.task('compileStyles',  function(cd) {
         .pipe(gulp.dest('src/assets/css'));
     cd();
 });
-
-// gulp.task('autoprefixer', () => {
-// 	const autoprefixer = require('autoprefixer');
-// 	const sourcemaps = require('gulp-sourcemaps');
-// 	const postcss = require('gulp-postcss');
-
-// 	return gulp
-// 		.src('./src/**/*.scss')
-// 		.pipe(sourcemaps.init())
-// 		.pipe(postcss([ autoprefixer() ]))
-// 		.pipe(sourcemaps.write('.'))
-// 		.pipe(gulp.dest('./src'));
-// });
 
 gulp.task('default', function() {
 	gulp.watch('src/assets/scss/*.scss', gulp.series('compileStyles'));

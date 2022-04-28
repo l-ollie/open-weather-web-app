@@ -2,12 +2,12 @@ import * as React from 'react';
 import { connect } from 'react-redux'
 // import { IHourlyWeather } from '../models/IHourlyWeather';
 
-export interface IFiveDaysProps {
+export interface ISevenDaysProps {
     // hourly: IHourlyWeather;
     // measurementUnit: string
 }
 
-class FiveDays extends React.Component<IFiveDaysProps> {
+class SevenDays extends React.Component<ISevenDaysProps> {
     public render() {
         return (
             <div>
@@ -19,9 +19,9 @@ class FiveDays extends React.Component<IFiveDaysProps> {
 
 const mapState2Props = (state: any) => {
     return {
-        forecast: state.forecast,
+        // forecast: state.forecast,
         measurementUnit: state.measurementUnit
     };
 }
 
-export default connect(mapState2Props)(FiveDays);
+export default connect(mapState2Props)(SevenDays);

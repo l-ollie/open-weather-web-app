@@ -1,28 +1,29 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { IDailyWeather } from '../../models/IDailyWeather';
 import { IHourlyWeather } from '../../models/IHourlyWeather';
+import MeasurementUnit from '../../models/MeasurementUnit';
+import BeaufortScale from '../../services/script/beaufortScale';
 import HourlyWindChart from '../shared/hourlyWindChart';
-var beaufort = require('beaufort-scale')
 
 interface IHourlyWindSection {
-    hourlyWeather: IHourlyWeather
-    measurementUnit: string
+    hourlyWeather: IHourlyWeather;
+    measurementUnit: MeasurementUnit;
+    sevenDaysWeather: IDailyWeather
 }
 
-
 function HourlyWindSection(props: IHourlyWindSection) {
-
-    const beaufortScale = beaufort(40)
-
+    const windSpeed = props.sevenDaysWeather.daily[0].wind_speed;
+    const beaufortScale = new BeaufortScale(windSpeed, props.measurementUnit)
     return (
-        <Container fluid className=" d-flex mt-4 flex-column" >
+        <>
             <Container className="mt-4">
                 <h5>Wind</h5>
             </Container>
             <Container className="d-flex mt-4 flex-row">
-                <div className="">
-                    <h1>42</h1>
+                <div className="" style={{ color: `${beaufortScale.color}` }}>
+                    <h1>{windSpeed}</h1>
                 </div>
                 <div className="d-flex flex-column">
                     <i>arrow</i>
@@ -38,11 +39,10 @@ function HourlyWindSection(props: IHourlyWindSection) {
                         itemWidth={50}
                         fontColor="dark" showAmountOfHours={24}
                         startingHour={7}
-                        measurementUnit={props.measurementUnit}
-                    /> : null}
+                        measurementUnit={props.measurementUnit} /> : null}
                 </div>
             </Container>
-        </Container>
+        </>
     );
 
 }
@@ -51,7 +51,7 @@ function mapStateToProps(state: any) {
     return {
         hourlyWeather: state.hourlyWeather,
         measurementUnit: state.measurementUnit,
-        dailyWeather: state.dailyWeather
+        sevenDaysWeather: state.sevenDaysWeather
     };
 }
 export default connect(

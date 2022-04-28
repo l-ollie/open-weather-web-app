@@ -4,27 +4,26 @@ import HourlyWeatherSection from '../components/tomorrow/hourlyWeatherSection';
 import HourlyWindSection from '../components/tomorrow/hourlyWindSection';
 import { IHourlyWeather } from '../models/IHourlyWeather';
 
-export interface IForeCastPageProps {
+export interface ITomorrowPageProps {
     // hourly: IHourlyWeather;
     // measurementUnit: string
+    sevenDaysWeather: any
 }
 
-class ForeCastPage extends React.Component<IForeCastPageProps> {
-    public render() {
-        return (
-            <div>
-                <HourlyWeatherSection />
-                <HourlyWindSection />
-            </div>
-        );
-    }
+function TomorrowPage(props: ITomorrowPageProps) {
+    return (
+        <div>
+            {props.sevenDaysWeather !== null ? <HourlyWeatherSection /> : null}
+            {props.sevenDaysWeather !== null ? <HourlyWindSection /> : null}
+        </div>
+    );
 }
 
 const mapState2Props = (state: any) => {
     return {
-        forecast: state.forecast,
-        measurementUnit: state.measurementUnit
+        measurementUnit: state.measurementUnit,
+        sevenDaysWeather: state.sevenDaysWeather
     };
 }
 
-export default connect(mapState2Props)(ForeCastPage);
+export default connect(mapState2Props)(TomorrowPage);

@@ -27,6 +27,11 @@ class BeaufortScale {
         return `#${BeaufortColors[windSpeedGrade.grade]}`
     }
 
+    get description(): string {
+        const windDescription = beaufort(this.speed, { int: true })
+        return BeaufortColors[windDescription.desc]
+    }
+
 }
 
 export default BeaufortScale;

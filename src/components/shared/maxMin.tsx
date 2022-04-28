@@ -13,13 +13,12 @@ function MaxMin(props: any) {
     const max = Math.round(props.max);
     const min = Math.round(props.min);
 
-
     return (
         <div className="d-flex">
-            <div className="maxMin-signle-temp me-3">
+            <div className="maxMin-single-temp me-3">
                 <span className={` ${props.tempUnitCss}`}>day {max}</span><BsArrowUp />
             </div>
-            <div className="maxMin-signle-temp me-3">
+            <div className="maxMin-single-temp me-3">
                 <span className={` ml-1  ${props.tempUnitCss}`}>night {min}</span><BsArrowDown />
             </div>
         </div>

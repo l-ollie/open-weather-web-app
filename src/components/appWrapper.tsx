@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 
 import { connect } from 'react-redux';
 import { setMeasurementUnit, setSelectedCity } from '../services/redux/actions';
-import { fetchForecastsWeather, fetchCurrentWeather } from '../services/redux/actions';
+import { fetchWeather } from '../services/redux/actions';
 
 import ICurrentWeather from '../models/ICurrentWeather';
 import IFontColor from '../models/IWeatherColor';
@@ -15,15 +15,14 @@ import ISelectedCity from '../models/ISelectedCity';
 const navLinks: Array<navBarLink> = [
 	new NavBarLink('Today', '/'),
 	new NavBarLink('Tomorrow', 'tomorrow'),
-	new NavBarLink('5 Days', 'fivedays'),
+	new NavBarLink('7 Days', 'sevendays'),
 	new NavBarLink('Pollution', 'pollution')
 ];
 
 type IAppWrapper = {
 	currentWeather: ICurrentWeather | null;
 	setMeasurementUnit: (unite: string) => {};
-	fetchForecastsWeather: (lat: number, lon: number, measurementUnit: string) => {}
-	fetchCurrentWeather: (lat: number, lon: number, measurementUnit: string) => {}
+	fetchWeather: (lat: number, lon: number, measurementUnit: string) => {}
 	measurementUnit: string;
 	fontColor: IFontColor;
 	selectedCity: ISelectedCity;
@@ -34,16 +33,14 @@ function AppWrapper(props: IAppWrapper) {
 
 	// eslint-disable-line react-hooks/exhaustive-deps
 	useEffect(() => {
-		props.fetchCurrentWeather(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit);
-		props.fetchForecastsWeather(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit);
+		props.fetchWeather(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit);
 	}, []);// eslint-disable-line react-hooks/exhaustive-deps
 
 	useEffect(
 		() => {
-			props.fetchCurrentWeather(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit);
-			props.fetchForecastsWeather(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit);
+			props.fetchWeather(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit);
 		},
-		[props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit]// eslint-disable-line react-hooks/exhaustive-deps
+		[props.selectedCity, props.measurementUnit]// eslint-disable-line react-hooks/exhaustive-deps
 	);
 
 	return (
@@ -63,4 +60,4 @@ const mapStateToProps = (state: any) => {
 	};
 };
 
-export default connect(mapStateToProps, { setMeasurementUnit, fetchCurrentWeather, fetchForecastsWeather, setSelectedCity })(AppWrapper);
+export default connect(mapStateToProps, { setMeasurementUnit, fetchWeather, setSelectedCity })(AppWrapper);

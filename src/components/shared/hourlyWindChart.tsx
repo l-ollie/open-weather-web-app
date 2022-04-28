@@ -1,7 +1,8 @@
 import moment from 'moment';
 import { Hourly, IHourlyWeather } from '../../models/IHourlyWeather';
 import BeaufortScale from '../../services/script/beaufortScale';
-
+import MeasurementUnit from '../../models/MeasurementUnit';
+import '../../assets/css/shared.css'
 
 interface IHourlyWindChart {
     data: IHourlyWeather;
@@ -27,14 +28,12 @@ function HourlyWindChart(props: IHourlyWindChart) {
     const minimumYFromData = Math.min(...forecast.map((e: Hourly) => e.wind_speed));
     const minMaxDifference = maximumYFromData - minimumYFromData;
 
-
     const infographicWidth = props.itemWidth * maximumItems;
     const infographicHeight = props.height;
 
     const fontSizeTime = 12;
     const fontSizeBar = 15;
     const fontHeight = fontSizeBar * 1.5;
-
 
     // const iconPadding = 10;
     const iconWidth = props.itemWidth;
@@ -57,7 +56,7 @@ function HourlyWindChart(props: IHourlyWindChart) {
         const y = (charBarMaxHeight - height) + iconBottomMargin + charBarNumberMargin + fontHeight + iconMaxHeight;
         const beaufortScale = new BeaufortScale(element.wind_speed, props.measurementUnit)
         return (
-            <rect width={charBarWidth} height={height} x={x} y={y} fill={`${beaufortScale.color}`} />
+            <rect width={charBarWidth} height={height} x={x} y={y} key={index} fill={`${beaufortScale.color}`} />
         )
     })
 
@@ -65,14 +64,14 @@ function HourlyWindChart(props: IHourlyWindChart) {
 
         const windSpeedKilometerH = element.wind_speed * (18 / 5);
         const windSpeedMilesH = element.wind_speed * 2.236936;
-        const windSpeed = props.measurementUnit === "metric" ? windSpeedKilometerH : windSpeedMilesH;
+        const windSpeed = props.measurementUnit === MeasurementUnit.metric ? windSpeedKilometerH : windSpeedMilesH;
 
         const height = ((element.wind_speed - minimumYFromData) * charBarSteps) + charBarMinHeight;
         const x = index * props.itemWidth + (props.itemWidth * 0.5);
         const y = (charBarMaxHeight - height) + iconBottomMargin + fontHeight + iconMaxHeight;
 
         return (
-            <text x={x} y={y} fill="black" textAnchor={'middle'}>
+            <text x={x} y={y} key={index} fill="black" textAnchor={'middle'}>
                 {Math.round(windSpeed)}
             </text>
         )
@@ -81,9 +80,9 @@ function HourlyWindChart(props: IHourlyWindChart) {
     const graphTime = forecast.map((element: Hourly, index: number) => {
         const x = index * props.itemWidth + props.itemWidth * 0.5;
         const y = infographicHeight;
-        const forecastDate = moment(new Date(element.dt * 1000)).format('HH:mm');
+        const forecastDate = moment(element.dt * 1000).format('HH:mm');
         return (
-            <text fontSize={fontSizeTime} x={x} y={y} key={index} textAnchor={'middle'}>
+            <text fontSize={fontSizeTime} x={x} y={y} key={index} textAnchor={'middle'} className="meta-text-color">
                 {forecastDate}
             </text>
         );
@@ -95,17 +94,12 @@ function HourlyWindChart(props: IHourlyWindChart) {
         const deg = element.wind_deg + 180;
 
         return (
-            <svg viewBox={`0 0 ${iconHeight} ${iconWidth}`} x={x} y={y} height={iconHeight}
-
-            >
-
-                <polygon points="25 0 50 50 25 34 0 50 25 0" fill="black"
+            <svg viewBox={`0 0 ${iconHeight} ${iconWidth}`} x={x} y={y} key={index} height={iconHeight}>
+                <polygon points="25 0 50 50 25 34 0 50 25 0" fill="gray" className="arrow-color"
                     transform={`
                      scale(${iconScale} ${iconScale})
                      rotate(${deg})`}
-                    //  , ${iconHeight * 0.5}, ${iconHeight * 0.5}
-                    transform-origin="50% 50%"
-                />
+                    transform-origin="50% 50%" />
             </svg >
 
         );

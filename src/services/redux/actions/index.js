@@ -1,50 +1,51 @@
 import WeatherRepository from '../../data/weatherRepository';
 import { apiKey } from '../../data/data';
 import getTempColorForLeds from '../../script/tempToColor';
-
+import ActionType from '../types';
 const weatherRepository = new WeatherRepository(apiKey);
 
-export const fetchCurrentWeather = (lat, lon, measurementUnit) => async (dispatch) => {
+export const fetchWeather = (lat, lon, measurementUnit) => async (dispatch) => {
 	const response = await weatherRepository.getCurrentWeather(lat, lon, measurementUnit);
-	dispatch({ type: 'FETCH_CURRENT_WEATHER', payload: { current: response.data } });
-	const tempToColor = getTempColorForLeds(response.data.main.feels_like, measurementUnit);
-	dispatch({ type: 'WEATHER_COLOR_TODAY', payload: tempToColor });
-};
+	dispatch({ type: ActionType.fetchCurrentWeather, payload: { current: response.data } });
 
-export const fetchForecastsWeather = (lat, lon, measurementUnit) => async (dispatch) => {
-	const response = await weatherRepository.getForcasts(lat, lon, measurementUnit);
-	dispatch({ type: 'HOURLY_WEATHER', payload: { hourly: response.data.hourly } });
-	dispatch({ type: 'FIVE_DAYS_WEATHER', payload: { daily: response.data.daily } });
+	const response2 = await weatherRepository.getForcasts(lat, lon, measurementUnit);
+	dispatch({ type: ActionType.fetchHourlyWeather, payload: { hourly: response2.data.hourly } });
+	dispatch({ type: ActionType.fetchSevenDaysWeather, payload: { daily: response2.data.daily } });
 
-	const tempToColorTomorrow = getTempColorForLeds(response.data.daily[1].feels_like.day, measurementUnit);
-	dispatch({ type: 'WEATHER_COLOR_TOMORROW', payload: tempToColorTomorrow });
+	const tempToColorToday = getTempColorForLeds(response.data.main.feels_like, measurementUnit);
 
-	const tempToColorFiveDaysTemp = response.data.daily.reduce(
+	const tempToColorTomorrow = getTempColorForLeds(response2.data.daily[1].feels_like.day, measurementUnit);
+
+	const tempToColorSevenDaysTemp = response2.data.daily.reduce(
 		(previousValue, currentValue) => previousValue + currentValue.feels_like.day,
 		0
 	);
-	const tempToColorFiveDaysAverage = tempToColorFiveDaysTemp / response.data.daily.length;
-	const tempToColorFiveDays = getTempColorForLeds(tempToColorFiveDaysAverage, measurementUnit);
-	dispatch({ type: 'WEATHER_COLOR_FIVE_DAYS', payload: tempToColorFiveDays });
+	const tempToColorSevenDaysAverage = tempToColorSevenDaysTemp / response2.data.daily.length;
+	const tempToColorSevenDays = getTempColorForLeds(tempToColorSevenDaysAverage, measurementUnit);
+
+	dispatch({
+		type: ActionType.weatherColors,
+		payload: { today: tempToColorToday, tomorrow: tempToColorTomorrow, sevenDays: tempToColorSevenDays }
+	});
 };
 
 export const setMeasurementUnit = (unit) => {
 	return {
-		type: 'SET_MEASUREMENT_UNIT',
+		type: ActionType.setMeasurementUnit,
 		payload: unit
 	};
 };
 
 export const setSelectedCity = (unite) => {
 	return {
-		type: 'SET_SELECTED_CITY',
+		type: ActionType.setSelectedCity,
 		payload: unite
 	};
 };
 
 export const setTempUnitCss = (unite) => {
 	return {
-		type: 'SET_TEMP_UNIT_CSS',
+		type: ActionType.setTempUnitCss,
 		payload: unite
 	};
 };

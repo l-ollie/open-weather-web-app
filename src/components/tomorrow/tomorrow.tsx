@@ -8,7 +8,7 @@ import IWeatherColor from '../../models/IWeatherColor';
 import MaxMin from '../shared/maxMin';
 
 interface ITomorrow {
-    fiveDaysWeather: IDailyWeather;
+    sevenDaysWeather: IDailyWeather;
 }
 
 
@@ -21,11 +21,11 @@ function Tomorrow(props: ITomorrow) {
     let weatherIcon: string | undefined = undefined;
     let weatherDescription: string = "";
 
-    if (props.fiveDaysWeather !== null) {
-        tomorrowMin = props.fiveDaysWeather.daily[1].temp.min;
-        tomorrowMax = props.fiveDaysWeather.daily[1].temp.max;
-        weatherIcon = `http://openweathermap.org/img/wn/${props.fiveDaysWeather.daily[1].weather[0].icon}.png`;
-        weatherDescription = props.fiveDaysWeather.daily[1].weather[0].description;
+    if (props.sevenDaysWeather !== null) {
+        tomorrowMin = props.sevenDaysWeather.daily[1].temp.min;
+        tomorrowMax = props.sevenDaysWeather.daily[1].temp.max;
+        weatherIcon = `http://openweathermap.org/img/wn/${props.sevenDaysWeather.daily[1].weather[0].icon}.png`;
+        weatherDescription = props.sevenDaysWeather.daily[1].weather[0].description;
     }
 
 
@@ -59,7 +59,7 @@ function Tomorrow(props: ITomorrow) {
 
 function mapStateToProps(state: any) {
     return {
-        fiveDaysWeather: state.fiveDaysWeather,
+        sevenDaysWeather: state.sevenDaysWeather,
     };
 }
 

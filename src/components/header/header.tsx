@@ -3,7 +3,7 @@ import { Container } from 'react-bootstrap';
 import NavBar from './navBar';
 import SideMenu from './sideMenu';
 import { connect } from 'react-redux';
-import IWeatherColor from '../../models/IWeatherColor';
+import IWeatherColors from '../../models/IWeatherColor';
 import ICurrentWeather from '../../models/ICurrentWeather';
 import NavBarLink from '../../models/navBarLink';
 import { useLocation } from 'react-router-dom';
@@ -12,30 +12,28 @@ import { IHourlyWeather } from '../../models/IHourlyWeather';
 interface IHeader {
     currentWeather: ICurrentWeather,
     hourlyWeather: IHourlyWeather,
-    weatherColorToday: IWeatherColor,
-    weatherColorTomorrow: IWeatherColor,
-    weatherColorFiveDays: IWeatherColor,
+    weatherColors: IWeatherColors,
     appNavlinks: Array<NavBarLink>,
 }
 
 
 function Header(props: IHeader) {
-    const [weatherColor, setWeatherColor] = useState(props.weatherColorToday);
+    const [weatherColor, setWeatherColor] = useState(props.weatherColors.today);
     const location = useLocation();
 
     function changeHeaderColorOnURL() {
         if (location.pathname === "/")
-            setWeatherColor(props.weatherColorToday);
+            setWeatherColor(props.weatherColors.today);
         else if (location.pathname === "/tomorrow")
-            setWeatherColor(props.weatherColorTomorrow);
-        else if (location.pathname === "/fivedays")
-            setWeatherColor(props.weatherColorFiveDays);
+            setWeatherColor(props.weatherColors.tomorrow);
+        else if (location.pathname === "/sevendays")
+            setWeatherColor(props.weatherColors.sevenDays);
     }
 
 
     useEffect(() => {
         changeHeaderColorOnURL()
-    }, [props.currentWeather, props.hourlyWeather, props.weatherColorFiveDays]);// eslint-disable-line react-hooks/exhaustive-deps
+    }, [props.currentWeather, props.hourlyWeather, props.weatherColors]);// eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         changeHeaderColorOnURL()
@@ -59,9 +57,7 @@ function Header(props: IHeader) {
 const mapStateToProps = (state: any) => {
     return {
         currentWeather: state.currentWeather,
-        weatherColorToday: state.weatherColorToday,
-        weatherColorTomorrow: state.weatherColorTomorrow,
-        weatherColorFiveDays: state.weatherColorFiveDays,
+        weatherColors: state.weatherColors,
         hourlyWeather: state.hourlyWeather,
     };
 };

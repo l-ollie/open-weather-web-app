@@ -5,9 +5,9 @@ import {
   Routes,
   Route
 } from 'react-router-dom';
-import Forecast from './routes/tomorrowPage';
+import Tomorrow from './routes/tomorrowPage';
 import Today from './routes/todayPage';
-import FiveDays from './routes/fiveDaysPage';
+import SevenDays from './routes/sevenDaysPage';
 import PageNotFound from './routes/pageNotFound';
 
 function App() {
@@ -16,8 +16,8 @@ function App() {
       <Routes>
         <Route element={<AppWrapper />} >
           <Route path="/" element={<Today />} />
-          <Route path="tomorrow" element={<Forecast />} />
-          <Route path="fivedays" element={<FiveDays />} />
+          <Route path="tomorrow" element={<Tomorrow />} />
+          <Route path="sevendays" element={<SevenDays />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>

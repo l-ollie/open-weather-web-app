@@ -1,6 +1,6 @@
 // coppied code from old arduino project 
 
-import IWeatherColor from "../../models/IWeatherColor";
+import { IWeatherColor } from "../../models/IWeatherColor";
 
 const tempColorSteps = [
     [0, 0, 255],    // 0 - dark blue -6 - 0
@@ -34,7 +34,7 @@ export default function getTempColorForLeds(feels_like: number, measurementUnit:
         _feels_like = (_feels_like - 32) * 0.5556;
     }
     calculateTempColor(_feels_like);
-    const color = {
+    const color: IWeatherColor = {
         "r": currentTempColor[0],
         "g": currentTempColor[1],
         "b": currentTempColor[2],
