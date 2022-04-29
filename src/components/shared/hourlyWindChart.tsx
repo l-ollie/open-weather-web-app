@@ -78,8 +78,8 @@ function HourlyWindChart(props: IHourlyWindChart) {
     const charBarNum = forecast.map((element: Hourly, index: number) => {
 
         const windSpeedKilometerH = element.wind_speed * (18 / 5);
-        const windSpeedMilesH = element.wind_speed * 2.236936;
-        const windSpeed = props.measurementUnit.system === MeasurementUnitSystem.metric ? windSpeedKilometerH : windSpeedMilesH;
+        // const windSpeedMilesH = element.wind_speed * 2.236936;
+        const windSpeed = props.measurementUnit.system === MeasurementUnitSystem.metric ? windSpeedKilometerH : element.wind_speed;
 
         const height = ((element.wind_speed - minimumYFromData) * charBarSteps) + charBarMinHeight;
         const x = index * props.itemWidth + (props.itemWidth * 0.5) - charBarSidePadding;

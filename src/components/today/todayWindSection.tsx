@@ -8,6 +8,7 @@ import { IHourlyWeather } from '../../models/IHourlyWeather';
 import MeasurementUnit from '../../models/MeasurementUnit';
 import BeaufortScale from '../../services/script/beaufortScale';
 import HourlyWindChart from '../shared/hourlyWindChart';
+import MeasurementUnitSystem from '../../types/MeasurementUnitSystem';
 const Compass = require("cardinal-direction");
 
 interface ITodayWindSection {
@@ -17,8 +18,8 @@ interface ITodayWindSection {
 }
 
 function TodayWindSection(props: ITodayWindSection) {
-    const windSpeed = Math.floor(props.sevenDaysWeather.daily[0].wind_speed);
-    const beaufortScale = new BeaufortScale(windSpeed, props.measurementUnit.system)
+    const windSpeed = Math.floor(props.measurementUnit.system === MeasurementUnitSystem.metric ? props.sevenDaysWeather.daily[0].wind_speed * (18 / 5) : props.sevenDaysWeather.daily[0].wind_speed);
+    const beaufortScale = new BeaufortScale(props.sevenDaysWeather.daily[0].wind_speed, props.measurementUnit.system)
     const windDescription = beaufortScale.description;
     const deg = props.sevenDaysWeather.daily[0].wind_deg + 180;
     const windDirection = Compass.cardinalConverter(Compass.cardinalFromDegree(deg, Compass.CardinalSubset.Ordinal));
