@@ -14,9 +14,7 @@ export const fetchWeather = (lat, lon, measurementUnitSystem) => async (dispatch
 	dispatch({ type: ActionType.fetchSevenDaysWeather, payload: { daily: response2.data.daily } });
 
 	const tempToColorToday = getTempColorForLeds(response.data.main.feels_like, measurementUnitSystem);
-
 	const tempToColorTomorrow = getTempColorForLeds(response2.data.daily[1].feels_like.day, measurementUnitSystem);
-
 	const tempToColorSevenDaysTemp = response2.data.daily.reduce(
 		(previousValue, currentValue) => previousValue + currentValue.feels_like.day,
 		0

@@ -4,6 +4,7 @@ import BeaufortScale from '../../services/script/beaufortScale';
 import '../../assets/css/shared.css'
 import IMeasurementUnit from '../../models/MeasurementUnit';
 import MeasurementUnitSystem from '../../types/MeasurementUnitSystem';
+import { Container } from 'react-bootstrap';
 
 interface IHourlyWindChart {
     data: IHourlyWeather;
@@ -66,7 +67,7 @@ function HourlyWindChart(props: IHourlyWindChart) {
 
     const charBar = forecast.map((element: Hourly, index: number) => {
         const height = ((element.wind_speed - minimumYFromData) * charBarSteps) + charBarMinHeight;
-        const x = index * props.itemWidth + charBarSidePadding;
+        const x = index * props.itemWidth + charBarSidePadding - charBarSidePadding;
         const y = (charBarMaxHeight - height) + iconBottomMargin + charBarNumberMargin + fontHeight + iconMaxHeight;
         const beaufortScale = new BeaufortScale(element.wind_speed, props.measurementUnit.system)
         return (
@@ -81,7 +82,7 @@ function HourlyWindChart(props: IHourlyWindChart) {
         const windSpeed = props.measurementUnit.system === MeasurementUnitSystem.metric ? windSpeedKilometerH : windSpeedMilesH;
 
         const height = ((element.wind_speed - minimumYFromData) * charBarSteps) + charBarMinHeight;
-        const x = index * props.itemWidth + (props.itemWidth * 0.5);
+        const x = index * props.itemWidth + (props.itemWidth * 0.5) - charBarSidePadding;
         const y = (charBarMaxHeight - height) + iconBottomMargin + fontHeight + iconMaxHeight;
 
         return (
@@ -92,7 +93,7 @@ function HourlyWindChart(props: IHourlyWindChart) {
     })
 
     const graphTime = forecast.map((element: Hourly, index: number) => {
-        const x = index * props.itemWidth + props.itemWidth * 0.5;
+        const x = (index * props.itemWidth + props.itemWidth * 0.5) - charBarSidePadding;
         const y = infographicHeight;
         const forecastDate = moment(element.dt * 1000).format('HH:mm');
         return (
@@ -103,7 +104,7 @@ function HourlyWindChart(props: IHourlyWindChart) {
     });
 
     const windDirection = forecast.map((element: Hourly, index: number) => {
-        const x = ((index * props.itemWidth + (props.itemWidth * 0.5))) - (infographicWidth * 0.5);
+        const x = ((index * props.itemWidth + (props.itemWidth * 0.5))) - (infographicWidth * 0.5) - charBarSidePadding;
         const y = -iconScale * iconHeight * 0.5;
         const deg = element.wind_deg + 180;
 
@@ -121,19 +122,20 @@ function HourlyWindChart(props: IHourlyWindChart) {
 
 
     return (
-        <svg className="m-auto" viewBox={`0 0 ${infographicWidth} ${props.height}`} height={props.height} width={infographicWidth} >
-            <defs>
-                <linearGradient id="linear" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="00%" stopColor={'#000'} stopOpacity={0.3} />
-                    <stop offset="100%" stopColor={'#000'} stopOpacity={0} />
-                </linearGradient>
-            </defs>
-            {charBar}
-            {graphTime}
-            {charBarNum}
-            {windDirection}
-        </svg>
-
+        <Container>
+            <svg className="m-auto" viewBox={`0 0 ${infographicWidth} ${props.height}`} height={props.height} width={infographicWidth} >
+                <defs>
+                    <linearGradient id="linear" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="00%" stopColor={'#000'} stopOpacity={0.3} />
+                        <stop offset="100%" stopColor={'#000'} stopOpacity={0} />
+                    </linearGradient>
+                </defs>
+                {charBar}
+                {graphTime}
+                {charBarNum}
+                {windDirection}
+            </svg>
+        </Container>
     );
 
 }

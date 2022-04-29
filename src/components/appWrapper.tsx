@@ -17,8 +17,7 @@ import IMeasurementUnit from '../models/MeasurementUnit';
 const navLinks: Array<navBarLink> = [
 	new NavBarLink('Today', '/'),
 	new NavBarLink('Tomorrow', 'tomorrow'),
-	new NavBarLink('7 Days', 'sevendays'),
-	new NavBarLink('Pollution', 'pollution')
+	new NavBarLink('7 Days', 'sevendays')
 ];
 
 type IAppWrapper = {
@@ -31,11 +30,6 @@ type IAppWrapper = {
 
 
 function AppWrapper(props: IAppWrapper) {
-
-	// eslint-disable-line react-hooks/exhaustive-deps
-	useEffect(() => {
-		props.fetchWeather(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit.system);
-	}, []);// eslint-disable-line react-hooks/exhaustive-deps
 
 	useEffect(
 		() => {
