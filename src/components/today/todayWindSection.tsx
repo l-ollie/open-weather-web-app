@@ -8,6 +8,8 @@ import { IHourlyWeather } from '../../models/IHourlyWeather';
 import MeasurementUnit from '../../models/MeasurementUnit';
 import BeaufortScale from '../../services/script/beaufortScale';
 import HourlyWindChart from '../shared/hourlyWindChart';
+const Compass = require("cardinal-direction");
+
 interface ITodayWindSection {
     hourlyWeather: IHourlyWeather;
     measurementUnit: MeasurementUnit;
@@ -19,6 +21,7 @@ function TodayWindSection(props: ITodayWindSection) {
     const beaufortScale = new BeaufortScale(windSpeed, props.measurementUnit.system)
     const windDescription = beaufortScale.description;
     const deg = props.sevenDaysWeather.daily[0].wind_deg + 180;
+    const windDirection = Compass.cardinalConverter(Compass.cardinalFromDegree(deg, Compass.CardinalSubset.Ordinal));
 
     const arrow = () => {
         return (
@@ -43,11 +46,11 @@ function TodayWindSection(props: ITodayWindSection) {
                 </div>
                 <div className="ms-2 d-flex flex-column justify-content-between">
                     {arrow()}
-                    <span className="meta-text optical-font-alignments">km/h</span>
+                    <span className="meta-text optical-font-alignments">{props.measurementUnit.speedUnit}</span>
                 </div>
                 <div className="ms-4 d-flex flex-column justify-content-between">
                     <span className="today-wind-desc optical-font-alignments" >{windDescription}</span>
-                    <span className="meta-text optical-font-alignments">Now from southwest</span>
+                    <span className="meta-text optical-font-alignments">Now from {windDirection}</span>
                 </div>
             </Container>
 
