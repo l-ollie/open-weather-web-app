@@ -17,8 +17,14 @@ export interface Hourly {
     wind_gust: number;
     weather: Weather[];
     pop: number;
+    rain?: rain;
+    snow?: number;
 }
 
+export interface rain {
+    "1h": number;
+
+}
 export interface Weather {
     id: number;
     main: Main;

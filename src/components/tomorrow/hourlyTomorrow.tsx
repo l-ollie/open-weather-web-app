@@ -4,7 +4,7 @@ import Moment from 'react-moment';
 import { connect } from 'react-redux';
 import { IDailyWeather } from '../../models/IDailyWeather';
 import MaxMin from '../shared/maxMin';
-
+import '../../assets/css/shared.css';
 interface ITomorrow {
     sevenDaysWeather: IDailyWeather;
 }
@@ -43,7 +43,7 @@ function HourlyTomorrow(props: ITomorrow) {
                     </Col>
                 </Col>
                 <Col xs={4} className="icon-centered text-center d-flex flex-column ">
-                    <img src={weatherIcon} alt="Weather icon" className="width-100" />
+                    <img src={weatherIcon} alt="Weather icon" className="height-100" />
                 </Col>
             </Row>
         </Container>

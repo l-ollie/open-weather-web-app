@@ -1,6 +1,6 @@
 import { Col, Container, Row } from 'react-bootstrap';
 import Moment from 'react-moment';
-import { BsArrowDown, BsArrowUp } from 'react-icons/bs';
+import '../../assets/css/shared.css'
 
 import ICurrentWeather, { Current } from '../../models/ICurrentWeather';
 import IWeatherColor from '../../models/IWeatherColor';
@@ -15,9 +15,7 @@ interface CurrentSectionProps {
 };
 
 function CurrentSection(props: CurrentSectionProps) {
-
     const _weather: Current = props.currentWeather?.current;
-    const _measurementUnit = props.measurementUnit;
 
     const dateToFormat = new Date();
     const temp: number = Math.round(_weather?.main.temp);
@@ -44,17 +42,18 @@ function CurrentSection(props: CurrentSectionProps) {
                     </Col>
                 </Row>
                 <Row>
-                    <Col className="">
+                    <Col className="d-flex flex-column">
                         <span className={`CurrentSection_temp ${props.measurementUnit.cssUnit}`} >{temp}</span>
+                        <span className={`${props.measurementUnit.cssUnit}`}>Feels like {feelsLike}</span>
                     </Col>
                     <Col className="icon-centered text-center d-flex flex-column ">
-                        <img src={weatherIcon} alt="Weather icon" className="width-100" />
+                        <img src={weatherIcon} alt="Weather icon" className="height-100" />
                         <span >{weatherDescription}</span>
                     </Col>
                 </Row>
                 <Row>
                     <Col>
-                        <span className={`${props.measurementUnit.cssUnit}`}>Feels like {feelsLike}</span>
+
                     </Col>
                 </Row>
                 <Row>
