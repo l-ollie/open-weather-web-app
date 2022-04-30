@@ -9,6 +9,7 @@ import { Container } from 'react-bootstrap';
 interface IHourlyWindChart {
     data: IHourlyWeather;
     height: number;
+    itemWidth: number;
     fontColor: string;
     measurementUnit: IMeasurementUnit;
     showToday: boolean;
@@ -42,102 +43,97 @@ function HourlyWindChart(props: IHourlyWindChart) {
     const minimumYFromData = Math.min(...forecast.map((e: Hourly) => e.wind_speed));
     const minMaxDifference = maximumYFromData - minimumYFromData;
 
-    const charBarSidePadding = 15;
-    const itemWidth = 40;
-
-    const infographicWidth = (itemWidth + charBarSidePadding) * maximumItems;
+    const infographicWidth = props.itemWidth * maximumItems;
     const infographicHeight = props.height;
 
     const fontSizeTime = 12;
     const fontSizeBar = 15;
     const fontHeight = fontSizeBar * 1.5;
 
-    const iconHeight = itemWidth;
-    const iconScale = 0.4;
-    const iconMaxHeight = (itemWidth * 2 * iconScale) / Math.SQRT2;
-    const iconBottomMargin = 5;
+    // const iconPadding = 10;
+    const iconWidth = props.itemWidth;
+    const iconHeight = props.itemWidth;
+    const iconScale = 0.3;
+    const iconMaxHeight = (props.itemWidth * 2 * iconScale) / Math.SQRT2;
+    const iconBottomMargin = 10;
 
+    const charBarSidePadding = 5;
+    const charBarWidth = props.itemWidth - (charBarSidePadding * 2);
     const charBarBase = 10;
     const charBarNumberMargin = 5;
     const charBarMinHeight = 10;
     const charBarMaxHeight = infographicHeight - charBarBase - iconBottomMargin - charBarNumberMargin - charBarMinHeight - fontHeight - iconMaxHeight;
     const charBarSteps = charBarMaxHeight / minMaxDifference;
 
-
-    const makeChart = forecast.map((element: Hourly, index: number) => {
-        const x = index * (itemWidth + charBarSidePadding);
-
+    const charBar = forecast.map((element: Hourly, index: number) => {
+        const height = ((element.wind_speed - minimumYFromData) * charBarSteps) + charBarMinHeight;
+        const x = index * props.itemWidth + charBarSidePadding - charBarSidePadding;
+        const y = (charBarMaxHeight - height) + iconBottomMargin + charBarNumberMargin + fontHeight + iconMaxHeight;
+        const beaufortScale = new BeaufortScale(element.wind_speed, props.measurementUnit.system)
         return (
-            <svg x={x} y={0} height={props.height} width={itemWidth} key={index}>
-                {charBar(element.wind_speed)}
-                {charBarNum(element.wind_speed)}
-                {graphTime(element.dt)}
-                {windDirection(element.wind_deg)}
-            </svg>
+            <rect width={charBarWidth} height={height} x={x} y={y} key={index} fill={`${beaufortScale.color}`} />
         )
     })
 
+    const charBarNum = forecast.map((element: Hourly, index: number) => {
 
-    function charBar(windSpeed: number): React.SVGProps<SVGRectElement> {
-        const height = ((windSpeed - minimumYFromData) * charBarSteps) + charBarMinHeight;
-        const y = (charBarMaxHeight - height) + iconBottomMargin + charBarNumberMargin + fontHeight + iconMaxHeight;
-        const beaufortScale = new BeaufortScale(windSpeed, props.measurementUnit.system);
+        const windSpeedKilometerH = element.wind_speed * (18 / 5);
+        // const windSpeedMilesH = element.wind_speed * 2.236936;
+        const windSpeed = props.measurementUnit.system === MeasurementUnitSystem.metric ? windSpeedKilometerH : element.wind_speed;
 
-        return (
-            <rect width={itemWidth} height={height} x="0" y={y} fill={`${beaufortScale.color}`} />
-        )
-    };
-
-    function charBarNum(windSpeed: number) {
-        const windSpeedKilometerH = windSpeed * (18 / 5);
-        const _windSpeed = props.measurementUnit.system === MeasurementUnitSystem.metric ? windSpeedKilometerH : windSpeed;
-        const height = ((windSpeed - minimumYFromData) * charBarSteps) + charBarMinHeight;
-        const x = itemWidth * 0.5;
+        const height = ((element.wind_speed - minimumYFromData) * charBarSteps) + charBarMinHeight;
+        const x = index * props.itemWidth + (props.itemWidth * 0.5) - charBarSidePadding;
         const y = (charBarMaxHeight - height) + iconBottomMargin + fontHeight + iconMaxHeight;
 
         return (
-            <text x={x} y={y} fill="black" textAnchor={'middle'}>
-                {Math.round(_windSpeed)}
+            <text x={x} y={y} key={index} fill="black" textAnchor={'middle'}>
+                {Math.round(windSpeed)}
             </text>
         )
-    };
+    })
 
-    function graphTime(time: number) {
-        const x = itemWidth * 0.5;
+    const graphTime = forecast.map((element: Hourly, index: number) => {
+        const x = (index * props.itemWidth + props.itemWidth * 0.5) - charBarSidePadding;
         const y = infographicHeight;
-        const forecastDate = moment(time * 1000).format('HH:mm');
+        const forecastDate = moment(element.dt * 1000).format('HH:mm');
         return (
-            <text fontSize={fontSizeTime} x={x} y={y} textAnchor={'middle'} className="meta-text">
+            <text fontSize={fontSizeTime} x={x} y={y} key={index} textAnchor={'middle'} className="meta-text">
                 {forecastDate}
             </text>
         );
-    };
+    });
 
-    function windDirection(windDeg: number) {
+    const windDirection = forecast.map((element: Hourly, index: number) => {
+        const x = ((index * props.itemWidth + (props.itemWidth * 0.5))) - (infographicWidth * 0.5) - charBarSidePadding;
         const y = -iconScale * iconHeight * 0.5;
-        const deg = windDeg + 180;
+        const deg = element.wind_deg + 180;
 
         return (
-            <svg viewBox={`0 0 50 50`} x="0" y={y} height={iconHeight}>
+            <svg viewBox={`0 0 ${iconHeight} ${iconWidth}`} x={x} y={y} key={index} height={iconHeight}>
                 <polygon points="25 0 50 50 25 34 0 50 25 0" fill="gray" className="arrow-color"
                     transform={`
-                     scale(${iconScale})
+                     scale(${iconScale} ${iconScale})
                      rotate(${deg})`}
                     transform-origin="50% 50%" />
             </svg >
+
         );
-    };
+    });
+
 
     return (
         <Container>
-            <svg className="m-auto" viewBox={`0 0 ${infographicWidth} ${props.height}`} height={props.height}  >
+            <svg className="m-auto" viewBox={`0 0 ${infographicWidth} ${props.height}`} height={props.height} width={infographicWidth} >
                 <defs>
                     <linearGradient id="linear" x1="0%" y1="0%" x2="0%" y2="100%">
                         <stop offset="00%" stopColor={'#000'} stopOpacity={0.3} />
                         <stop offset="100%" stopColor={'#000'} stopOpacity={0} />
                     </linearGradient>
                 </defs>
-                {makeChart}
+                {charBar}
+                {graphTime}
+                {charBarNum}
+                {windDirection}
             </svg>
         </Container>
     );

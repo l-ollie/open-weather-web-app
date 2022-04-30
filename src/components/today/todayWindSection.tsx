@@ -60,7 +60,6 @@ function TodayWindSection(props: ITodayWindSection) {
                     {props.hourlyWeather !== null ? <HourlyWindChart
                         data={props.hourlyWeather}
                         height={100}
-                        itemWidth={50}
                         fontColor="dark"
                         showToday={true}
                         measurementUnit={props.measurementUnit} /> : null}
