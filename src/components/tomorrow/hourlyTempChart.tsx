@@ -1,6 +1,6 @@
 
 import { Hourly, IHourlyWeather } from '../../models/IHourlyWeather';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 const STROKE = 1;
 
@@ -9,12 +9,13 @@ interface IHourlyTempChart {
     height: number;
     itemWidth: number;
     fontColor: string;
+    timezone: string;
 }
 
 function HourlyTempChart(props: IHourlyTempChart) {
 
     const findSevenHourStart = props.data?.hourly.findIndex((element, index) => {
-        const time = moment(new Date(element.dt * 1000)).format('HH');
+        const time = moment(element.dt * 1000).tz(props.timezone).format('HH');
         if (Number(time) === 7)
             return index;
     });
@@ -91,7 +92,7 @@ function HourlyTempChart(props: IHourlyTempChart) {
     const graphTime = forecast.map((element: Hourly, index: number) => {
         const x = index * props.itemWidth + props.itemWidth / 2;
         const y = chartHeight;
-        const forecastDate = moment(new Date(element.dt * 1000)).format('HH:mm');
+        const forecastDate = moment(element.dt * 1000).tz(props.timezone).format('HH:mm');
         return (
             <text fontSize={FONT_SIZE} fill={gradientColor} x={x} y={y} key={index} textAnchor={'middle'}>
                 {forecastDate}

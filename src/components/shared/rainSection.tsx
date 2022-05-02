@@ -12,12 +12,14 @@ interface props {
     sevenDaysWeather: IDailyWeather;
     measurementUnit: IMeasurementUnit;
     showToday: boolean;
+    timezone: string;
 }
 function mapStateToProps(state: any) {
     return {
         sevenDaysWeather: state.sevenDaysWeather,
         hourlyWeather: state.hourlyWeather,
         measurementUnit: state.measurementUnit,
+        timezone: state.timezone,
     };
 }
 
@@ -38,7 +40,8 @@ function RainSection(props: props) {
                         itemWidth={50}
                         fontColor="dark"
                         showToday={props.showToday}
-                        measurementUnit={props.measurementUnit} /> : null}
+                        measurementUnit={props.measurementUnit}
+                        timezone={props.timezone} /> : null}
                 </div>
             </Container>
             <Container >

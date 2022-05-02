@@ -1,5 +1,5 @@
-import moment from 'moment';
-import { Hourly, IHourlyWeather, Rain } from '../../models/IHourlyWeather';
+import moment from 'moment-timezone';
+import { Hourly, IHourlyWeather } from '../../models/IHourlyWeather';
 import '../../assets/css/shared.css'
 import IMeasurementUnit from '../../models/MeasurementUnit';
 import { Container } from 'react-bootstrap';
@@ -10,6 +10,7 @@ interface IHourlyRainChart {
     fontColor: string;
     measurementUnit: IMeasurementUnit;
     showToday: boolean;
+    timezone: string;
 }
 
 function HourlyRainChart(props: IHourlyRainChart) {
@@ -17,7 +18,7 @@ function HourlyRainChart(props: IHourlyRainChart) {
 
     if (props.showToday) {
         const findEndingHour = props.data?.hourly.findIndex((element, index) => {
-            const time = moment(element.dt * 1000).format('HH');
+            const time = moment(element.dt * 1000).tz(props.timezone).format('HH');
             if (Number(time) === 7)
                 return index;
             return 0
@@ -25,7 +26,7 @@ function HourlyRainChart(props: IHourlyRainChart) {
         forecast = props.data?.hourly.slice(0, findEndingHour)
     } else {
         const findStartingHour = props.data?.hourly.findIndex((element, index) => {
-            const time = moment(element.dt * 1000).format('HH');
+            const time = moment(element.dt * 1000).tz(props.timezone).format('HH');
             if (Number(time) === 7)
                 return index;
             return 0
@@ -120,7 +121,7 @@ function HourlyRainChart(props: IHourlyRainChart) {
     function graphTime(time: number): React.SVGProps<SVGTextElement> {
         const x = itemWidth * 0.5;
         const y = infographicHeight;
-        const forecastDate = moment(time * 1000).format('HH:mm');
+        const forecastDate = moment(time * 1000).tz(props.timezone).format('HH:mm');
         return (
             <text fontSize={fontSizeTime} x={x} y={y} textAnchor={'middle'} className="meta-text-color">
                 {forecastDate}

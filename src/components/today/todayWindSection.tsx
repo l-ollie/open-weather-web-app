@@ -14,7 +14,8 @@ const Compass = require("cardinal-direction");
 interface ITodayWindSection {
     hourlyWeather: IHourlyWeather;
     measurementUnit: MeasurementUnit;
-    sevenDaysWeather: IDailyWeather
+    sevenDaysWeather: IDailyWeather;
+    timezone: string;
 }
 
 function TodayWindSection(props: ITodayWindSection) {
@@ -62,6 +63,7 @@ function TodayWindSection(props: ITodayWindSection) {
                         height={100}
                         fontColor="dark"
                         showToday={true}
+                        timezone={props.timezone}
                         measurementUnit={props.measurementUnit} /> : null}
                 </div>
             </Container>
@@ -75,7 +77,8 @@ function mapStateToProps(state: any) {
     return {
         hourlyWeather: state.hourlyWeather,
         measurementUnit: state.measurementUnit,
-        sevenDaysWeather: state.sevenDaysWeather
+        sevenDaysWeather: state.sevenDaysWeather,
+        timezone: state.timezone,
     };
 }
 export default connect(

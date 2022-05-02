@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { Hourly, IHourlyWeather } from '../../models/IHourlyWeather';
 import BeaufortScale from '../../services/script/beaufortScale';
 import '../../assets/css/shared.css'
@@ -12,6 +12,7 @@ interface IHourlyWindChart {
     fontColor: string;
     measurementUnit: IMeasurementUnit;
     showToday: boolean;
+    timezone: string;
 }
 
 function HourlyWindChart(props: IHourlyWindChart) {
@@ -20,7 +21,7 @@ function HourlyWindChart(props: IHourlyWindChart) {
 
     if (props.showToday) {
         const findEndingHour = props.data?.hourly.findIndex((element, index) => {
-            const time = moment(element.dt * 1000).format('HH');
+            const time = moment(element.dt * 1000).tz(props.timezone).format('HH');
             if (Number(time) === 7)
                 return index;
             return 0
@@ -28,7 +29,7 @@ function HourlyWindChart(props: IHourlyWindChart) {
         forecast = props.data?.hourly.slice(0, findEndingHour)
     } else {
         const findStartingHour = props.data?.hourly.findIndex((element, index) => {
-            const time = moment(element.dt * 1000).format('HH');
+            const time = moment(element.dt * 1000).tz(props.timezone).format('HH');
             if (Number(time) === 7)
                 return index;
             return 0
@@ -105,7 +106,7 @@ function HourlyWindChart(props: IHourlyWindChart) {
     function graphTime(time: number) {
         const x = itemWidth * 0.5;
         const y = infographicHeight;
-        const forecastDate = moment(time * 1000).format('HH:mm');
+        const forecastDate = moment(time * 1000).tz(props.timezone).format('HH:mm');
         return (
             <text fontSize={fontSizeTime} x={x} y={y} textAnchor={'middle'} className="meta-text-color">
                 {forecastDate}

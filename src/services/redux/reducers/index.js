@@ -6,6 +6,7 @@ import sevenDaysWeather from './sevenDaysWeatherReducer';
 
 import weatherColors from './weatherColors';
 import selectedCity from './selectedCityReducer';
+import timezone from './timezoneReducer';
 
 const allReducers = combineReducers({
 	currentWeather,
@@ -13,7 +14,8 @@ const allReducers = combineReducers({
 	hourlyWeather,
 	sevenDaysWeather,
 	weatherColors,
-	selectedCity
+	selectedCity,
+	timezone
 });
 
 export default allReducers;

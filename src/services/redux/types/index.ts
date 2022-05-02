@@ -7,6 +7,7 @@
     fetchSevenDaysWeather = "SEVEN_DAYS_WEATHER",
     fetchWeather = "FETCH_WEATHER",
     weatherColors = "WEATHER_COLORS",
+    timeZone = "TIME_ZONE",
 }
 
 export default ActionType
