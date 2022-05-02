@@ -38,7 +38,7 @@ function HourlyWindSection(props: IHourlyWindSection) {
             <Container className="d-flex mt-4 flex-row">
                 <div className=" d-flex flex-column justify-content-between">
                     <span className="today-wind-desc optical-font-alignments mb-3" >{windDescription}</span>
-                    <span className="meta-text optical-font-alignments">{minimumWindSpeedConverted}-{maximumWindSpeedConverted} {props.measurementUnit.speedUnit}</span>
+                    <span className="meta-text-color optical-font-alignments">{minimumWindSpeedConverted}-{maximumWindSpeedConverted} {props.measurementUnit.speedUnit}</span>
                 </div>
             </Container>
 
@@ -52,6 +52,7 @@ function HourlyWindSection(props: IHourlyWindSection) {
                         measurementUnit={props.measurementUnit} /> : null}
                 </div>
             </Container>
+            <hr />
         </>
     );
 

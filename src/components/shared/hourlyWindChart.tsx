@@ -107,7 +107,7 @@ function HourlyWindChart(props: IHourlyWindChart) {
         const y = infographicHeight;
         const forecastDate = moment(time * 1000).format('HH:mm');
         return (
-            <text fontSize={fontSizeTime} x={x} y={y} textAnchor={'middle'} className="meta-text">
+            <text fontSize={fontSizeTime} x={x} y={y} textAnchor={'middle'} className="meta-text-color">
                 {forecastDate}
             </text>
         );
@@ -131,12 +131,6 @@ function HourlyWindChart(props: IHourlyWindChart) {
     return (
         <Container>
             <svg className="m-auto" viewBox={`0 0 ${infographicWidth} ${props.height}`} height={props.height}  >
-                <defs>
-                    <linearGradient id="linear" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="00%" stopColor={'#000'} stopOpacity={0.3} />
-                        <stop offset="100%" stopColor={'#000'} stopOpacity={0} />
-                    </linearGradient>
-                </defs>
                 {makeChart}
             </svg>
         </Container>

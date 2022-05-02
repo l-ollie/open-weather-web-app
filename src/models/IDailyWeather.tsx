@@ -21,7 +21,7 @@ export interface Daily {
     clouds: number;
     pop: number;
     uvi: number;
-    rain?: number;
+    rain: number;
 }
 
 export interface FeelsLike {

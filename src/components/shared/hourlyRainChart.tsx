@@ -1,14 +1,11 @@
 import moment from 'moment';
-import { Hourly, IHourlyWeather } from '../../models/IHourlyWeather';
-import BeaufortScale from '../../services/script/beaufortScale';
+import { Hourly, IHourlyWeather, Rain } from '../../models/IHourlyWeather';
 import '../../assets/css/shared.css'
 import IMeasurementUnit from '../../models/MeasurementUnit';
-import MeasurementUnitSystem from '../../types/MeasurementUnitSystem';
 import { Container } from 'react-bootstrap';
 
 interface IHourlyRainChart {
     data: IHourlyWeather;
-    height: number;
     itemWidth: number;
     fontColor: string;
     measurementUnit: IMeasurementUnit;
@@ -37,44 +34,58 @@ function HourlyRainChart(props: IHourlyRainChart) {
     }
 
     const maximumItems = forecast.length;
-    const maximumYFromData = Math.max(...forecast.map((e: Hourly) => e.wind_speed));
-    const minimumYFromData = Math.min(...forecast.map((e: Hourly) => e.wind_speed));
-    const minMaxDifference = maximumYFromData - minimumYFromData;
+    const itemWidth = 40;
+    const charBarSidePadding = 15;
 
-    const infographicWidth = props.itemWidth * maximumItems;
-    const infographicHeight = props.height;
+    const infographicWidth = maximumItems * (itemWidth + charBarSidePadding);
+    const infographicHeight = 120;
 
     const fontSizeTime = 12;
-    const fontSizeBar = 15;
-    const fontHeight = fontSizeBar * 1.5;
 
-    // const iconPadding = 10;
-    const iconStrokeWidth = 8;
-    const iconWidth = props.itemWidth;
-    const iconY = 20;
+    const iconWidth = itemWidth;
     const iconHeight = 61;
-    const iconScale = 0.6;
-    const iconMaxHeight = (props.itemWidth * 2 * iconScale) / Math.SQRT2;
-    const iconBottomMargin = 10;
-
-    const charBarSidePadding = 5;
-    const charBarWidth = props.itemWidth - (charBarSidePadding * 2);
-    const charBarBase = 10;
-    const charBarNumberMargin = 5;
-    const charBarMinHeight = 10;
-    const charBarMaxHeight = infographicHeight - charBarBase - iconBottomMargin - charBarNumberMargin - charBarMinHeight - fontHeight - iconMaxHeight;
-    const charBarSteps = charBarMaxHeight / minMaxDifference;
-
-    const volumeYPos = infographicHeight - 20;
 
     const rainfallCategory = [0, 0.40, 2.5, 7.6, 100];
     const rainfallStep = 100 / rainfallCategory.length;
 
-    const rainDroplet = forecast.map((element: Hourly, index: number) => {
-        const x = ((index * props.itemWidth));
+    const sideAxe = () => {
+        const volumeY = infographicHeight - 53;
+        return (
+            <>
+                <text fontSize={fontSizeTime} x={0} y={15} className="meta-text-color">
+                    Change
+                </text>
+                <text fontSize={fontSizeTime} x={0} y={volumeY} className="meta-text-color" >
+                    <tspan x="0" dy="1.2em" alignmentBaseline="middle" >
+                        Volume
+                    </tspan>
+                    <tspan x="0" dy="1.2em" alignmentBaseline="middle">
+                        (mm)
+                    </tspan>
+                </text>
+            </>
+        )
+    }
 
+    const makeChart = forecast.map((element: Hourly, index: number) => {
+        const x = index * (itemWidth + charBarSidePadding);
         const amountRainfall: number = element.rain?.["1h"] !== undefined ? element.rain?.["1h"] : 0;
+
+        return (
+            <svg x={x} y={0} height={infographicHeight} width={itemWidth} key={index}>
+                {rainDroplet(amountRainfall)}
+                {graphVolume(amountRainfall)}
+                {graphTime(element.dt)}
+                {graphPercentage(element.pop)}
+            </svg>
+        )
+    });
+
+
+    function rainDroplet(amountRainfall: number) {
+        const iconStrokeWidth = 6;
         let rainfallBar = 0;
+        const iconY = -infographicHeight * .5 + 39 * 0.5 + 25;
 
         for (let i = 0; i < rainfallCategory.length; i++) {
             if (amountRainfall <= rainfallCategory[i]) {
@@ -83,66 +94,71 @@ function HourlyRainChart(props: IHourlyRainChart) {
             }
         }
 
-
         return (
-            <svg x={x} y={iconY} width={iconWidth} height={iconHeight} key={index} >
-                <g transform={`scale(${iconScale} ${iconScale})`} transform-origin="50% 0%" >
-                    <mask id="dropletMask">
-                        <path d="M50,35.92a24.92,24.92,0,0,0-6.67-17C38.77,14,25,0,25,0S11.23,14,6.67,18.92A25,25,0,1,0,50,35.92Z" fill="white" />
-                    </mask>
-                    <rect
-                        width={iconWidth}
-                        height={iconHeight}
-                        x={0}
-                        y={`${-rainfallBar}%`}
-                        fill="#0DE3FB"
-                        mask="url(#dropletMask)" />
-
-                    <path d="M50,35.92a24.92,24.92,0,0,0-6.67-17C38.77,14,25,0,25,0S11.23,14,6.67,18.92A25,25,0,1,0,50,35.92Z"
-                        stroke="black"
-                        fill="none"
-                        stroke-opacity={0.2}
-                        stroke-width={iconStrokeWidth}
-                        mask="url(#dropletMask)" />
-                </g>
+            <svg viewBox="0 0 40 49 " width="30" x="5" y={iconY} >
+                <mask id="dropletMask">
+                    <path d="M40,28.74a19.94,19.94,0,0,0-5.33-13.6C31,11.2,20,0,20,0S9,11.2,5.33,15.14A20,20,0,1,0,40,28.74Z" fill="white" />
+                </mask>
+                <rect
+                    width={iconWidth}
+                    height={iconHeight}
+                    y={`${-rainfallBar}%`}
+                    fill="#0DE3FB"
+                    mask="url(#dropletMask)" />
+                <path d="M40,28.74a19.94,19.94,0,0,0-5.33-13.6C31,11.2,20,0,20,0S9,11.2,5.33,15.14A20,20,0,1,0,40,28.74Z"
+                    stroke="black"
+                    fill="none"
+                    stroke-opacity={0.15}
+                    stroke-width={iconStrokeWidth}
+                    x="40"
+                    mask="url(#dropletMask)"
+                />
             </svg>
         );
-    });
+    };
 
-    const graphTime = forecast.map((element: Hourly, index: number) => {
-        const x = (index * props.itemWidth + props.itemWidth * 0.5);
+    function graphTime(time: number): React.SVGProps<SVGTextElement> {
+        const x = itemWidth * 0.5;
         const y = infographicHeight;
-        const forecastDate = moment(element.dt * 1000).format('HH:mm');
+        const forecastDate = moment(time * 1000).format('HH:mm');
         return (
-            <text fontSize={fontSizeTime} x={x} y={y} key={index} textAnchor={'middle'} className="meta-text">
+            <text fontSize={fontSizeTime} x={x} y={y} textAnchor={'middle'} className="meta-text-color">
                 {forecastDate}
             </text>
         );
-    });
+    };
 
-    const graphVolume = forecast.map((element: Hourly, index: number) => {
-        const x = (index * props.itemWidth + props.itemWidth * 0.5);
-        const y = volumeYPos;
-        const volume = element.rain !== undefined ? element.rain?.["1h"] : 0;
+    function graphVolume(volume: number): React.SVGProps<SVGTextElement> {
+        const _volume = volume !== 0 ? volume.toFixed(1) : "-";
+        const blue = volume !== 0 ? "droplet-blue" : null;
+        const x = itemWidth * 0.5;
+        const y = infographicHeight - 30;
         return (
-            <text fontSize={fontSizeTime} x={x} y={y} key={index} textAnchor={'middle'} className="meta-text">
-                {volume}
+            <text fontSize={fontSizeTime} x={x} y={y} textAnchor={'middle'} className={`${blue} meta-text-color droplet-volume `}>
+                {_volume}
             </text>
         );
-    });
+    };
+
+    function graphPercentage(percentage: number): React.SVGProps<SVGTextElement> {
+        const fontSize = 15;
+        const _percentage = Math.round(percentage * 10) * 10;
+        const x = itemWidth * 0.5;
+        const y = fontSize;
+        return (
+            <text fontSize={fontSize} x={x} y={y} textAnchor={'middle'} color="black" >
+                {_percentage}%
+            </text>
+        );
+    };
 
     return (
         <Container>
-            <svg className="m-auto" viewBox={`0 0 ${infographicWidth} ${props.height}`} height={props.height} width={infographicWidth} >
-                <defs>
-                    <linearGradient id="linear" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="00%" stopColor={'#000'} stopOpacity={0.3} />
-                        <stop offset="100%" stopColor={'#000'} stopOpacity={0} />
-                    </linearGradient>
-                </defs>
-                {graphTime}
-                {rainDroplet}
-                {graphVolume}
+            <svg className="m-auto" viewBox={`0 0 ${infographicWidth + 70} ${infographicHeight}`} height={infographicHeight}  >
+                <svg x={70}>
+                    {makeChart}
+                </svg>
+                {sideAxe()}
             </svg>
         </Container>
     );

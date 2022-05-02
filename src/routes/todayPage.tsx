@@ -5,7 +5,7 @@ import ICurrentWeather from '../models/ICurrentWeather';
 import { IDailyWeather } from '../models/IDailyWeather';
 import MeasurementUnit from '../models/MeasurementUnit';
 
-import HourlyRainSection from '../components/shared/hourlyRainSection';
+import RainSection from '../components/shared/rainSection';
 
 type CurrentPageProps = {
 	currentWeather: ICurrentWeather;
@@ -18,7 +18,7 @@ function TodayPage(props: CurrentPageProps) {
 		<div>
 			{props.sevenDaysWeather !== null ? <CurrentSection currentWeather={props.currentWeather} measurementUnit={props.measurementUnit} /> : null}
 			{props.sevenDaysWeather !== null ? <TodayWindSection /> : null}
-			{props.sevenDaysWeather !== null ? <HourlyRainSection showToday={true} /> : null}
+			{props.sevenDaysWeather !== null ? <RainSection showToday={true} /> : null}
 		</div>
 	);
 }

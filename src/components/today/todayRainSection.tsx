@@ -3,7 +3,7 @@ import { Container } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { IHourlyWeather } from '../../models/IHourlyWeather';
 import IMeasurementUnit from '../../models/MeasurementUnit';
-import HourlyRainChart from './hourlyRainChart';
+import HourlyRainChart from '../shared/hourlyRainChart';
 
 
 interface props {
@@ -25,11 +25,10 @@ function HourlyRainSection(props: props) {
                 <h5>Precipitation</h5>
             </Container>
 
-            <Container fluid className=" d-flex mt-auto p-0 mb-4">
+            <Container fluid className=" d-flex p-0 mb-4 mt-4">
                 <div className="scrolling-wrapper width-100vw d-grid"  >
                     {props.hourlyWeather !== null ? <HourlyRainChart
                         data={props.hourlyWeather}
-                        height={100}
                         itemWidth={50}
                         fontColor="dark"
                         showToday={props.showToday}

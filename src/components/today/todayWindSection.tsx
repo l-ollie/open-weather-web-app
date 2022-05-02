@@ -47,11 +47,11 @@ function TodayWindSection(props: ITodayWindSection) {
                 </div>
                 <div className="ms-2 d-flex flex-column justify-content-between">
                     {arrow()}
-                    <span className="meta-text optical-font-alignments">{props.measurementUnit.speedUnit}</span>
+                    <span className="meta-text-color optical-font-alignments">{props.measurementUnit.speedUnit}</span>
                 </div>
                 <div className="ms-4 d-flex flex-column justify-content-between">
                     <span className="today-wind-desc optical-font-alignments" >{windDescription}</span>
-                    <span className="meta-text optical-font-alignments">Now from {windDirection}</span>
+                    <span className="meta-text-color optical-font-alignments">Now from {windDirection}</span>
                 </div>
             </Container>
 
@@ -65,6 +65,8 @@ function TodayWindSection(props: ITodayWindSection) {
                         measurementUnit={props.measurementUnit} /> : null}
                 </div>
             </Container>
+            <hr />
+
         </>
     );
 }
