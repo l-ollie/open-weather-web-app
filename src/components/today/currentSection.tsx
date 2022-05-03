@@ -7,26 +7,26 @@ import IWeatherColor from '../../models/IWeatherColor';
 import { connect } from 'react-redux';
 import MaxMin from '../shared/maxMin';
 import MeasurementUnit from '../../models/MeasurementUnit';
+import { IDailyWeather } from '../../models/IDailyWeather';
 
 interface CurrentSectionProps {
     currentWeather: ICurrentWeather;
     measurementUnit: MeasurementUnit;
     weatherColors: IWeatherColor;
+    sevenDaysWeather: IDailyWeather;
 };
 
 function CurrentSection(props: CurrentSectionProps) {
     const _weather: Current = props.currentWeather?.current;
-
     const dateToFormat = new Date();
     const temp: number = Math.round(_weather?.main.temp);
     const feelsLike: number = Math.round(_weather?.main.feels_like);
-    const max: number = Math.round(_weather?.main.temp_max);
-    const min: number = Math.round(_weather?.main.temp_min);
+    const max: number = Math.round(props.sevenDaysWeather.daily[0].temp.max);
+    const min: number = Math.round(props.sevenDaysWeather.daily[0].temp.min);
     const weatherIcon: string = `http://openweathermap.org/img/wn/${_weather?.weather[0].icon}.png`;
     const weatherDescription: string = _weather?.weather[0].description.charAt(0).toUpperCase() + _weather?.weather[0].description.slice(1);
     const gradientStep = 0.5;
     const backgroundGradient = `linear-gradient(rgba(${props.weatherColors.today.r}, ${props.weatherColors.today.g}, ${props.weatherColors.today.b},${gradientStep}),rgba(${props.weatherColors.today.r}, ${props.weatherColors.today.g}, ${props.weatherColors.today.b} ,255))`;
-
 
     return (
         <Container fluid
@@ -51,14 +51,6 @@ function CurrentSection(props: CurrentSectionProps) {
                         <span >{weatherDescription}</span>
                     </Col>
                 </Row>
-                <Row>
-                    <Col>
-
-                    </Col>
-                </Row>
-                <Row>
-
-                </Row>
             </Container>
         </Container >
     );
@@ -67,7 +59,8 @@ function CurrentSection(props: CurrentSectionProps) {
 
 const mapStateToProps = (state: any) => {
     return {
-        weatherColors: state.weatherColors
+        weatherColors: state.weatherColors,
+        sevenDaysWeather: state.sevenDaysWeather,
     };
 };
 

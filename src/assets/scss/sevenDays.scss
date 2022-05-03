@@ -1,0 +1,17 @@
+ul{
+    padding-left:0px!important;
+    margin-bottom: 0px!important;
+    li{
+        list-style: none;
+    }
+}
+.full-detail-page{
+    div:last-child{
+        hr{
+            display:none
+        }
+    }
+}
+.seven-day-change-of-rain{
+    font-weight:600;
+}

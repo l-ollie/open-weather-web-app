@@ -16,10 +16,10 @@ function MaxMin(props: any) {
     return (
         <div className="d-flex">
             <div className="maxMin-single-temp me-3">
-                <span >day {max}°</span><BsArrowUp />
+                <span >day {max}&#176;</span><BsArrowUp />
             </div>
             <div className="maxMin-single-temp me-3">
-                <span >night {min}°</span><BsArrowDown />
+                <span >night {min}&#176;</span><BsArrowDown />
             </div>
         </div>
     );

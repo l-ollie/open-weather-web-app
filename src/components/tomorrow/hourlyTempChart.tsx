@@ -75,7 +75,7 @@ function HourlyTempChart(props: IHourlyTempChart) {
         const y = chartHeight - ((element.temp - minimumYFromData) * lineGraphSteps) + heightPadding - fontMargin - iconYPos - lineGraphBottomMargin;
         return (
             <text fontSize={FONT_SIZE} fill={gradientColor} x={x} y={y} key={index} textAnchor={'middle'}>
-                {Math.round(element.temp)}°
+                {Math.round(element.temp)}&#176;
             </text>
         );
     });

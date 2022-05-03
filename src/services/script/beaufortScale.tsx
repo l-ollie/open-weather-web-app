@@ -4,18 +4,18 @@ const beaufort = require('beaufort-scale')
 
 class BeaufortScale {
     private speed: number;
-    private measurementUnit: string;
+    private measurementSystem: string;
 
-    constructor(speed: number, measurementUnit: string) {
-        this.measurementUnit = measurementUnit;
+    constructor(speed: number, measurementSystem: string) {
+        this.measurementSystem = measurementSystem;
         this.speed = this.speedToKmh(speed);
     }
 
     speedToKmh(speed: number): number {
-        if (this.measurementUnit === MeasurementUnitSystem.metric) {
+        if (this.measurementSystem === MeasurementUnitSystem.metric) {
             const metreToKmh = speed * 18 / 5;
             return metreToKmh;
-        } else if (this.measurementUnit === MeasurementUnitSystem.imperial) {
+        } else if (this.measurementSystem === MeasurementUnitSystem.imperial) {
             const mileToKmh = speed * 1.609344;
             return mileToKmh
         }

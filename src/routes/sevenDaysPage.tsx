@@ -2,10 +2,11 @@ import * as React from 'react';
 import { connect } from 'react-redux'
 import SevenDayCard from '../components/sevenDays/sevenDayCard';
 import { IDailyWeather } from '../models/IDailyWeather';
-// import { IHourlyWeather } from '../models/IHourlyWeather';
+import MeasurementUnit from '../models/MeasurementUnit';
 
 export interface ISevenDaysProps {
     sevenDaysWeather: IDailyWeather;
+    measurementUnit: MeasurementUnit;
 }
 
 function SevenDays(props: ISevenDaysProps) {
@@ -17,19 +18,19 @@ function SevenDays(props: ISevenDaysProps) {
                     key={index}
                     date={element.dt}
                     max={element.temp.max} min={element.temp.min}
-                    weatherDescription={''}
+                    weatherDescription={element.weather[0].description}
                     icon={element.weather[0].icon}
-                    windDescription={''}
                     windSpeed={element.wind_speed}
                     windDirection={element.wind_deg}
+                    humidity={element.humidity}
+                    changeOfRain={element.pop}
                     uvIndex={element.uvi}
                     sunrise={element.sunrise}
                     sunset={element.sunset}
-                    showDetails={false} />
+                    measurementUnit={props.measurementUnit} />
             )
         })
     }
-
 
     return (
         <div className="full-detail-page">

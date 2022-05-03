@@ -89,11 +89,11 @@ code {
 }
 
 .unit-celsius::after {
-	content: "℃";
+	content: "\00B0 C ";
 }
 
 .unit-fahrenheit::after {
-	content: "°F";
+	content: "\00B0 F";
 }
 
 

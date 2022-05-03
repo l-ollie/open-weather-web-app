@@ -5,26 +5,18 @@ import { connect } from 'react-redux';
 import { IDailyWeather } from '../../models/IDailyWeather';
 import MaxMin from '../shared/maxMin';
 import '../../assets/css/shared.css';
+import Capitalize from '../../services/script/capitalize';
+
 interface ITomorrow {
     sevenDaysWeather: IDailyWeather;
 }
 
-
 function HourlyTomorrow(props: ITomorrow) {
-
-    const tomorrowDate = new Date();
-    tomorrowDate.setDate(tomorrowDate.getDate() + 1);
-
-    let tomorrowMin, tomorrowMax: number = 0;
-    let weatherIcon: string | undefined = undefined;
-    let weatherDescription: string = "";
-
-    if (props.sevenDaysWeather !== null) {
-        tomorrowMin = props.sevenDaysWeather.daily[1].temp.min;
-        tomorrowMax = props.sevenDaysWeather.daily[1].temp.max;
-        weatherIcon = `http://openweathermap.org/img/wn/${props.sevenDaysWeather.daily[1].weather[0].icon}.png`;
-        weatherDescription = props.sevenDaysWeather.daily[1].weather[0].description;
-    }
+    const tomorrowDate = new Date().setDate(new Date().getDate() + 1);
+    const tomorrowMin: number = props.sevenDaysWeather.daily[1].temp.min;
+    const tomorrowMax: number = props.sevenDaysWeather.daily[1].temp.max;
+    const weatherIcon: string = `http://openweathermap.org/img/wn/${props.sevenDaysWeather.daily[1].weather[0].icon}.png`;
+    const weatherDescription: string = new Capitalize(props.sevenDaysWeather.daily[1].weather[0].description).sentence;
 
     return (
         <Container >

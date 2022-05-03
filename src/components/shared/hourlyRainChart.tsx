@@ -101,10 +101,10 @@ function HourlyRainChart(props: IHourlyRainChart) {
                     <path d="M40,28.74a19.94,19.94,0,0,0-5.33-13.6C31,11.2,20,0,20,0S9,11.2,5.33,15.14A20,20,0,1,0,40,28.74Z" fill="white" />
                 </mask>
                 <rect
+                    className="rain-blue"
                     width={iconWidth}
                     height={iconHeight}
                     y={`${-rainfallBar}%`}
-                    fill="#0DE3FB"
                     mask="url(#dropletMask)" />
                 <path d="M40,28.74a19.94,19.94,0,0,0-5.33-13.6C31,11.2,20,0,20,0S9,11.2,5.33,15.14A20,20,0,1,0,40,28.74Z"
                     stroke="black"
@@ -131,7 +131,7 @@ function HourlyRainChart(props: IHourlyRainChart) {
 
     function graphVolume(volume: number): React.SVGProps<SVGTextElement> {
         const _volume = volume !== 0 ? volume.toFixed(1) : "-";
-        const blue = volume !== 0 ? "droplet-blue" : null;
+        const blue = volume !== 0 ? "droplet-blue-text" : null;
         const x = itemWidth * 0.5;
         const y = infographicHeight - 30;
         return (
