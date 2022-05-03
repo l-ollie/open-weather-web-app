@@ -10,10 +10,9 @@ export const fetchWeather = (lat, lon, measurementUnitSystem) => async (dispatch
 	dispatch({ type: ActionType.fetchCurrentWeather, payload: { current: response.data } });
 
 	const response2 = await weatherRepository.getForcasts(lat, lon, measurementUnitSystem);
-	console.log(response2);
+	dispatch({ type: ActionType.timeZone, payload: response2.data.timezone });
 	dispatch({ type: ActionType.fetchHourlyWeather, payload: { hourly: response2.data.hourly } });
 	dispatch({ type: ActionType.fetchSevenDaysWeather, payload: { daily: response2.data.daily } });
-	dispatch({ type: ActionType.timeZone, payload: response2.data.timezone });
 
 	const tempToColorToday = getTempColorForLeds(response.data.main.feels_like, measurementUnitSystem);
 	const tempToColorTomorrow = getTempColorForLeds(response2.data.daily[1].feels_like.day, measurementUnitSystem);

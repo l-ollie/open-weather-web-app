@@ -109,8 +109,8 @@ function HourlyRainChart(props: IHourlyRainChart) {
                 <path d="M40,28.74a19.94,19.94,0,0,0-5.33-13.6C31,11.2,20,0,20,0S9,11.2,5.33,15.14A20,20,0,1,0,40,28.74Z"
                     stroke="black"
                     fill="none"
-                    stroke-opacity={0.15}
-                    stroke-width={iconStrokeWidth}
+                    strokeOpacity={0.15}
+                    strokeWidth={iconStrokeWidth}
                     x="40"
                     mask="url(#dropletMask)"
                 />

@@ -68,7 +68,6 @@ function TodayWindSection(props: ITodayWindSection) {
                 </div>
             </Container>
             <hr />
-
         </>
     );
 }

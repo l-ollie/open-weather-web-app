@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { IDailyWeather } from '../../models/IDailyWeather';
 import { IHourlyWeather } from '../../models/IHourlyWeather';
 import IMeasurementUnit from '../../models/MeasurementUnit';
+import MeasurementUnitSystem from '../../types/MeasurementUnitSystem';
 import HourlyRainChart from './hourlyRainChart';
 
 
@@ -26,7 +27,8 @@ function mapStateToProps(state: any) {
 function RainSection(props: props) {
     const selectDay = props.showToday === true ? 0 : 1;
     const dailyVolume: number = props.sevenDaysWeather.daily[selectDay].rain === undefined ? 0 : props.sevenDaysWeather.daily[selectDay].rain;
-    const convertedDailyVolume = (Math.round(dailyVolume * 10) * .1).toFixed(1);
+    const convertedDailyVolume = props.measurementUnit.system === MeasurementUnitSystem.metric ? (Math.round(dailyVolume * 10) * .1).toFixed(1) : (Math.round((dailyVolume / 25.4) * 10) * .1).toFixed(1);
+    const unitAcronym = props.measurementUnit.system === MeasurementUnitSystem.metric ? "mm" : "in."
     return (
         <>
             <Container className="mt-4">
@@ -45,7 +47,7 @@ function RainSection(props: props) {
                 </div>
             </Container>
             <Container >
-                <span className="meta-text-color">Total daily volume</span> {convertedDailyVolume} mm
+                <span className="meta-text-color">Total daily volume</span> {convertedDailyVolume} {unitAcronym}
             </Container>
         </>
     );

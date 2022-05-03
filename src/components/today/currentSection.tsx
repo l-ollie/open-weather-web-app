@@ -23,7 +23,7 @@ function CurrentSection(props: CurrentSectionProps) {
     const max: number = Math.round(_weather?.main.temp_max);
     const min: number = Math.round(_weather?.main.temp_min);
     const weatherIcon: string = `http://openweathermap.org/img/wn/${_weather?.weather[0].icon}.png`;
-    const weatherDescription: string = _weather?.weather[0].description;
+    const weatherDescription: string = _weather?.weather[0].description.charAt(0).toUpperCase() + _weather?.weather[0].description.slice(1);
     const gradientStep = 0.5;
     const backgroundGradient = `linear-gradient(rgba(${props.weatherColors.today.r}, ${props.weatherColors.today.g}, ${props.weatherColors.today.b},${gradientStep}),rgba(${props.weatherColors.today.r}, ${props.weatherColors.today.g}, ${props.weatherColors.today.b} ,255))`;
 
