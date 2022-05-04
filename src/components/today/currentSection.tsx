@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import MaxMin from '../shared/maxMin';
 import MeasurementUnit from '../../models/MeasurementUnit';
 import { IDailyWeather } from '../../models/IDailyWeather';
+import Capitalize from '../../services/script/capitalize';
 
 interface CurrentSectionProps {
     currentWeather: ICurrentWeather;
@@ -24,7 +25,7 @@ function CurrentSection(props: CurrentSectionProps) {
     const max: number = Math.round(props.sevenDaysWeather.daily[0].temp.max);
     const min: number = Math.round(props.sevenDaysWeather.daily[0].temp.min);
     const weatherIcon: string = `http://openweathermap.org/img/wn/${_weather?.weather[0].icon}.png`;
-    const weatherDescription: string = _weather?.weather[0].description.charAt(0).toUpperCase() + _weather?.weather[0].description.slice(1);
+    const weatherDescription: string = new Capitalize(_weather?.weather[0].description).sentence;
     const gradientStep = 0.5;
     const backgroundGradient = `linear-gradient(rgba(${props.weatherColors.today.r}, ${props.weatherColors.today.g}, ${props.weatherColors.today.b},${gradientStep}),rgba(${props.weatherColors.today.r}, ${props.weatherColors.today.g}, ${props.weatherColors.today.b} ,255))`;
 

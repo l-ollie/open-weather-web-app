@@ -3,6 +3,7 @@ import { Hourly, IHourlyWeather } from '../../models/IHourlyWeather';
 import '../../assets/css/shared.css'
 import IMeasurementUnit from '../../models/MeasurementUnit';
 import { Container } from 'react-bootstrap';
+import MeasurementUnitSystem from '../../types/MeasurementUnitSystem';
 
 interface IHourlyRainChart {
     data: IHourlyWeather;
@@ -49,19 +50,35 @@ function HourlyRainChart(props: IHourlyRainChart) {
     const rainfallCategory = [0, 0.40, 2.5, 7.6, 100];
     const rainfallStep = 100 / rainfallCategory.length;
 
-    const sideAxe = () => {
+    const sideAxeMM = () => {
         const volumeY = infographicHeight - 53;
         return (
             <>
                 <text fontSize={fontSizeTime} x={0} y={15} className="meta-text-color">
                     Change
                 </text>
-                <text fontSize={fontSizeTime} x={0} y={volumeY} className="meta-text-color" >
+                <text fontSize={fontSizeTime} x={0} y={volumeY} className="meta-text-color" alignmentBaseline="middle" >
                     <tspan x="0" dy="1.2em" alignmentBaseline="middle" >
                         Volume
                     </tspan>
                     <tspan x="0" dy="1.2em" alignmentBaseline="middle">
                         (mm)
+                    </tspan>
+                </text>
+            </>
+        )
+    }
+
+    const sideAxeIN = () => {
+        const volumeY = infographicHeight - 48;
+        return (
+            <>
+                <text fontSize={fontSizeTime} x={0} y={15} className="meta-text-color">
+                    Change
+                </text>
+                <text fontSize={fontSizeTime} x={0} y={volumeY} className="meta-text-color" alignmentBaseline="middle" >
+                    <tspan x="0" dy="1.2em" alignmentBaseline="middle" >
+                        Volume
                     </tspan>
                 </text>
             </>
@@ -130,13 +147,24 @@ function HourlyRainChart(props: IHourlyRainChart) {
     };
 
     function graphVolume(volume: number): React.SVGProps<SVGTextElement> {
-        const _volume = volume !== 0 ? volume.toFixed(1) : "-";
-        const blue = volume !== 0 ? "droplet-blue-text" : null;
+        const _volume = () => {
+            if (props.measurementUnit.system === MeasurementUnitSystem.metric)
+                return volume.toFixed(1)
+            else if (volume / 25.4 < 0.01 && volume / 25.4 > 0.001)
+                return '<0.01"';
+            else {
+                console.log(Number((volume / 25.4).toFixed(2)));
+                return (volume / 25.4).toFixed(2);
+            }
+        };
+
+
+        const blue = volume !== 0.000 ? "droplet-blue-text" : null;
         const x = itemWidth * 0.5;
         const y = infographicHeight - 30;
         return (
             <text fontSize={fontSizeTime} x={x} y={y} textAnchor={'middle'} className={`${blue} meta-text-color droplet-volume `}>
-                {_volume}
+                {_volume()}
             </text>
         );
     };
@@ -159,7 +187,7 @@ function HourlyRainChart(props: IHourlyRainChart) {
                 <svg x={70}>
                     {makeChart}
                 </svg>
-                {sideAxe()}
+                {props.measurementUnit.system === MeasurementUnitSystem.metric ? sideAxeMM() : sideAxeIN()}
             </svg>
         </Container>
     );
