@@ -12,15 +12,15 @@ interface IHourlyTempChart {
     timezone: string;
 }
 
-function HourlyTempChart(props: IHourlyTempChart) {
+function HourlyTempChart(props: IHourlyTempChart): JSX.Element {
 
-    const findSevenHourStart = props.data?.hourly.findIndex((element, index) => {
+    const findSevenHourStart: number = props.data?.hourly.findIndex((element, index) => {
         const time = moment(element.dt * 1000).tz(props.timezone).format('HH');
         if (Number(time) === 7)
             return index;
     });
 
-    const forecast = props.data?.hourly.slice(findSevenHourStart, findSevenHourStart + 24)
+    const forecast: Hourly[] = props.data?.hourly.slice(findSevenHourStart, findSevenHourStart + 24)
 
     const maximumItems = forecast.length;
     const maximumYFromData = Math.max(...forecast.map((e: Hourly) => e.temp));
@@ -40,18 +40,16 @@ function HourlyTempChart(props: IHourlyTempChart) {
     const iconWidth = props.itemWidth - iconPadding * 2;
     const iconHeight = props.itemWidth - iconPadding * 2;
 
-
     const lineHeight = chartHeight - 20;
     const lineGraphBottomMargin = 20;
     const minMaxDifference = maximumYFromData - minimumYFromData;
     const lineGraphHeight = chartHeight - (heightPadding + fontMargin + iconYPos + lineGraphBottomMargin);
     const lineGraphSteps = lineGraphHeight / minMaxDifference
 
-
     const lineCharOffsetYLeft = chartHeight - ((forecast[0]?.temp - minimumYFromData) * lineGraphSteps) + heightPadding - iconYPos - lineGraphBottomMargin;
     const lineCharOffsetYRight = chartHeight - ((forecast[forecast.length - 1]?.temp - minimumYFromData) * lineGraphSteps) + heightPadding - iconYPos - lineGraphBottomMargin;
 
-    const points = forecast.map((element: Hourly, index: number) => {
+    const points: string[] = forecast.map((element: Hourly, index: number) => {
         const x = index * props.itemWidth + props.itemWidth / 2;
         const y = chartHeight - ((element.temp - minimumYFromData) * lineGraphSteps) + heightPadding - iconYPos - lineGraphBottomMargin;
         return `${x},${y}`;
@@ -60,7 +58,7 @@ function HourlyTempChart(props: IHourlyTempChart) {
     points.push(`${chartWidth},${lineCharOffsetYRight} ${chartWidth},${chartHeight}  0,${chartHeight}`);
     const graph = points.join(' ');
 
-    const accentuatedLine = forecast.map((element: Hourly, index: number) => {
+    const accentuatedLine: string[] = forecast.map((element: Hourly, index: number) => {
         const x = index * props.itemWidth + props.itemWidth / 2;
         const y = chartHeight - ((element.temp - minimumYFromData) * lineGraphSteps) + heightPadding - iconYPos - lineGraphBottomMargin + (STROKE / 2);
         return `${x},${y}`;
@@ -69,36 +67,45 @@ function HourlyTempChart(props: IHourlyTempChart) {
     accentuatedLine.push(`${chartWidth},${lineCharOffsetYRight + (STROKE / 2)}`);
     const graphAccentuatedLine = accentuatedLine.join(' ');
 
-    const graphTemperatureNum = forecast.map((element: Hourly, index: number) => {
-        const x = index * props.itemWidth + props.itemWidth / 2;
-
-        const y = chartHeight - ((element.temp - minimumYFromData) * lineGraphSteps) + heightPadding - fontMargin - iconYPos - lineGraphBottomMargin;
+    const addInfo: JSX.Element[] = forecast.map((element: Hourly, index: number) => {
         return (
-            <text fontSize={FONT_SIZE} fill={gradientColor} x={x} y={y} key={index} textAnchor={'middle'}>
-                {Math.round(element.temp)}&#176;
+            <svg key={index}>
+                {graphTemperatureNum(element.temp, index)};
+                {graphIcon(element.weather[0].icon, index)}
+                {graphTime(element.dt, index)}
+            </svg>
+        )
+    });
+
+    function graphTemperatureNum(temp: number, index: number): JSX.Element {
+        const x = index * props.itemWidth + props.itemWidth / 2;
+        const y = chartHeight - ((temp - minimumYFromData) * lineGraphSteps) + heightPadding - fontMargin - iconYPos - lineGraphBottomMargin;
+        return (
+            <text fontSize={FONT_SIZE} fill={gradientColor} x={x} y={y} textAnchor={'middle'}>
+                {Math.round(temp)}&#176;
             </text>
         );
-    });
+    };
 
-    const graphIcon = forecast.map((element: Hourly, index: number) => {
+    function graphIcon(icon: string, index: number): JSX.Element {
         const x = index * props.itemWidth + iconPadding;
         const y = iconOffset;
-        const icon = `http://openweathermap.org/img/wn/${element.weather[0].icon}.png`
+        const _icon = `http://openweathermap.org/img/wn/${icon}.png`
         return (
-            <image href={icon} x={x} y={y} key={index} width={iconWidth} height={iconHeight} />
+            <image href={_icon} x={x} y={y} width={iconWidth} height={iconHeight} />
         );
-    });
+    };
 
-    const graphTime = forecast.map((element: Hourly, index: number) => {
+    function graphTime(time: number, index: number): JSX.Element {
         const x = index * props.itemWidth + props.itemWidth / 2;
         const y = chartHeight;
-        const forecastDate = moment(element.dt * 1000).tz(props.timezone).format('HH:mm');
+        const forecastDate = moment(time * 1000).tz(props.timezone).format('HH:mm');
         return (
-            <text fontSize={FONT_SIZE} fill={gradientColor} x={x} y={y} key={index} textAnchor={'middle'}>
+            <text fontSize={FONT_SIZE} fill={gradientColor} x={x} y={y} textAnchor={'middle'}>
                 {forecastDate}
             </text>
         );
-    });
+    };
 
     return (
         <svg className="m-auto" viewBox={`0 0 ${chartWidth} ${props.height}`} height={props.height} >
@@ -107,14 +114,12 @@ function HourlyTempChart(props: IHourlyTempChart) {
                     <stop offset="00%" stopColor={gradientColor} stopOpacity={0.3} />
                     <stop offset="100%" stopColor={gradientColor} stopOpacity={0} />
                 </linearGradient>
-
             </defs>
+
             <polygon fill="url(#linear)" points={graph} />
             <polyline fill="none" strokeWidth={STROKE} stroke={gradientColor} strokeOpacity={0.1} points={graphAccentuatedLine} />
             <line x1="0" y1={lineHeight} x2={chartWidth} y2={lineHeight} stroke={gradientColor} strokeOpacity={0.2} strokeWidth={STROKE} />
-            {graphIcon}
-            {graphTemperatureNum}
-            {graphTime}
+            {addInfo}
         </svg>
     );
 };
