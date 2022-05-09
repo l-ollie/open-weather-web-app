@@ -4,8 +4,7 @@ import { Outlet } from 'react-router-dom';
 import { useEffect } from 'react';
 
 import { connect } from 'react-redux';
-import { setMeasurementUnit, setSelectedCity } from '../services/redux/actions';
-import { fetchWeather } from '../services/redux/actions';
+import { fetchWeather, fetchWeather2 } from '../services/redux/actions';
 
 import ICurrentWeather from '../models/ICurrentWeather';
 import MeasurementUnitSystem from '../types/MeasurementUnitSystem';
@@ -22,7 +21,8 @@ const navLinks: Array<navBarLink> = [
 
 type IAppWrapper = {
 	currentWeather: ICurrentWeather | null;
-	fetchWeather: (lat: number, lon: number, measurementUnit: MeasurementUnitSystem) => {}
+	fetchWeather: (lat: number, lon: number, measurementUnit: MeasurementUnitSystem) => {};
+	fetchWeather2: (lat?: any, lon?: any, measurementUnitSystem?: any) => void;
 	measurementUnit: IMeasurementUnit;
 	fontColor: IFontColor;
 	selectedCity: ISelectedCity;
@@ -33,7 +33,8 @@ function AppWrapper(props: IAppWrapper) {
 
 	useEffect(
 		() => {
-			props.fetchWeather(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit.system);
+			// props.fetchWeather(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit.system);
+			props.fetchWeather2(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit.system);
 		},
 		[props.selectedCity, props.measurementUnit]// eslint-disable-line react-hooks/exhaustive-deps
 	);
@@ -55,4 +56,4 @@ const mapStateToProps = (state: any) => {
 	};
 };
 
-export default connect(mapStateToProps, { setMeasurementUnit, fetchWeather, setSelectedCity })(AppWrapper);
+export default connect(mapStateToProps, { fetchWeather, fetchWeather2 })(AppWrapper);

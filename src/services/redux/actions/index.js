@@ -42,3 +42,107 @@ export const setSelectedCity = (city) => {
 		payload: city
 	};
 };
+
+// =============================================
+
+export const fetchCurrentWeatherRequest = () => {
+	return {
+		type: ActionType.fetchCurrentWeatherRequest
+	};
+};
+
+export const fetchCurrentWeatherSuccess = (currentWeather) => {
+	return {
+		type: ActionType.fetchCurrentWeatherSuccess,
+		payload: currentWeather
+	};
+};
+
+export const fetchCurrentWeatherFailure = (error) => {
+	return {
+		type: ActionType.fetchCurrentWeatherFailure,
+		payload: error
+	};
+};
+
+export const fetchCurrentWeather = (lat, lon, measurementUnitSystem) => {
+	return function(dispatch) {
+		dispatch(fetchCurrentWeatherRequest());
+		weatherRepository
+			.getCurrentWeather(lat, lon, measurementUnitSystem)
+			.then((response) => {
+				const currentWeather = response.data;
+				dispatch(fetchCurrentWeatherSuccess(currentWeather));
+			})
+			.catch((error) => {
+				dispatch(fetchCurrentWeatherFailure(error));
+			});
+	};
+};
+// =============================================
+
+export const fetchWeatherRequest = () => {
+	return {
+		type: ActionType.fetchWeatherRequest
+	};
+};
+
+export const fetchWeatherSuccess = (weather) => {
+	return {
+		type: ActionType.fetchWeatherSuccess,
+		payload: weather
+	};
+};
+
+export const fetchWeatherSave = (weather, name) => {
+	return {
+		type: ActionType.fetchWeatherSave,
+		payload: weather,
+		name: name
+	};
+};
+
+export const fetchWeatherFailure = (error) => {
+	return {
+		type: ActionType.fetchWeatherFailure,
+		payload: error
+	};
+};
+
+export const fetchWeather2 = (lat, lon, measurementUnitSystem) => {
+	return function(dispatch) {
+		dispatch(fetchWeatherRequest());
+		try {
+			weatherRepository.getCurrentWeather(lat, lon, measurementUnitSystem).then((response) => {
+				const currentWeather = response.data;
+				dispatch(fetchWeatherSave(currentWeather, 'currentWeather'));
+			});
+			// .catch((error) => {
+			// 	dispatch(fetchWeatherFailure(error));
+			// });
+
+			weatherRepository
+				.getForcasts(lat, lon, measurementUnitSystem)
+				.then((response) => {
+					const hourlyWeather = response.data.hourly;
+
+					dispatch(fetchWeatherSave(hourlyWeather, 'hourlyWeather'));
+					const dailyWeather = response.data.daily;
+
+					dispatch(fetchWeatherSave(dailyWeather, 'dailyWeather'));
+				})
+				.then(() => {
+					dispatch(fetchWeatherSuccess());
+				})
+				.catch((error) => {
+					dispatch(fetchWeatherFailure(error));
+				});
+		} catch (error) {
+			dispatch(fetchWeatherFailure(error));
+		}
+	};
+};
+
+function handelError(error) {
+	alert(error);
+}
