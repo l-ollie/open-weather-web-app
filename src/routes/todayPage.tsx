@@ -2,7 +2,7 @@ import CurrentSection from '../components/today/currentSection';
 import TodayWindSection from '../components/today/todayWindSection';
 import { connect } from 'react-redux';
 import ICurrentWeather from '../models/ICurrentWeather';
-import { IDailyWeather } from '../models/IDailyWeather';
+import IDailyWeather from '../models/IDailyWeather';
 import MeasurementUnit from '../models/MeasurementUnit';
 
 import RainSection from '../components/shared/rainSection';

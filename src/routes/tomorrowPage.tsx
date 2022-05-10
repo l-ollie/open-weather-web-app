@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import RainSection from '../components/shared/rainSection';
 import HourlyWeatherSection from '../components/tomorrow/hourlyWeatherSection';
 import HourlyWindSection from '../components/tomorrow/hourlyWindSection';
-import { IHourlyWeather } from '../models/IHourlyWeather';
+import IHourlyWeather from '../models/IHourlyWeather';
 
 export interface ITomorrowPageProps {
     // hourly: IHourlyWeather;

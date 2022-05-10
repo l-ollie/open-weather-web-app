@@ -1,6 +1,6 @@
 import { Container } from 'react-bootstrap';
 import { connect } from 'react-redux'
-import { IHourlyWeather } from '../../models/IHourlyWeather';
+import IHourlyWeather from '../../models/IHourlyWeather';
 import '../../assets/css/hourly.css';
 import HourlyTomorrow from './hourlyTomorrow';
 import HourlyTempChart from './hourlyTempChart';

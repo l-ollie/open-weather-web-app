@@ -1,4 +1,4 @@
-export interface IHourlyWeather {
+export default interface IHourlyWeather {
     hourly: Hourly[];
 }
 

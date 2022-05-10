@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux'
 import SevenDayCard from '../components/sevenDays/sevenDayCard';
-import { IDailyWeather } from '../models/IDailyWeather';
+import IDailyWeather from '../models/IDailyWeather';
 import MeasurementUnit from '../models/MeasurementUnit';
 
 export interface ISevenDaysProps {

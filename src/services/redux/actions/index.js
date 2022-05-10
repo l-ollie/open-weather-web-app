@@ -2,6 +2,7 @@ import WeatherRepository from '../../data/weatherRepository';
 import { apiKey } from '../../data/data';
 import getTempColorForLeds from '../../script/tempToColor';
 import ActionType from '../types';
+import store from '../store';
 
 const weatherRepository = new WeatherRepository(apiKey);
 
@@ -43,43 +44,44 @@ export const setSelectedCity = (city) => {
 	};
 };
 
-// =============================================
-
-export const fetchCurrentWeatherRequest = () => {
+export const saveBackgoundColors = (colors) => {
+	console.log(colors);
 	return {
-		type: ActionType.fetchCurrentWeatherRequest
+		type: ActionType.saveBackgroundColor,
+		payload: colors
+	};
+};
+export const calculateBackgoundColors = () => {
+	return {
+		type: ActionType.calculateBackgroundColor
 	};
 };
 
-export const fetchCurrentWeatherSuccess = (currentWeather) => {
-	return {
-		type: ActionType.fetchCurrentWeatherSuccess,
-		payload: currentWeather
-	};
-};
+export const generateBackgroundColor = () => {
+	return async (dispatch, getState) => {
+		dispatch(calculateBackgoundColors());
 
-export const fetchCurrentWeatherFailure = (error) => {
-	return {
-		type: ActionType.fetchCurrentWeatherFailure,
-		payload: error
-	};
-};
+		const weather = getState().weather;
+		const measurementUnit = getState().measurementUnit;
 
-export const fetchCurrentWeather = (lat, lon, measurementUnitSystem) => {
-	return function(dispatch) {
-		dispatch(fetchCurrentWeatherRequest());
-		weatherRepository
-			.getCurrentWeather(lat, lon, measurementUnitSystem)
-			.then((response) => {
-				const currentWeather = response.data;
-				dispatch(fetchCurrentWeatherSuccess(currentWeather));
+		const tempToColorToday = getTempColorForLeds(weather.currentWeather.main.feels_like, measurementUnit.system);
+		const tempToColorTomorrow = getTempColorForLeds(weather.dailyWeather[1].feels_like.day, measurementUnit.system);
+		const tempToColorSevenDaysTemp = weather.dailyWeather.reduce(
+			(previousValue, currentValue) => previousValue + currentValue.feels_like.day,
+			0
+		);
+		const tempToColorSevenDaysAverage = tempToColorSevenDaysTemp / weather.dailyWeather.length;
+		const tempToColorSevenDays = getTempColorForLeds(tempToColorSevenDaysAverage, measurementUnit.system);
+
+		dispatch(
+			saveBackgoundColors({
+				today: tempToColorToday,
+				tomorrow: tempToColorTomorrow,
+				sevenDays: tempToColorSevenDays
 			})
-			.catch((error) => {
-				dispatch(fetchCurrentWeatherFailure(error));
-			});
+		);
 	};
 };
-// =============================================
 
 export const fetchWeatherRequest = () => {
 	return {
@@ -88,9 +90,9 @@ export const fetchWeatherRequest = () => {
 };
 
 export const fetchWeatherSuccess = (weather) => {
-	return {
-		type: ActionType.fetchWeatherSuccess,
-		payload: weather
+	return (dispatch) => {
+		dispatch({ type: ActionType.fetchWeatherSuccess, payload: weather });
+		dispatch(generateBackgroundColor());
 	};
 };
 
@@ -110,18 +112,15 @@ export const fetchWeatherFailure = (error) => {
 };
 
 export const fetchWeather2 = (lat, lon, measurementUnitSystem) => {
-	return function(dispatch) {
+	return async function(dispatch) {
 		dispatch(fetchWeatherRequest());
 		try {
-			weatherRepository.getCurrentWeather(lat, lon, measurementUnitSystem).then((response) => {
+			await weatherRepository.getCurrentWeather(lat, lon, measurementUnitSystem).then((response) => {
 				const currentWeather = response.data;
 				dispatch(fetchWeatherSave(currentWeather, 'currentWeather'));
 			});
-			// .catch((error) => {
-			// 	dispatch(fetchWeatherFailure(error));
-			// });
 
-			weatherRepository
+			await weatherRepository
 				.getForcasts(lat, lon, measurementUnitSystem)
 				.then((response) => {
 					const hourlyWeather = response.data.hourly;
@@ -133,16 +132,9 @@ export const fetchWeather2 = (lat, lon, measurementUnitSystem) => {
 				})
 				.then(() => {
 					dispatch(fetchWeatherSuccess());
-				})
-				.catch((error) => {
-					dispatch(fetchWeatherFailure(error));
 				});
 		} catch (error) {
 			dispatch(fetchWeatherFailure(error));
 		}
 	};
 };
-
-function handelError(error) {
-	alert(error);
-}

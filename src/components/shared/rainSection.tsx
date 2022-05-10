@@ -1,8 +1,8 @@
 
 import { Container } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { IDailyWeather } from '../../models/IDailyWeather';
-import { IHourlyWeather } from '../../models/IHourlyWeather';
+import IDailyWeather from '../../models/IDailyWeather';
+import IHourlyWeather from '../../models/IHourlyWeather';
 import IMeasurementUnit from '../../models/MeasurementUnit';
 import MeasurementUnitSystem from '../../types/MeasurementUnitSystem';
 import HourlyRainChart from './hourlyRainChart';

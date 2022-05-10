@@ -1,4 +1,4 @@
-export interface IDailyWeather {
+export default interface IDailyWeather {
     daily: Daily[];
 }
 

@@ -7,7 +7,7 @@ import IWeatherColor from '../../models/IWeatherColor';
 import { connect } from 'react-redux';
 import MaxMin from '../shared/maxMin';
 import MeasurementUnit from '../../models/MeasurementUnit';
-import { IDailyWeather } from '../../models/IDailyWeather';
+import IDailyWeather from '../../models/IDailyWeather';
 import Capitalize from '../../services/script/capitalize';
 
 interface CurrentSectionProps {

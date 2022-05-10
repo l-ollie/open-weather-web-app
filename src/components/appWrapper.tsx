@@ -4,14 +4,14 @@ import { Outlet } from 'react-router-dom';
 import { useEffect } from 'react';
 
 import { connect } from 'react-redux';
-import { fetchWeather, fetchWeather2 } from '../services/redux/actions';
+import { fetchWeather2, generateBackgroundColor } from '../services/redux/actions';
 
-import ICurrentWeather from '../models/ICurrentWeather';
 import MeasurementUnitSystem from '../types/MeasurementUnitSystem';
 import IFontColor from '../models/IWeatherColor';
 import navBarLink from '../models/navBarLink';
 import ISelectedCity from '../models/ISelectedCity';
 import IMeasurementUnit from '../models/MeasurementUnit';
+import IWeather from '../models/IWeather';
 
 const navLinks: Array<navBarLink> = [
 	new NavBarLink('Today', '/'),
@@ -20,8 +20,8 @@ const navLinks: Array<navBarLink> = [
 ];
 
 type IAppWrapper = {
-	currentWeather: ICurrentWeather | null;
-	fetchWeather: (lat: number, lon: number, measurementUnit: MeasurementUnitSystem) => {};
+	weather: IWeather;
+	generateBackgroundColor: (weather: IWeather, measurementUnitSystem: MeasurementUnitSystem) => void;
 	fetchWeather2: (lat?: any, lon?: any, measurementUnitSystem?: any) => void;
 	measurementUnit: IMeasurementUnit;
 	fontColor: IFontColor;
@@ -35,6 +35,7 @@ function AppWrapper(props: IAppWrapper) {
 		() => {
 			// props.fetchWeather(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit.system);
 			props.fetchWeather2(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit.system);
+			// props.generateBackgroundColor(props.weather, props.measurementUnit.system);
 		},
 		[props.selectedCity, props.measurementUnit]// eslint-disable-line react-hooks/exhaustive-deps
 	);
@@ -50,10 +51,10 @@ function AppWrapper(props: IAppWrapper) {
 const mapStateToProps = (state: any) => {
 	return {
 		measurementUnit: state.measurementUnit,
-		currentWeather: state.currentWeather,
+		weather: state.weather,
 		fontColor: state.fontColor,
 		selectedCity: state.selectedCity
 	};
 };
 
-export default connect(mapStateToProps, { fetchWeather, fetchWeather2 })(AppWrapper);
+export default connect(mapStateToProps, { fetchWeather2, generateBackgroundColor })(AppWrapper);

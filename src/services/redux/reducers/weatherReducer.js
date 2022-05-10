@@ -2,9 +2,9 @@ import ActionType from '../types';
 
 const initialState = {
 	loading: false,
-	currentWeather: [],
-	hourlyWeather: [],
-	dailyWeather: [],
+	currentWeather: null,
+	hourlyWeather: null,
+	dailyWeather: null,
 	error: ''
 };
 
@@ -32,9 +32,9 @@ export default (state = initialState, action) => {
 		case ActionType.fetchWeatherFailure:
 			return {
 				loading: false,
-				currentWeather: [],
-				hourlyWeather: [],
-				dailyWeather: [],
+				currentWeather: null,
+				hourlyWeather: null,
+				dailyWeather: null,
 				error: action.payload
 			};
 		default:

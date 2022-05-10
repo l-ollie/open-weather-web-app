@@ -2,7 +2,7 @@
 import { Row, Col, Container } from 'react-bootstrap';
 import Moment from 'react-moment';
 import { connect } from 'react-redux';
-import { IDailyWeather } from '../../models/IDailyWeather';
+import IDailyWeather from '../../models/IDailyWeather';
 import MaxMin from '../shared/maxMin';
 import '../../assets/css/shared.css';
 import Capitalize from '../../services/script/capitalize';

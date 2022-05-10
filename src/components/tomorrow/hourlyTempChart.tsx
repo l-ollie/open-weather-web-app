@@ -1,5 +1,5 @@
 
-import { Hourly, IHourlyWeather } from '../../models/IHourlyWeather';
+import IHourlyWeather, { Hourly } from '../../models/IHourlyWeather';
 import moment from 'moment-timezone';
 
 const STROKE = 1;
@@ -18,6 +18,7 @@ function HourlyTempChart(props: IHourlyTempChart): JSX.Element {
         const time = moment(element.dt * 1000).tz(props.timezone).format('HH');
         if (Number(time) === 7)
             return index;
+        return -1
     });
 
     const forecast: Hourly[] = props.data?.hourly.slice(findSevenHourStart, findSevenHourStart + 24)

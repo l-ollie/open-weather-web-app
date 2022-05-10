@@ -1,5 +1,5 @@
 import moment from 'moment-timezone';
-import { Hourly, IHourlyWeather } from '../../models/IHourlyWeather';
+import IHourlyWeather, { Hourly } from '../../models/IHourlyWeather';
 import '../../assets/css/shared.css'
 import IMeasurementUnit from '../../models/MeasurementUnit';
 import { Container } from 'react-bootstrap';

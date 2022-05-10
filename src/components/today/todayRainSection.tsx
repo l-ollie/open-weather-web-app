@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { IHourlyWeather } from '../../models/IHourlyWeather';
+import IHourlyWeather from '../../models/IHourlyWeather';
 import IMeasurementUnit from '../../models/MeasurementUnit';
 import HourlyRainChart from '../shared/hourlyRainChart';
 

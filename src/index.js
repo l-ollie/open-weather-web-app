@@ -4,23 +4,8 @@ import './assets/css/index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
-
-import allReducers from './services/redux/reducers';
-// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-// const store = createStore(reducers, applyMiddleware(thunk));
-// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-// const store = createStore(allReducers, composeEnhancers(applyMiddleware(thunk)));
-
-// import { createStore, applyMiddleware, compose } from 'redux';
-
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(allReducers, /* preloadedState, */ composeEnhancers(applyMiddleware(thunk)));
+import store from './services/redux/store';
 
 ReactDOM.render(
 	<Provider store={store}>
