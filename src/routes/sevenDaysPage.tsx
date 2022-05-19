@@ -1,18 +1,18 @@
-import * as React from 'react';
 import { connect } from 'react-redux'
 import SevenDayCard from '../components/sevenDays/sevenDayCard';
-import IDailyWeather from '../models/IDailyWeather';
+import LoaderSpinner from '../components/shared/loaderSpinner';
+import IWeather from '../models/IWeather';
 import MeasurementUnit from '../models/MeasurementUnit';
 
 export interface ISevenDaysProps {
-    sevenDaysWeather: IDailyWeather;
+    weather: IWeather
     measurementUnit: MeasurementUnit;
 }
 
 function SevenDays(props: ISevenDaysProps) {
     let list: JSX.Element[] | null = null
-    if (props.sevenDaysWeather !== null) {
-        list = props.sevenDaysWeather.daily.map((element, index) => {
+    if (props.weather !== null) {
+        list = props.weather.dailyWeather.map((element, index) => {
             return (
                 <SevenDayCard
                     key={index}
@@ -33,15 +33,24 @@ function SevenDays(props: ISevenDaysProps) {
     }
 
     return (
-        <div className="full-detail-page">
-            {list}
-        </div>
+        <>
+            {props.weather.dailyWeather !== null && props.weather.loading === false ?
+                <div className="full-detail-page">
+                    {list}
+                </div>
+                :
+                <LoaderSpinner />
+            }
+        </>
+
+
+
     );
 }
 
 const mapState2Props = (state: any) => {
     return {
-        sevenDaysWeather: state.sevenDaysWeather,
+        weather: state.weather,
         measurementUnit: state.measurementUnit
     };
 }

@@ -9,21 +9,23 @@ import MaxMin from '../shared/maxMin';
 import MeasurementUnit from '../../models/MeasurementUnit';
 import IDailyWeather from '../../models/IDailyWeather';
 import Capitalize from '../../services/script/capitalize';
+import IWeather from '../../models/IWeather';
 
 interface CurrentSectionProps {
-    currentWeather: ICurrentWeather;
+    // currentWeather: ICurrentWeather;
     measurementUnit: MeasurementUnit;
     weatherColors: IWeatherColor;
-    sevenDaysWeather: IDailyWeather;
+    // sevenDaysWeather: IDailyWeather;
+    weather: IWeather;
 };
 
 function CurrentSection(props: CurrentSectionProps) {
-    const _weather: Current = props.currentWeather?.current;
+    const _weather: Current = props.weather.currentWeather;
     const dateToFormat = new Date();
     const temp: number = Math.round(_weather?.main.temp);
     const feelsLike: number = Math.round(_weather?.main.feels_like);
-    const max: number = Math.round(props.sevenDaysWeather.daily[0].temp.max);
-    const min: number = Math.round(props.sevenDaysWeather.daily[0].temp.min);
+    const max: number = Math.round(props.weather.dailyWeather[0].temp.max);
+    const min: number = Math.round(props.weather.dailyWeather[0].temp.min);
     const weatherIcon: string = `http://openweathermap.org/img/wn/${_weather?.weather[0].icon}.png`;
     const weatherDescription: string = new Capitalize(_weather?.weather[0].description).sentence;
     const gradientStep = 0.5;
@@ -62,6 +64,8 @@ const mapStateToProps = (state: any) => {
     return {
         weatherColors: state.weatherColors,
         sevenDaysWeather: state.sevenDaysWeather,
+        measurementUnit: state.measurementUnit,
+        weather: state.weather,
     };
 };
 

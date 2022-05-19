@@ -1,24 +1,21 @@
 
 import { Container } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import IDailyWeather from '../../models/IDailyWeather';
-import IHourlyWeather from '../../models/IHourlyWeather';
+import IWeather from '../../models/IWeather';
 import IMeasurementUnit from '../../models/MeasurementUnit';
 import MeasurementUnitSystem from '../../types/MeasurementUnitSystem';
 import HourlyRainChart from './hourlyRainChart';
 
 
 interface props {
-    hourlyWeather: IHourlyWeather;
-    sevenDaysWeather: IDailyWeather;
+    weather: IWeather;
     measurementUnit: IMeasurementUnit;
     showToday: boolean;
     timezone: string;
 }
 function mapStateToProps(state: any) {
     return {
-        sevenDaysWeather: state.sevenDaysWeather,
-        hourlyWeather: state.hourlyWeather,
+        weather: state.weather,
         measurementUnit: state.measurementUnit,
         timezone: state.timezone,
     };
@@ -26,7 +23,7 @@ function mapStateToProps(state: any) {
 
 function RainSection(props: props) {
     const selectDay = props.showToday === true ? 0 : 1;
-    const dailyVolume: number = props.sevenDaysWeather.daily[selectDay].rain === undefined ? 0 : props.sevenDaysWeather.daily[selectDay].rain;
+    const dailyVolume: number = props.weather.dailyWeather[selectDay].rain === undefined ? 0 : props.weather.dailyWeather[selectDay].rain;
     const convertedDailyVolume = () => props.measurementUnit.system === MeasurementUnitSystem.metric ? dailyVolume.toFixed(1) : (dailyVolume / 25.4).toFixed(2);
     const unitAcronym = props.measurementUnit.system === MeasurementUnitSystem.metric ? "mm" : "in."
     return (
@@ -37,8 +34,8 @@ function RainSection(props: props) {
 
             <Container fluid className=" d-flex p-0 mb-4 mt-4">
                 <div className="scrolling-wrapper width-100vw d-grid"  >
-                    {props.hourlyWeather !== null ? <HourlyRainChart
-                        data={props.hourlyWeather}
+                    {props.weather.hourlyWeather !== null ? <HourlyRainChart
+                        data={props.weather.hourlyWeather}
                         itemWidth={50}
                         fontColor="dark"
                         showToday={props.showToday}

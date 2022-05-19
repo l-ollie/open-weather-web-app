@@ -1,31 +1,34 @@
-import * as React from 'react';
 import { connect } from 'react-redux'
+import LoaderSpinner from '../components/shared/loaderSpinner';
 import RainSection from '../components/shared/rainSection';
 import HourlyWeatherSection from '../components/tomorrow/hourlyWeatherSection';
 import HourlyWindSection from '../components/tomorrow/hourlyWindSection';
-import IHourlyWeather from '../models/IHourlyWeather';
+import IWeather from '../models/IWeather';
 
-export interface ITomorrowPageProps {
-    // hourly: IHourlyWeather;
-    // measurementUnit: string
-    sevenDaysWeather: any
+export interface IPros {
+    weather: IWeather;
 }
 
-function TomorrowPage(props: ITomorrowPageProps) {
+function TomorrowPage(props: IPros) {
     return (
-        <div>
-            {props.sevenDaysWeather !== null ? <HourlyWeatherSection /> : null}
-            {props.sevenDaysWeather !== null ? <HourlyWindSection /> : null}
-            {props.sevenDaysWeather !== null ? <RainSection showToday={false} /> : null}
-
-        </div>
+        <>
+            {
+                props.weather.dailyWeather !== null && props.weather.loading === false ?
+                    <>
+                        <HourlyWeatherSection />
+                        <HourlyWindSection />
+                        <RainSection showToday={false} />
+                    </> :
+                    <LoaderSpinner />
+            }
+        </>
     );
 }
 
 const mapState2Props = (state: any) => {
     return {
         measurementUnit: state.measurementUnit,
-        sevenDaysWeather: state.sevenDaysWeather
+        weather: state.weather
     };
 }
 

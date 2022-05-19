@@ -3,26 +3,24 @@ import { Container } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import '../../assets/css/today.css';
 import '../../assets/css/shared.css';
-import IDailyWeather from '../../models/IDailyWeather';
-import IHourlyWeather from '../../models/IHourlyWeather';
 import MeasurementUnit from '../../models/MeasurementUnit';
 import BeaufortScale from '../../services/script/beaufortScale';
 import HourlyWindChart from '../shared/hourlyWindChart';
 import MeasurementUnitSystem from '../../types/MeasurementUnitSystem';
+import IWeather from '../../models/IWeather';
 const Compass = require("cardinal-direction");
 
 interface ITodayWindSection {
-    hourlyWeather: IHourlyWeather;
     measurementUnit: MeasurementUnit;
-    sevenDaysWeather: IDailyWeather;
     timezone: string;
+    weather: IWeather
 }
 
 function TodayWindSection(props: ITodayWindSection) {
-    const windSpeed = Math.floor(props.measurementUnit.system === MeasurementUnitSystem.metric ? props.sevenDaysWeather.daily[0].wind_speed * (18 / 5) : props.sevenDaysWeather.daily[0].wind_speed);
-    const beaufortScale = new BeaufortScale(props.sevenDaysWeather.daily[0].wind_speed, props.measurementUnit.system)
+    const windSpeed = Math.floor(props.measurementUnit.system === MeasurementUnitSystem.metric ? props.weather.dailyWeather[0].wind_speed * (18 / 5) : props.weather.dailyWeather[0].wind_speed);
+    const beaufortScale = new BeaufortScale(props.weather.dailyWeather[0].wind_speed, props.measurementUnit.system)
     const windDescription = beaufortScale.description;
-    const deg = props.sevenDaysWeather.daily[0].wind_deg + 180;
+    const deg = props.weather.dailyWeather[0].wind_deg + 180;
     const windDirection = Compass.cardinalConverter(Compass.cardinalFromDegree(deg, Compass.CardinalSubset.Ordinal));
 
     const arrow = () => {
@@ -58,8 +56,8 @@ function TodayWindSection(props: ITodayWindSection) {
 
             <Container fluid className=" d-flex mt-auto p-0 mb-4">
                 <div className="scrolling-wrapper width-100vw d-grid"  >
-                    {props.hourlyWeather !== null ? <HourlyWindChart
-                        data={props.hourlyWeather}
+                    {props.weather.hourlyWeather !== null ? <HourlyWindChart
+                        data={props.weather.hourlyWeather}
                         height={100}
                         fontColor="dark"
                         showToday={true}
@@ -74,9 +72,8 @@ function TodayWindSection(props: ITodayWindSection) {
 
 function mapStateToProps(state: any) {
     return {
-        hourlyWeather: state.hourlyWeather,
+        weather: state.weather,
         measurementUnit: state.measurementUnit,
-        sevenDaysWeather: state.sevenDaysWeather,
         timezone: state.timezone,
     };
 }

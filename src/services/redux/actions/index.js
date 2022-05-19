@@ -2,33 +2,32 @@ import WeatherRepository from '../../data/weatherRepository';
 import { apiKey } from '../../data/data';
 import getTempColorForLeds from '../../script/tempToColor';
 import ActionType from '../types';
-import store from '../store';
 
 const weatherRepository = new WeatherRepository(apiKey);
 
-export const fetchWeather = (lat, lon, measurementUnitSystem) => async (dispatch) => {
-	const response = await weatherRepository.getCurrentWeather(lat, lon, measurementUnitSystem);
-	dispatch({ type: ActionType.fetchCurrentWeather, payload: { current: response.data } });
+// export const fetchWeather = (lat, lon, measurementUnitSystem) => async (dispatch) => {
+// 	const response = await weatherRepository.getCurrentWeather(lat, lon, measurementUnitSystem);
+// 	dispatch({ type: ActionType.fetchCurrentWeather, payload: { current: response.data } });
 
-	const response2 = await weatherRepository.getForcasts(lat, lon, measurementUnitSystem);
-	dispatch({ type: ActionType.timeZone, payload: response2.data.timezone });
-	dispatch({ type: ActionType.fetchHourlyWeather, payload: { hourly: response2.data.hourly } });
-	dispatch({ type: ActionType.fetchSevenDaysWeather, payload: { daily: response2.data.daily } });
+// 	const response2 = await weatherRepository.getForcasts(lat, lon, measurementUnitSystem);
+// 	dispatch({ type: ActionType.timeZone, payload: response2.data.timezone });
+// 	dispatch({ type: ActionType.fetchHourlyWeather, payload: { hourly: response2.data.hourly } });
+// 	dispatch({ type: ActionType.fetchSevenDaysWeather, payload: { daily: response2.data.daily } });
 
-	const tempToColorToday = getTempColorForLeds(response.data.main.feels_like, measurementUnitSystem);
-	const tempToColorTomorrow = getTempColorForLeds(response2.data.daily[1].feels_like.day, measurementUnitSystem);
-	const tempToColorSevenDaysTemp = response2.data.daily.reduce(
-		(previousValue, currentValue) => previousValue + currentValue.feels_like.day,
-		0
-	);
-	const tempToColorSevenDaysAverage = tempToColorSevenDaysTemp / response2.data.daily.length;
-	const tempToColorSevenDays = getTempColorForLeds(tempToColorSevenDaysAverage, measurementUnitSystem);
+// 	const tempToColorToday = getTempColorForLeds(response.data.main.feels_like, measurementUnitSystem);
+// 	const tempToColorTomorrow = getTempColorForLeds(response2.data.daily[1].feels_like.day, measurementUnitSystem);
+// 	const tempToColorSevenDaysTemp = response2.data.daily.reduce(
+// 		(previousValue, currentValue) => previousValue + currentValue.feels_like.day,
+// 		0
+// 	);
+// 	const tempToColorSevenDaysAverage = tempToColorSevenDaysTemp / response2.data.daily.length;
+// 	const tempToColorSevenDays = getTempColorForLeds(tempToColorSevenDaysAverage, measurementUnitSystem);
 
-	dispatch({
-		type: ActionType.weatherColors,
-		payload: { today: tempToColorToday, tomorrow: tempToColorTomorrow, sevenDays: tempToColorSevenDays }
-	});
-};
+// 	dispatch({
+// 		type: ActionType.weatherColors,
+// 		payload: { today: tempToColorToday, tomorrow: tempToColorTomorrow, sevenDays: tempToColorSevenDays }
+// 	});
+// };
 
 export const setMeasurementUnit = (unit) => {
 	return {
@@ -44,14 +43,13 @@ export const setSelectedCity = (city) => {
 	};
 };
 
-export const saveBackgoundColors = (colors) => {
-	console.log(colors);
+export const saveBackgroundColors = (colors) => {
 	return {
 		type: ActionType.saveBackgroundColor,
 		payload: colors
 	};
 };
-export const calculateBackgoundColors = () => {
+export const calculateBackgroundColors = () => {
 	return {
 		type: ActionType.calculateBackgroundColor
 	};
@@ -59,7 +57,7 @@ export const calculateBackgoundColors = () => {
 
 export const generateBackgroundColor = () => {
 	return async (dispatch, getState) => {
-		dispatch(calculateBackgoundColors());
+		dispatch(calculateBackgroundColors());
 
 		const weather = getState().weather;
 		const measurementUnit = getState().measurementUnit;
@@ -74,7 +72,7 @@ export const generateBackgroundColor = () => {
 		const tempToColorSevenDays = getTempColorForLeds(tempToColorSevenDaysAverage, measurementUnit.system);
 
 		dispatch(
-			saveBackgoundColors({
+			saveBackgroundColors({
 				today: tempToColorToday,
 				tomorrow: tempToColorTomorrow,
 				sevenDays: tempToColorSevenDays
@@ -93,6 +91,12 @@ export const fetchWeatherSuccess = (weather) => {
 	return (dispatch) => {
 		dispatch({ type: ActionType.fetchWeatherSuccess, payload: weather });
 		dispatch(generateBackgroundColor());
+	};
+};
+export const saveTimezone = (timezone) => {
+	return {
+		type: ActionType.saveTimezone,
+		payload: timezone
 	};
 };
 
@@ -117,6 +121,7 @@ export const fetchWeather2 = (lat, lon, measurementUnitSystem) => {
 		try {
 			await weatherRepository.getCurrentWeather(lat, lon, measurementUnitSystem).then((response) => {
 				const currentWeather = response.data;
+
 				dispatch(fetchWeatherSave(currentWeather, 'currentWeather'));
 			});
 
@@ -129,6 +134,8 @@ export const fetchWeather2 = (lat, lon, measurementUnitSystem) => {
 					const dailyWeather = response.data.daily;
 
 					dispatch(fetchWeatherSave(dailyWeather, 'dailyWeather'));
+
+					dispatch(saveTimezone(response.data.timezone));
 				})
 				.then(() => {
 					dispatch(fetchWeatherSuccess());

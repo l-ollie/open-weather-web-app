@@ -1,12 +1,12 @@
 import moment from 'moment-timezone';
-import IHourlyWeather, { Hourly } from '../../models/IHourlyWeather';
+import { Hourly } from '../../models/IHourlyWeather';
 import '../../assets/css/shared.css'
 import IMeasurementUnit from '../../models/MeasurementUnit';
 import { Container } from 'react-bootstrap';
 import MeasurementUnitSystem from '../../types/MeasurementUnitSystem';
 
 interface IHourlyRainChart {
-    data: IHourlyWeather;
+    data: Hourly[];
     itemWidth: number;
     fontColor: string;
     measurementUnit: IMeasurementUnit;
@@ -18,21 +18,21 @@ function HourlyRainChart(props: IHourlyRainChart) {
     let forecast;
 
     if (props.showToday) {
-        const findEndingHour = props.data?.hourly.findIndex((element, index) => {
+        const findEndingHour = props.data?.findIndex((element, index) => {
             const time = moment(element.dt * 1000).tz(props.timezone).format('HH');
             if (Number(time) === 7)
                 return index;
             return 0
         });
-        forecast = props.data?.hourly.slice(0, findEndingHour)
+        forecast = props.data?.slice(0, findEndingHour)
     } else {
-        const findStartingHour = props.data?.hourly.findIndex((element, index) => {
+        const findStartingHour = props.data?.findIndex((element, index) => {
             const time = moment(element.dt * 1000).tz(props.timezone).format('HH');
             if (Number(time) === 7)
                 return index;
             return 0
         });
-        forecast = props.data?.hourly.slice(findStartingHour, findStartingHour + 24)
+        forecast = props.data?.slice(findStartingHour, findStartingHour + 24)
     }
 
     const maximumItems = forecast.length;

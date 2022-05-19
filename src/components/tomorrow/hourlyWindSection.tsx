@@ -2,30 +2,29 @@ import moment from 'moment-timezone';
 import React from 'react';
 import { Container } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import IDailyWeather from '../../models/IDailyWeather';
-import IHourlyWeather, { Hourly } from '../../models/IHourlyWeather';
+import { Hourly } from '../../models/IHourlyWeather';
+import IWeather from '../../models/IWeather';
 import MeasurementUnit from '../../models/MeasurementUnit';
 import BeaufortScale from '../../services/script/beaufortScale';
 import MeasurementUnitSystem from '../../types/MeasurementUnitSystem';
 import HourlyWindChart from '../shared/hourlyWindChart';
 
 interface IHourlyWindSection {
-    hourlyWeather: IHourlyWeather;
     measurementUnit: MeasurementUnit;
-    sevenDaysWeather: IDailyWeather;
+    weather: IWeather
     timezone: string;
 }
 
 function HourlyWindSection(props: IHourlyWindSection) {
-    const windSpeed = Math.floor(props.sevenDaysWeather.daily[1].wind_speed);
+    const windSpeed = Math.floor(props.weather.dailyWeather[1].wind_speed);
     const windDescription = new BeaufortScale(windSpeed, props.measurementUnit.system).description;
-    const findStartingHour = props.hourlyWeather.hourly.findIndex((element, index) => {
+    const findStartingHour = props.weather.hourlyWeather.findIndex((element, index) => {
         const time = moment(element.dt * 1000).tz(props.timezone).format('HH');
         if (Number(time) === 7)
             return index;
         return 0
     });
-    const forecast = props.hourlyWeather.hourly.slice(findStartingHour, findStartingHour + 24)
+    const forecast = props.weather.hourlyWeather.slice(findStartingHour, findStartingHour + 24)
     const maximumWindSpeed = Math.max(...forecast.map((e: Hourly) => e.wind_speed));
     const minimumWindSpeed = Math.min(...forecast.map((e: Hourly) => e.wind_speed));
     const maximumWindSpeedConverted = props.measurementUnit.system === MeasurementUnitSystem.metric ? Math.round(maximumWindSpeed * (18 / 5)) : Math.round(maximumWindSpeed);
@@ -45,8 +44,8 @@ function HourlyWindSection(props: IHourlyWindSection) {
 
             <Container fluid className=" d-flex p-0 mt-4 mb-4">
                 <div className="scrolling-wrapper width-100vw d-grid"  >
-                    {props.hourlyWeather !== null ? <HourlyWindChart
-                        data={props.hourlyWeather}
+                    {props.weather.hourlyWeather !== null ? <HourlyWindChart
+                        data={props.weather.hourlyWeather}
                         height={100}
                         fontColor="dark"
                         showToday={false}
@@ -62,9 +61,8 @@ function HourlyWindSection(props: IHourlyWindSection) {
 
 function mapStateToProps(state: any) {
     return {
-        hourlyWeather: state.hourlyWeather,
+        weather: state.weather,
         measurementUnit: state.measurementUnit,
-        sevenDaysWeather: state.sevenDaysWeather,
         timezone: state.timezone
     };
 }

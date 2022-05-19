@@ -1,33 +1,36 @@
 import CurrentSection from '../components/today/currentSection';
 import TodayWindSection from '../components/today/todayWindSection';
 import { connect } from 'react-redux';
-import ICurrentWeather from '../models/ICurrentWeather';
-import IDailyWeather from '../models/IDailyWeather';
 import MeasurementUnit from '../models/MeasurementUnit';
 
 import RainSection from '../components/shared/rainSection';
+import IWeather from '../models/IWeather';
+import LoaderSpinner from '../components/shared/loaderSpinner';
 
-type CurrentPageProps = {
-	currentWeather: ICurrentWeather;
+interface IProps {
+	weather: IWeather;
 	measurementUnit: MeasurementUnit;
-	sevenDaysWeather: IDailyWeather;
 };
 
-function TodayPage(props: CurrentPageProps) {
+function TodayPage(props: IProps) {
 	return (
-		<div>
-			{props.sevenDaysWeather !== null ? <CurrentSection currentWeather={props.currentWeather} measurementUnit={props.measurementUnit} /> : null}
-			{props.sevenDaysWeather !== null ? <TodayWindSection /> : null}
-			{props.sevenDaysWeather !== null ? <RainSection showToday={true} /> : null}
-		</div>
+		<>
+			{props.weather.dailyWeather !== null && props.weather.loading === false ?
+				<>
+					<CurrentSection />
+					<TodayWindSection />
+					<RainSection showToday={true} />
+				</> :
+				<LoaderSpinner />
+			}
+		</>
 	);
 }
 
-const mapStateToProps = (state: CurrentPageProps) => {
+const mapStateToProps = (state: IProps) => {
 	return {
-		currentWeather: state.currentWeather,
 		measurementUnit: state.measurementUnit,
-		sevenDaysWeather: state.sevenDaysWeather
+		weather: state.weather,
 	};
 };
 

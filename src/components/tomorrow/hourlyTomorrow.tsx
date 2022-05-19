@@ -6,17 +6,18 @@ import IDailyWeather from '../../models/IDailyWeather';
 import MaxMin from '../shared/maxMin';
 import '../../assets/css/shared.css';
 import Capitalize from '../../services/script/capitalize';
+import IWeather from '../../models/IWeather';
 
 interface ITomorrow {
-    sevenDaysWeather: IDailyWeather;
+    weather: IWeather;
 }
 
 function HourlyTomorrow(props: ITomorrow) {
     const tomorrowDate = new Date().setDate(new Date().getDate() + 1);
-    const tomorrowMin: number = props.sevenDaysWeather.daily[1].temp.min;
-    const tomorrowMax: number = props.sevenDaysWeather.daily[1].temp.max;
-    const weatherIcon: string = `http://openweathermap.org/img/wn/${props.sevenDaysWeather.daily[1].weather[0].icon}.png`;
-    const weatherDescription: string = new Capitalize(props.sevenDaysWeather.daily[1].weather[0].description).sentence;
+    const tomorrowMin: number = props.weather.dailyWeather[1].temp.min;
+    const tomorrowMax: number = props.weather.dailyWeather[1].temp.max;
+    const weatherIcon: string = `http://openweathermap.org/img/wn/${props.weather.dailyWeather[1].weather[0].icon}.png`;
+    const weatherDescription: string = new Capitalize(props.weather.dailyWeather[1].weather[0].description).sentence;
 
     return (
         <Container >
@@ -44,7 +45,7 @@ function HourlyTomorrow(props: ITomorrow) {
 
 function mapStateToProps(state: any) {
     return {
-        sevenDaysWeather: state.sevenDaysWeather,
+        weather: state.weather
     };
 }
 

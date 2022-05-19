@@ -33,9 +33,7 @@ function AppWrapper(props: IAppWrapper) {
 
 	useEffect(
 		() => {
-			// props.fetchWeather(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit.system);
 			props.fetchWeather2(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit.system);
-			// props.generateBackgroundColor(props.weather, props.measurementUnit.system);
 		},
 		[props.selectedCity, props.measurementUnit]// eslint-disable-line react-hooks/exhaustive-deps
 	);

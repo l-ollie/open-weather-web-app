@@ -5,9 +5,10 @@ import '../../assets/css/hourly.css';
 import HourlyTomorrow from './hourlyTomorrow';
 import HourlyTempChart from './hourlyTempChart';
 import IWeatherColors from '../../models/IWeatherColor';
+import IWeather from '../../models/IWeather';
 
 export interface IHourlyProps {
-    hourlyWeather: IHourlyWeather;
+    weather: IWeather
     weatherColors: IWeatherColors;
     timezone: string;
 }
@@ -24,7 +25,7 @@ function Hourly(props: IHourlyProps) {
 
             <Container fluid className=" d-flex mt-auto p-0 mb-4">
                 <div className="scrolling-wrapper width-100vw d-grid"  >
-                    {props.hourlyWeather !== null ? <HourlyTempChart timezone={props.timezone} data={props.hourlyWeather} itemWidth={50} fontColor={props.weatherColors.tomorrow.fontColor} height={200} /> : null}
+                    {props.weather.hourlyWeather !== null ? <HourlyTempChart timezone={props.timezone} data={props.weather.hourlyWeather} itemWidth={50} fontColor={props.weatherColors.tomorrow.fontColor} height={200} /> : null}
                 </div>
             </Container>
         </Container>
@@ -33,8 +34,7 @@ function Hourly(props: IHourlyProps) {
 
 const mapState2Props = (state: any) => {
     return {
-        hourlyWeather: state.hourlyWeather,
-        forecast: state.forecast,
+        weather: state.weather,
         weatherColors: state.weatherColors,
         timezone: state.timezone,
     };

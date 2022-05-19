@@ -1,11 +1,11 @@
 
-import IHourlyWeather, { Hourly } from '../../models/IHourlyWeather';
+import { Hourly } from '../../models/IHourlyWeather';
 import moment from 'moment-timezone';
 
 const STROKE = 1;
 
 interface IHourlyTempChart {
-    data: IHourlyWeather;
+    data: Hourly[];
     height: number;
     itemWidth: number;
     fontColor: string;
@@ -14,14 +14,13 @@ interface IHourlyTempChart {
 
 function HourlyTempChart(props: IHourlyTempChart): JSX.Element {
 
-    const findSevenHourStart: number = props.data?.hourly.findIndex((element, index) => {
+    const findSevenHourStart: number = props.data?.findIndex((element, index) => {
         const time = moment(element.dt * 1000).tz(props.timezone).format('HH');
         if (Number(time) === 7)
-            return index;
-        return -1
+            return true
     });
 
-    const forecast: Hourly[] = props.data?.hourly.slice(findSevenHourStart, findSevenHourStart + 24)
+    const forecast: Hourly[] = props.data?.slice(findSevenHourStart, findSevenHourStart + 24)
 
     const maximumItems = forecast.length;
     const maximumYFromData = Math.max(...forecast.map((e: Hourly) => e.temp));
