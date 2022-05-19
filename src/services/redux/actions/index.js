@@ -1,7 +1,7 @@
 import WeatherRepository from '../../data/weatherRepository';
 import { apiKey } from '../../data/data';
 import getTempColorForLeds from '../../script/tempToColor';
-import ActionType from '../types';
+import ActionType from '../actionTypes';
 
 const weatherRepository = new WeatherRepository(apiKey);
 
@@ -9,7 +9,7 @@ const weatherRepository = new WeatherRepository(apiKey);
 // 	const response = await weatherRepository.getCurrentWeather(lat, lon, measurementUnitSystem);
 // 	dispatch({ type: ActionType.fetchCurrentWeather, payload: { current: response.data } });
 
-// 	const response2 = await weatherRepository.getForcasts(lat, lon, measurementUnitSystem);
+// 	const response2 = await weatherRepository.getForecasts(lat, lon, measurementUnitSystem);
 // 	dispatch({ type: ActionType.timeZone, payload: response2.data.timezone });
 // 	dispatch({ type: ActionType.fetchHourlyWeather, payload: { hourly: response2.data.hourly } });
 // 	dispatch({ type: ActionType.fetchSevenDaysWeather, payload: { daily: response2.data.daily } });
@@ -126,7 +126,7 @@ export const fetchWeather2 = (lat, lon, measurementUnitSystem) => {
 			});
 
 			await weatherRepository
-				.getForcasts(lat, lon, measurementUnitSystem)
+				.getForecasts(lat, lon, measurementUnitSystem)
 				.then((response) => {
 					const hourlyWeather = response.data.hourly;
 

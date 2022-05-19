@@ -1,4 +1,4 @@
-import ActionType from '../types';
+import ActionType from '../actionTypes';
 
 const weatherColor = { r: 255, g: 255, b: 255, fontColor: 'light' };
 

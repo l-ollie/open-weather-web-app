@@ -1,4 +1,4 @@
-import ActionType from '../types';
+import ActionType from '../actionTypes';
 import CssUnit from '../../../types/CssUnit';
 import SpeedUnit from '../../../types/speedUnit';
 import MeasurementUnitSystem from '../../../types/MeasurementUnitSystem';

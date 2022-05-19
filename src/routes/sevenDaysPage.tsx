@@ -11,7 +11,7 @@ export interface ISevenDaysProps {
 
 function SevenDays(props: ISevenDaysProps) {
     let list: JSX.Element[] | null = null
-    if (props.weather !== null) {
+    if (props.weather.dailyWeather !== null) {
         list = props.weather.dailyWeather.map((element, index) => {
             return (
                 <SevenDayCard
