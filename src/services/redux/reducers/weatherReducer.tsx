@@ -1,4 +1,7 @@
+import IWeather from '../../../models/IWeather';
 import ActionType from '../actionTypes';
+import { WeatherR } from '../types';
+
 
 const initialState = {
 	loading: false,
@@ -8,8 +11,9 @@ const initialState = {
 	error: ''
 };
 
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default (state = initialState, action) => {
+export default (state: IWeather = initialState, action: WeatherR) => {
 	switch (action.type) {
 		case ActionType.fetchWeather:
 			return action.payload;

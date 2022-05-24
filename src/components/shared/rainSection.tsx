@@ -23,7 +23,7 @@ function mapStateToProps(state: any) {
 
 function RainSection(props: props) {
     const selectDay = props.showToday === true ? 0 : 1;
-    const dailyVolume: number = props.weather.dailyWeather[selectDay].rain === undefined ? 0 : props.weather.dailyWeather[selectDay].rain;
+    const dailyVolume: number = props.weather.dailyWeather![selectDay].rain === undefined ? 0 : props.weather.dailyWeather![selectDay].rain;
     const convertedDailyVolume = () => props.measurementUnit.system === MeasurementUnitSystem.metric ? dailyVolume.toFixed(1) : (dailyVolume / 25.4).toFixed(2);
     const unitAcronym = props.measurementUnit.system === MeasurementUnitSystem.metric ? "mm" : "in."
     return (

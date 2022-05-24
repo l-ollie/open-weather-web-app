@@ -27,7 +27,7 @@ function SearchResultsItem(props: ISearchResultsItem) {
                 }}
             >
 
-                {props.city.name}, {props.city.country} <img src={`https://openweathermap.org/images/flags/${landCode}.png`} />
+                {props.city.name}, {props.city.country} <img alt="Flag" src={`https://openweathermap.org/images/flags/${landCode}.png`} />
             </ListGroup.Item>
         </>
     );

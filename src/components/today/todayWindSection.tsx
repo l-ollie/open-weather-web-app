@@ -17,10 +17,10 @@ interface ITodayWindSection {
 }
 
 function TodayWindSection(props: ITodayWindSection) {
-    const windSpeed = Math.floor(props.measurementUnit.system === MeasurementUnitSystem.metric ? props.weather.dailyWeather[0].wind_speed * (18 / 5) : props.weather.dailyWeather[0].wind_speed);
-    const beaufortScale = new BeaufortScale(props.weather.dailyWeather[0].wind_speed, props.measurementUnit.system)
+    const windSpeed = Math.floor(props.measurementUnit.system === MeasurementUnitSystem.metric ? props.weather.dailyWeather![0].wind_speed * (18 / 5) : props.weather.dailyWeather![0].wind_speed);
+    const beaufortScale = new BeaufortScale(props.weather.dailyWeather![0].wind_speed, props.measurementUnit.system)
     const windDescription = beaufortScale.description;
-    const deg = props.weather.dailyWeather[0].wind_deg + 180;
+    const deg = props.weather.dailyWeather![0].wind_deg + 180;
     const windDirection = Compass.cardinalConverter(Compass.cardinalFromDegree(deg, Compass.CardinalSubset.Ordinal));
 
     const arrow = () => {

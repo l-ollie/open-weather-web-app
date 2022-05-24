@@ -1,4 +1,4 @@
- enum ActionType {
+enum ActionType {
     setMeasurementUnit = "SET_MEASUREMENT_UNIT",
     setSelectedCity = "SET_SELECTED_CITY",
     setTempUnitCss = "SET_TEMP_UNIT_CSS",

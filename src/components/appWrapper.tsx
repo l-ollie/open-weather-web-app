@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 import { useEffect } from 'react';
 
 import { connect } from 'react-redux';
-import { fetchWeather2, generateBackgroundColor } from '../services/redux/actions';
+import { fetchWeather, generateBackgroundColor } from '../services/redux/actions';
 
 import MeasurementUnitSystem from '../types/MeasurementUnitSystem';
 import IFontColor from '../models/IWeatherColor';
@@ -22,7 +22,7 @@ const navLinks: Array<navBarLink> = [
 type IAppWrapper = {
 	weather: IWeather;
 	generateBackgroundColor: (weather: IWeather, measurementUnitSystem: MeasurementUnitSystem) => void;
-	fetchWeather2: (lat?: any, lon?: any, measurementUnitSystem?: any) => void;
+	fetchWeather: (lat?: any, lon?: any, measurementUnitSystem?: any) => void;
 	measurementUnit: IMeasurementUnit;
 	fontColor: IFontColor;
 	selectedCity: ISelectedCity;
@@ -33,7 +33,7 @@ function AppWrapper(props: IAppWrapper) {
 
 	useEffect(
 		() => {
-			props.fetchWeather2(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit.system);
+			props.fetchWeather(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit.system);
 		},
 		[props.selectedCity, props.measurementUnit]// eslint-disable-line react-hooks/exhaustive-deps
 	);
@@ -55,4 +55,4 @@ const mapStateToProps = (state: any) => {
 	};
 };
 
-export default connect(mapStateToProps, { fetchWeather2, generateBackgroundColor })(AppWrapper);
+export default connect(mapStateToProps, { fetchWeather, generateBackgroundColor })(AppWrapper);

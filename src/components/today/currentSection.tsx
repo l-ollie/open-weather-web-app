@@ -2,32 +2,29 @@ import { Col, Container, Row } from 'react-bootstrap';
 import Moment from 'react-moment';
 import '../../assets/css/shared.css'
 
-import ICurrentWeather, { Current } from '../../models/ICurrentWeather';
 import IWeatherColor from '../../models/IWeatherColor';
 import { connect } from 'react-redux';
 import MaxMin from '../shared/maxMin';
 import MeasurementUnit from '../../models/MeasurementUnit';
-import IDailyWeather from '../../models/IDailyWeather';
 import Capitalize from '../../services/script/capitalize';
 import IWeather from '../../models/IWeather';
+import { Current } from '../../models/ICurrentWeather';
 
 interface CurrentSectionProps {
-    // currentWeather: ICurrentWeather;
     measurementUnit: MeasurementUnit;
     weatherColors: IWeatherColor;
-    // sevenDaysWeather: IDailyWeather;
     weather: IWeather;
 };
 
 function CurrentSection(props: CurrentSectionProps) {
-    const _weather: Current = props.weather.currentWeather;
+    const _weather: Current | null = props.weather.currentWeather;
     const dateToFormat = new Date();
-    const temp: number = Math.round(_weather?.main.temp);
-    const feelsLike: number = Math.round(_weather?.main.feels_like);
-    const max: number = Math.round(props.weather.dailyWeather[0].temp.max);
-    const min: number = Math.round(props.weather.dailyWeather[0].temp.min);
-    const weatherIcon: string = `http://openweathermap.org/img/wn/${_weather?.weather[0].icon}.png`;
-    const weatherDescription: string = new Capitalize(_weather?.weather[0].description).sentence;
+    const temp: number = Math.round(_weather!.main.temp);
+    const feelsLike: number = Math.round(_weather!.main.feels_like);
+    const max: number = Math.round(props.weather.dailyWeather![0].temp.max);
+    const min: number = Math.round(props.weather.dailyWeather![0].temp.min);
+    const weatherIcon: string = `http://openweathermap.org/img/wn/${_weather!.weather[0].icon}.png`;
+    const weatherDescription: string = new Capitalize(_weather!.weather[0].description).sentence;
     const gradientStep = 0.5;
     const backgroundGradient = `linear-gradient(rgba(${props.weatherColors.today.r}, ${props.weatherColors.today.g}, ${props.weatherColors.today.b},${gradientStep}),rgba(${props.weatherColors.today.r}, ${props.weatherColors.today.g}, ${props.weatherColors.today.b} ,255))`;
 

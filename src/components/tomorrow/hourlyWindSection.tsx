@@ -16,15 +16,15 @@ interface IHourlyWindSection {
 }
 
 function HourlyWindSection(props: IHourlyWindSection) {
-    const windSpeed = Math.floor(props.weather.dailyWeather[1].wind_speed);
+    const windSpeed = Math.floor(props.weather.dailyWeather![1].wind_speed);
     const windDescription = new BeaufortScale(windSpeed, props.measurementUnit.system).description;
-    const findStartingHour = props.weather.hourlyWeather.findIndex((element, index) => {
+    const findStartingHour = props.weather.hourlyWeather!.findIndex((element, index) => {
         const time = moment(element.dt * 1000).tz(props.timezone).format('HH');
         if (Number(time) === 7)
             return index;
         return 0
     });
-    const forecast = props.weather.hourlyWeather.slice(findStartingHour, findStartingHour + 24)
+    const forecast = props.weather.hourlyWeather!.slice(findStartingHour, findStartingHour + 24)
     const maximumWindSpeed = Math.max(...forecast.map((e: Hourly) => e.wind_speed));
     const minimumWindSpeed = Math.min(...forecast.map((e: Hourly) => e.wind_speed));
     const maximumWindSpeedConverted = props.measurementUnit.system === MeasurementUnitSystem.metric ? Math.round(maximumWindSpeed * (18 / 5)) : Math.round(maximumWindSpeed);

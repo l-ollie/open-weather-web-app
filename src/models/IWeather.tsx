@@ -1,11 +1,11 @@
-import ICurrentWeather, { Current } from "./ICurrentWeather";
+import { Current } from "./ICurrentWeather";
 import { Daily } from "./IDailyWeather";
-import IHourlyWeather, { Hourly } from "./IHourlyWeather";
+import { Hourly } from "./IHourlyWeather";
 
 export default interface IWeather {
     loading: boolean;
-    currentWeather: Current;
-    hourlyWeather: Hourly[];
-    dailyWeather: Daily[];
-    error: string;
+    currentWeather: Current | null;
+    hourlyWeather: Hourly[] | null;
+    dailyWeather: Daily[] | null;
+    error: string | null;
 }
