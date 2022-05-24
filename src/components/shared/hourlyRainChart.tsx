@@ -137,7 +137,7 @@ function HourlyRainChart(props: IHourlyRainChart) {
 
     function graphTime(time: number): React.SVGProps<SVGTextElement> {
         const x = itemWidth * 0.5;
-        const y = infographicHeight;
+        const y = infographicHeight - 1;
         const forecastDate = moment(time * 1000).tz(props.timezone).format('HH:mm');
         return (
             <text fontSize={fontSizeTime} x={x} y={y} textAnchor={'middle'} className="meta-text-color">

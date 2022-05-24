@@ -25,7 +25,7 @@ function TodayWindSection(props: ITodayWindSection) {
 
     const arrow = () => {
         return (
-            <svg viewBox={`0 0 ${50} ${50}`} >
+            <svg viewBox={`0 0 ${50} ${50}`} height="36px" >
                 <polygon points="25 0 50 50 25 34 0 50 25 0" fill="gray" className="arrow-color"
                     transform={`
                         scale(${0.45} ${0.45})

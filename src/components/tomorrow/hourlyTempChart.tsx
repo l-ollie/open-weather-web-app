@@ -98,7 +98,7 @@ function HourlyTempChart(props: IHourlyTempChart): JSX.Element {
 
     function graphTime(time: number, index: number): JSX.Element {
         const x = index * props.itemWidth + props.itemWidth / 2;
-        const y = chartHeight;
+        const y = chartHeight - 1;
         const forecastDate = moment(time * 1000).tz(props.timezone).format('HH:mm');
         return (
             <text fontSize={FONT_SIZE} fill={gradientColor} x={x} y={y} textAnchor={'middle'}>
