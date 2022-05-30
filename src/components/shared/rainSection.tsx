@@ -7,25 +7,15 @@ import MeasurementUnitSystem from '../../types/MeasurementUnitSystem';
 import HourlyRainChart from './hourlyRainChart';
 
 
-interface props {
-    weather: IWeather;
-    measurementUnit: IMeasurementUnit;
+interface IProps extends IMapStateToProps {
     showToday: boolean;
-    timezone: string;
-}
-function mapStateToProps(state: any) {
-    return {
-        weather: state.weather,
-        measurementUnit: state.measurementUnit,
-        timezone: state.timezone,
-    };
 }
 
-function RainSection(props: props) {
-    const selectDay = props.showToday === true ? 0 : 1;
+function RainSection(props: IProps) {
+    const selectDay: number = props.showToday === true ? 0 : 1;
     const dailyVolume: number = props.weather.dailyWeather![selectDay].rain === undefined ? 0 : props.weather.dailyWeather![selectDay].rain;
     const convertedDailyVolume = () => props.measurementUnit.system === MeasurementUnitSystem.metric ? dailyVolume.toFixed(1) : (dailyVolume / 25.4).toFixed(2);
-    const unitAcronym = props.measurementUnit.system === MeasurementUnitSystem.metric ? "mm" : "in."
+    const unitAcronym: string = props.measurementUnit.system === MeasurementUnitSystem.metric ? "mm" : "in."
     return (
         <>
             <Container className="mt-4">
@@ -49,6 +39,20 @@ function RainSection(props: props) {
         </>
     );
 
+}
+
+interface IMapStateToProps {
+    weather: IWeather;
+    measurementUnit: IMeasurementUnit;
+    timezone: string;
+}
+
+const mapStateToProps = (state: IMapStateToProps) => {
+    return {
+        weather: state.weather,
+        measurementUnit: state.measurementUnit,
+        timezone: state.timezone,
+    };
 }
 
 export default connect(

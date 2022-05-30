@@ -1,7 +1,7 @@
 import ActionType from '../actionTypes';
 import { WeatherColorsR } from '../types';
 
-const weatherColor = { r: 255, g: 255, b: 255, fontColor: 'light' };
+const weatherColor = { r: 255, g: 255, b: 255, fontColor: 'dark' };
 const initialState = { today: weatherColor, tomorrow: weatherColor, sevenDays: weatherColor };
 
 // eslint-disable-next-line import/no-anonymous-default-export

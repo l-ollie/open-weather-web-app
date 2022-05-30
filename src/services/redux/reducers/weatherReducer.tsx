@@ -8,7 +8,7 @@ const initialState = {
 	currentWeather: null,
 	hourlyWeather: null,
 	dailyWeather: null,
-	error: ''
+	error: null
 };
 
 
@@ -26,7 +26,7 @@ export default (state: IWeather = initialState, action: WeatherR) => {
 			return {
 				...state,
 				loading: false,
-				error: ''
+				error: null
 			};
 		case ActionType.fetchWeatherSave:
 			return {

@@ -10,7 +10,7 @@ import ActionType from "../actionTypes";
 
 export interface SetMeasurementUnitR {
     type: ActionType.setMeasurementUnit;
-    payload: MeasurementUnit
+    payload: MeasurementUnitSystem
 }
 
 export interface TimezoneR {

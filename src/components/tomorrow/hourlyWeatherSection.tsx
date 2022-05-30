@@ -1,19 +1,12 @@
 import { Container } from 'react-bootstrap';
 import { connect } from 'react-redux'
-import IHourlyWeather from '../../models/IHourlyWeather';
 import '../../assets/css/hourly.css';
 import HourlyTomorrow from './hourlyTomorrow';
 import HourlyTempChart from './hourlyTempChart';
 import IWeatherColors from '../../models/IWeatherColor';
 import IWeather from '../../models/IWeather';
 
-export interface IHourlyProps {
-    weather: IWeather
-    weatherColors: IWeatherColors;
-    timezone: string;
-}
-
-function Hourly(props: IHourlyProps) {
+function Hourly(props: IMapStateToProps) {
     const gradientStep = 0.5;
     const backgroundGradient = `linear-gradient(rgba(${props.weatherColors.tomorrow.r}, ${props.weatherColors.tomorrow.g}, ${props.weatherColors.tomorrow.b},${gradientStep}),rgba(${props.weatherColors.tomorrow.r}, ${props.weatherColors.tomorrow.g}, ${props.weatherColors.tomorrow.b} ,255))`;
 
@@ -32,7 +25,13 @@ function Hourly(props: IHourlyProps) {
     );
 }
 
-const mapState2Props = (state: any) => {
+export interface IMapStateToProps {
+    weather: IWeather
+    weatherColors: IWeatherColors;
+    timezone: string;
+}
+
+const mapStateToProps = (state: IMapStateToProps) => {
     return {
         weather: state.weather,
         weatherColors: state.weatherColors,
@@ -40,4 +39,4 @@ const mapState2Props = (state: any) => {
     };
 }
 
-export default connect(mapState2Props)(Hourly);
+export default connect(mapStateToProps)(Hourly);

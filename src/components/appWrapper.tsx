@@ -19,18 +19,8 @@ const navLinks: Array<navBarLink> = [
 	new NavBarLink('7 Days', 'sevendays')
 ];
 
-type IAppWrapper = {
-	weather: IWeather;
-	generateBackgroundColor: (weather: IWeather, measurementUnitSystem: MeasurementUnitSystem) => void;
-	fetchWeather: (lat?: any, lon?: any, measurementUnitSystem?: any) => void;
-	measurementUnit: IMeasurementUnit;
-	fontColor: IFontColor;
-	selectedCity: ISelectedCity;
-};
 
-
-function AppWrapper(props: IAppWrapper) {
-
+function AppWrapper(props: IMapStateToProps) {
 	useEffect(
 		() => {
 			props.fetchWeather(props.selectedCity.lat, props.selectedCity.lon, props.measurementUnit.system);
@@ -46,7 +36,16 @@ function AppWrapper(props: IAppWrapper) {
 	);
 }
 
-const mapStateToProps = (state: any) => {
+interface IMapStateToProps {
+	weather: IWeather;
+	generateBackgroundColor: (weather: IWeather, measurementUnitSystem: MeasurementUnitSystem) => void;
+	fetchWeather: (lat?: any, lon?: any, measurementUnitSystem?: any) => void;
+	measurementUnit: IMeasurementUnit;
+	fontColor: IFontColor;
+	selectedCity: ISelectedCity;
+};
+
+const mapStateToProps = (state: IMapStateToProps) => {
 	return {
 		measurementUnit: state.measurementUnit,
 		weather: state.weather,

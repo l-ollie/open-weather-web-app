@@ -2,17 +2,11 @@ import CurrentSection from '../components/today/currentSection';
 import TodayWindSection from '../components/today/todayWindSection';
 import { connect } from 'react-redux';
 import MeasurementUnit from '../models/MeasurementUnit';
-
 import RainSection from '../components/shared/rainSection';
 import IWeather from '../models/IWeather';
-import LoaderSpinner from '../components/shared/loaderSpinner';
+import LoaderSpinner from '../components/shared/loaderSpinnerAndErrorMsg';
 
-interface IProps {
-	weather: IWeather;
-	measurementUnit: MeasurementUnit;
-};
-
-function TodayPage(props: IProps) {
+function TodayPage(props: IMapStateToProps) {
 	return (
 		<>
 			{props.weather.dailyWeather !== null && props.weather.loading === false ?
@@ -27,7 +21,12 @@ function TodayPage(props: IProps) {
 	);
 }
 
-const mapStateToProps = (state: IProps) => {
+interface IMapStateToProps {
+	weather: IWeather;
+	measurementUnit: MeasurementUnit;
+};
+
+const mapStateToProps = (state: IMapStateToProps) => {
 	return {
 		measurementUnit: state.measurementUnit,
 		weather: state.weather,

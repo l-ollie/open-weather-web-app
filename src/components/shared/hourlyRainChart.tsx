@@ -15,10 +15,10 @@ interface IHourlyRainChart {
 }
 
 function HourlyRainChart(props: IHourlyRainChart) {
-    let forecast;
+    let forecast: Hourly[];
 
     if (props.showToday) {
-        const findEndingHour = props.data?.findIndex((element, index) => {
+        const findEndingHour = props.data?.findIndex((element: Hourly, index: number) => {
             const time = moment(element.dt * 1000).tz(props.timezone).format('HH');
             if (Number(time) === 7)
                 return index;
@@ -26,7 +26,7 @@ function HourlyRainChart(props: IHourlyRainChart) {
         });
         forecast = props.data?.slice(0, findEndingHour)
     } else {
-        const findStartingHour = props.data?.findIndex((element, index) => {
+        const findStartingHour: number = props.data?.findIndex((element: Hourly, index: number) => {
             const time = moment(element.dt * 1000).tz(props.timezone).format('HH');
             if (Number(time) === 7)
                 return index;
@@ -35,7 +35,7 @@ function HourlyRainChart(props: IHourlyRainChart) {
         forecast = props.data?.slice(findStartingHour, findStartingHour + 24)
     }
 
-    const maximumItems = forecast.length;
+    const maximumItems: number = forecast.length;
     const itemWidth = 40;
     const charBarSidePadding = 15;
 
@@ -138,7 +138,7 @@ function HourlyRainChart(props: IHourlyRainChart) {
     function graphTime(time: number): React.SVGProps<SVGTextElement> {
         const x = itemWidth * 0.5;
         const y = infographicHeight - 1;
-        const forecastDate = moment(time * 1000).tz(props.timezone).format('HH:mm');
+        const forecastDate: string = moment(time * 1000).tz(props.timezone).format('HH:mm');
         return (
             <text fontSize={fontSizeTime} x={x} y={y} textAnchor={'middle'} className="meta-text-color">
                 {forecastDate}

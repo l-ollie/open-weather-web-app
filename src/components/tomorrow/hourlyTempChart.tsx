@@ -2,7 +2,7 @@
 import { Hourly } from '../../models/IHourlyWeather';
 import moment from 'moment-timezone';
 
-const STROKE = 1;
+
 
 interface IHourlyTempChart {
     data: Hourly[];
@@ -14,15 +14,17 @@ interface IHourlyTempChart {
 
 function HourlyTempChart(props: IHourlyTempChart): JSX.Element {
 
-    const findSevenHourStart: number = props.data?.findIndex((element, index) => {
+    const findSevenHourStart: number = props.data?.findIndex((element: Hourly) => {
         const time = moment(element.dt * 1000).tz(props.timezone).format('HH');
         if (Number(time) === 7)
             return true
+        return false;
     });
 
+    const STROKE = 1;
     const forecast: Hourly[] = props.data?.slice(findSevenHourStart, findSevenHourStart + 24)
 
-    const maximumItems = forecast.length;
+    const maximumItems: number = forecast.length;
     const maximumYFromData = Math.max(...forecast.map((e: Hourly) => e.temp));
     const minimumYFromData = Math.min(...forecast.map((e: Hourly) => e.temp));
 
@@ -32,7 +34,7 @@ function HourlyTempChart(props: IHourlyTempChart): JSX.Element {
     const FONT_SIZE = 12;
     const fontMargin = FONT_SIZE * 1.2;
     const heightPadding = FONT_SIZE * 0.8;
-    const gradientColor = props.fontColor === 'light' ? '#fff' : '#000';
+    const gradientColor: string = props.fontColor === 'light' ? '#fff' : '#000';
 
     const iconYPos = 65;
     const iconOffset = chartHeight - iconYPos;
@@ -56,7 +58,7 @@ function HourlyTempChart(props: IHourlyTempChart): JSX.Element {
     });
     points.unshift(`0,${lineCharOffsetYLeft}`);
     points.push(`${chartWidth},${lineCharOffsetYRight} ${chartWidth},${chartHeight}  0,${chartHeight}`);
-    const graph = points.join(' ');
+    const graph: string = points.join(' ');
 
     const accentuatedLine: string[] = forecast.map((element: Hourly, index: number) => {
         const x = index * props.itemWidth + props.itemWidth / 2;
@@ -65,7 +67,7 @@ function HourlyTempChart(props: IHourlyTempChart): JSX.Element {
     });
     accentuatedLine.unshift(`0,${lineCharOffsetYLeft + (STROKE / 2)}`);
     accentuatedLine.push(`${chartWidth},${lineCharOffsetYRight + (STROKE / 2)}`);
-    const graphAccentuatedLine = accentuatedLine.join(' ');
+    const graphAccentuatedLine: string = accentuatedLine.join(' ');
 
     const addInfo: JSX.Element[] = forecast.map((element: Hourly, index: number) => {
         return (
@@ -99,7 +101,7 @@ function HourlyTempChart(props: IHourlyTempChart): JSX.Element {
     function graphTime(time: number, index: number): JSX.Element {
         const x = index * props.itemWidth + props.itemWidth / 2;
         const y = chartHeight - 1;
-        const forecastDate = moment(time * 1000).tz(props.timezone).format('HH:mm');
+        const forecastDate: string = moment(time * 1000).tz(props.timezone).format('HH:mm');
         return (
             <text fontSize={FONT_SIZE} fill={gradientColor} x={x} y={y} textAnchor={'middle'}>
                 {forecastDate}
@@ -123,6 +125,5 @@ function HourlyTempChart(props: IHourlyTempChart): JSX.Element {
         </svg>
     );
 };
-
 
 export default HourlyTempChart;

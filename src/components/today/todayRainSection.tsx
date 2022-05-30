@@ -6,18 +6,8 @@ import IMeasurementUnit from '../../models/MeasurementUnit';
 import HourlyRainChart from '../shared/hourlyRainChart';
 
 
-interface props {
-    hourlyWeather: Hourly[];
-    measurementUnit: IMeasurementUnit;
+interface props extends IMapStateToProps {
     showToday: boolean;
-    timezone: string;
-}
-function mapStateToProps(state: any) {
-    return {
-        hourlyWeather: state.hourlyWeather,
-        measurementUnit: state.measurementUnit,
-        timezone: state.timezone,
-    };
 }
 
 function HourlyRainSection(props: props) {
@@ -41,6 +31,20 @@ function HourlyRainSection(props: props) {
         </>
     );
 
+}
+
+interface IMapStateToProps {
+    hourlyWeather: Hourly[];
+    measurementUnit: IMeasurementUnit;
+    timezone: string;
+}
+
+const mapStateToProps = (state: IMapStateToProps) => {
+    return {
+        hourlyWeather: state.hourlyWeather,
+        measurementUnit: state.measurementUnit,
+        timezone: state.timezone,
+    };
 }
 
 export default connect(

@@ -3,20 +3,20 @@ import { Container } from 'react-bootstrap';
 import NavBar from './navBar';
 import SideMenu from './sideMenu';
 import { connect } from 'react-redux';
-import IWeatherColors from '../../models/IWeatherColor';
+import IWeatherColors, { IWeatherColor } from '../../models/IWeatherColor';
 import NavBarLink from '../../models/navBarLink';
 import { useLocation } from 'react-router-dom';
 
-interface IHeader {
-    weatherColors: IWeatherColors,
+interface IHeader extends MapStateToProps {
     appNavlinks: Array<NavBarLink>,
 }
 
-function Header(props: IHeader) {
-    const [weatherColor, setWeatherColor] = useState(props.weatherColors.today);
+function Header(props: IHeader): JSX.Element {
+    const [weatherColor, setWeatherColor] = useState<IWeatherColor>(props.weatherColors.today);
     const location = useLocation();
 
-    function changeHeaderColor() {
+
+    function changeHeaderColor(): void {
         if (location.pathname === "/")
             setWeatherColor(props.weatherColors.today);
         else if (location.pathname === "/tomorrow")
@@ -34,7 +34,6 @@ function Header(props: IHeader) {
             <Container>
                 <SideMenu />
             </Container>
-
             <div className=" d-flex justify-content justify-content-around ">
                 <NavBar appNavlinks={props.appNavlinks} />
             </div>
@@ -42,8 +41,11 @@ function Header(props: IHeader) {
     );
 }
 
+interface MapStateToProps {
+    weatherColors: IWeatherColors
+}
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: MapStateToProps) => {
     return {
         weatherColors: state.weatherColors,
     };

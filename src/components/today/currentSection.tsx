@@ -10,13 +10,9 @@ import Capitalize from '../../services/script/capitalize';
 import IWeather from '../../models/IWeather';
 import { Current } from '../../models/ICurrentWeather';
 
-interface CurrentSectionProps {
-    measurementUnit: MeasurementUnit;
-    weatherColors: IWeatherColor;
-    weather: IWeather;
-};
 
-function CurrentSection(props: CurrentSectionProps) {
+
+function CurrentSection(props: IProps) {
     const _weather: Current | null = props.weather.currentWeather;
     const dateToFormat = new Date();
     const temp: number = Math.round(_weather!.main.temp);
@@ -56,11 +52,15 @@ function CurrentSection(props: CurrentSectionProps) {
     );
 }
 
+interface IProps {
+    measurementUnit: MeasurementUnit;
+    weatherColors: IWeatherColor;
+    weather: IWeather;
+};
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: IProps) => {
     return {
         weatherColors: state.weatherColors,
-        sevenDaysWeather: state.sevenDaysWeather,
         measurementUnit: state.measurementUnit,
         weather: state.weather,
     };

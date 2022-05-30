@@ -1,5 +1,4 @@
 import moment from 'moment-timezone';
-import React from 'react';
 import { Container } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { Hourly } from '../../models/IHourlyWeather';
@@ -9,16 +8,10 @@ import BeaufortScale from '../../services/script/beaufortScale';
 import MeasurementUnitSystem from '../../types/MeasurementUnitSystem';
 import HourlyWindChart from '../shared/hourlyWindChart';
 
-interface IHourlyWindSection {
-    measurementUnit: MeasurementUnit;
-    weather: IWeather
-    timezone: string;
-}
-
-function HourlyWindSection(props: IHourlyWindSection) {
-    const windSpeed = Math.floor(props.weather.dailyWeather![1].wind_speed);
-    const windDescription = new BeaufortScale(windSpeed, props.measurementUnit.system).description;
-    const findStartingHour = props.weather.hourlyWeather!.findIndex((element, index) => {
+function HourlyWindSection(props: IMapStateToProps) {
+    const windSpeed: number = Math.floor(props.weather.dailyWeather![1].wind_speed);
+    const windDescription: string = new BeaufortScale(windSpeed, props.measurementUnit.system).description;
+    const findStartingHour: number = props.weather.hourlyWeather!.findIndex((element, index) => {
         const time = moment(element.dt * 1000).tz(props.timezone).format('HH');
         if (Number(time) === 7)
             return index;
@@ -59,13 +52,20 @@ function HourlyWindSection(props: IHourlyWindSection) {
 
 }
 
-function mapStateToProps(state: any) {
+interface IMapStateToProps {
+    measurementUnit: MeasurementUnit;
+    weather: IWeather
+    timezone: string;
+}
+
+const mapStateToProps = (state: IMapStateToProps) => {
     return {
         weather: state.weather,
         measurementUnit: state.measurementUnit,
         timezone: state.timezone
     };
 }
+
 export default connect(
     mapStateToProps,
 )(HourlyWindSection);

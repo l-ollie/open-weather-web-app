@@ -1,15 +1,10 @@
 import { connect } from 'react-redux'
 import SevenDayCard from '../components/sevenDays/sevenDayCard';
-import LoaderSpinner from '../components/shared/loaderSpinner';
+import LoaderSpinner from '../components/shared/loaderSpinnerAndErrorMsg';
 import IWeather from '../models/IWeather';
 import MeasurementUnit from '../models/MeasurementUnit';
 
-export interface ISevenDaysProps {
-    weather: IWeather
-    measurementUnit: MeasurementUnit;
-}
-
-function SevenDays(props: ISevenDaysProps) {
+function SevenDays(props: IMapStateToProps) {
     let list: JSX.Element[] | null = null
     if (props.weather.dailyWeather !== null) {
         list = props.weather.dailyWeather.map((element, index) => {
@@ -47,12 +42,15 @@ function SevenDays(props: ISevenDaysProps) {
 
     );
 }
-
-const mapState2Props = (state: any) => {
+interface IMapStateToProps {
+    weather: IWeather
+    measurementUnit: MeasurementUnit;
+}
+const mapStateToProps = (state: IMapStateToProps) => {
     return {
         weather: state.weather,
         measurementUnit: state.measurementUnit
     };
 }
 
-export default connect(mapState2Props)(SevenDays);
+export default connect(mapStateToProps)(SevenDays);

@@ -14,8 +14,8 @@ interface ISearchResultsItem {
 }
 
 
-function SearchResultsItem(props: ISearchResultsItem) {
-    const landCode = props.city.country.toLowerCase();
+function SearchResultsItem(props: ISearchResultsItem): JSX.Element {
+    const countryCode: string = props.city.country.toLowerCase();
 
     return (
         <>
@@ -27,17 +27,11 @@ function SearchResultsItem(props: ISearchResultsItem) {
                 }}
             >
 
-                {props.city.name}, {props.city.country} <img alt="Flag" src={`https://openweathermap.org/images/flags/${landCode}.png`} />
+                {props.city.name}, {props.city.country} <img alt="Flag" src={`https://openweathermap.org/images/flags/${countryCode}.png`} />
             </ListGroup.Item>
         </>
     );
 }
 
 
-const mapState2Props = (state: any) => {
-    return {
-
-    };
-}
-
-export default connect(mapState2Props, { setSelectedCity })(SearchResultsItem);
+export default connect(null, { setSelectedCity })(SearchResultsItem);

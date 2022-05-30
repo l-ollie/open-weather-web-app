@@ -1,4 +1,3 @@
-
 import { Row, Col, Container } from 'react-bootstrap';
 import Moment from 'react-moment';
 import { connect } from 'react-redux';
@@ -7,12 +6,8 @@ import '../../assets/css/shared.css';
 import Capitalize from '../../services/script/capitalize';
 import IWeather from '../../models/IWeather';
 
-interface ITomorrow {
-    weather: IWeather;
-}
-
-function HourlyTomorrow(props: ITomorrow) {
-    const tomorrowDate = new Date().setDate(new Date().getDate() + 1);
+function HourlyTomorrow(props: IMapStateToProps) {
+    const tomorrowDate: number = new Date().setDate(new Date().getDate() + 1);
     const tomorrowMin: number = props.weather.dailyWeather![1].temp.min;
     const tomorrowMax: number = props.weather.dailyWeather![1].temp.max;
     const weatherIcon: string = `http://openweathermap.org/img/wn/${props.weather.dailyWeather![1].weather[0].icon}.png`;
@@ -42,7 +37,11 @@ function HourlyTomorrow(props: ITomorrow) {
     );
 }
 
-function mapStateToProps(state: any) {
+interface IMapStateToProps {
+    weather: IWeather;
+}
+
+function mapStateToProps(state: IMapStateToProps) {
     return {
         weather: state.weather
     };

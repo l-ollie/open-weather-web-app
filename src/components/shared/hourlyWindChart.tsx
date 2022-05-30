@@ -17,11 +17,11 @@ interface IHourlyWindChart {
 
 function HourlyWindChart(props: IHourlyWindChart) {
 
-    let forecast;
+    let forecast: Hourly[];
 
     if (props.showToday) {
-        const findEndingHour = props.data?.findIndex((element, index) => {
-            const time = moment(element.dt * 1000).tz(props.timezone).format('HH');
+        const findEndingHour = props.data?.findIndex((element: Hourly, index: number) => {
+            const time: string = moment(element.dt * 1000).tz(props.timezone).format('HH');
             if (Number(time) === 7)
                 return index;
             return 0
@@ -38,10 +38,10 @@ function HourlyWindChart(props: IHourlyWindChart) {
     }
 
 
-    const maximumItems = forecast.length;
-    const maximumYFromData = Math.max(...forecast.map((e: Hourly) => e.wind_speed));
-    const minimumYFromData = Math.min(...forecast.map((e: Hourly) => e.wind_speed));
-    const minMaxDifference = maximumYFromData - minimumYFromData;
+    const maximumItems: number = forecast.length;
+    const maximumYFromData: number = Math.max(...forecast.map((e: Hourly) => e.wind_speed));
+    const minimumYFromData: number = Math.min(...forecast.map((e: Hourly) => e.wind_speed));
+    const minMaxDifference: number = maximumYFromData - minimumYFromData;
 
     const charBarSidePadding = 15;
     const itemWidth = 40;
@@ -65,7 +65,7 @@ function HourlyWindChart(props: IHourlyWindChart) {
     const charBarSteps = charBarMaxHeight / minMaxDifference;
 
 
-    const makeChart = forecast.map((element: Hourly, index: number) => {
+    const makeChart: JSX.Element[] = forecast.map((element: Hourly, index: number) => {
         const x = index * (itemWidth + charBarSidePadding);
 
         return (
@@ -82,7 +82,7 @@ function HourlyWindChart(props: IHourlyWindChart) {
     function charBar(windSpeed: number): React.SVGProps<SVGRectElement> {
         const height = ((windSpeed - minimumYFromData) * charBarSteps) + charBarMinHeight;
         const y = (charBarMaxHeight - height) + iconBottomMargin + charBarNumberMargin + fontHeight + iconMaxHeight;
-        const beaufortScale = new BeaufortScale(windSpeed, props.measurementUnit.system);
+        const beaufortScale: BeaufortScale = new BeaufortScale(windSpeed, props.measurementUnit.system);
 
         return (
             <rect width={itemWidth} height={height} x="0" y={y} fill={`${beaufortScale.color}`} />

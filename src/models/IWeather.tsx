@@ -7,5 +7,11 @@ export default interface IWeather {
     currentWeather: Current | null;
     hourlyWeather: Hourly[] | null;
     dailyWeather: Daily[] | null;
-    error: string | null;
+    error: IError | null;
+}
+
+interface IError {
+    message: string;
+    name: string;
+    stack: string;
 }

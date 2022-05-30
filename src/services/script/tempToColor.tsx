@@ -14,8 +14,8 @@ const tempColorSteps = [
 
 
 const temperatureStep = 6;
-let temperatureDiv: any = [];
-let currentTempColor: any = [];
+let temperatureDiv: Array<number> = [];
+let currentTempColor: Array<number> = [];
 
 function setupTemperatureDiv() {
     for (let i = 0; i < 7; i++) {
@@ -54,21 +54,19 @@ function checkIfDark(r: number, g: number, b: number) {
 
     // Using the HSP value, determine whether the color is light or dark
     if (hsp > 127.5) {
-
         return "dark";
     }
     else {
-
         return "light";
     }
 }
 
 function calculateTempColor(main_feels_like: number) {
     for (let i = 0; i < 6; i++) {                                                                             // check for 6 tempDiv
-        if (main_feels_like >= temperatureDiv[i] && main_feels_like <= temperatureDiv[i + 1]) {   // check if temp is in range of this div
-            let procentage = returnProcentage(i, main_feels_like);
+        if (main_feels_like >= temperatureDiv[i] && main_feels_like <= temperatureDiv[i + 1]) {   // check if temp is in range of this div 
+            let percentage = returnPercentage(i, main_feels_like);
             for (let b = 0; b < 3; b++) {
-                currentTempColor[b] = Math.round(tempColorSteps[i][b] * (1 - procentage) + (tempColorSteps[i + 1][b] * procentage));
+                currentTempColor[b] = Math.round(tempColorSteps[i][b] * (1 - percentage) + (tempColorSteps[i + 1][b] * percentage));
             }
             return;
         }
@@ -84,7 +82,7 @@ function calculateTempColor(main_feels_like: number) {
     }
 }
 
-function returnProcentage(a: number, main_feels_like: number): number {
+function returnPercentage(a: number, main_feels_like: number): number {
     let bTemp = main_feels_like + temperatureStep;
     bTemp = bTemp - (temperatureStep * a);
     return bTemp / 6;

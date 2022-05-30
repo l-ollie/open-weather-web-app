@@ -1,12 +1,14 @@
-import React from 'react';
 import navBarLink from '../../models/navBarLink';
 import NavBarLinkButton from './navBarLinkButton';
 
-function NavBar(props: any) {
+interface IProps {
+    appNavlinks: navBarLink[];
+}
 
-    const NavLinks = props.appNavlinks.map((item: navBarLink, index: number) => {
+function NavBar(props: IProps): JSX.Element {
+    const NavLinks: JSX.Element[] = props.appNavlinks.map((item: navBarLink, index: number) => {
         return (
-            <NavBarLinkButton link={item} key={index} setSelectedNav={props.setSelectedNav} />
+            <NavBarLinkButton link={item} key={index} />
         )
     });
 

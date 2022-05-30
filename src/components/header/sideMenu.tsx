@@ -3,31 +3,37 @@ import { Container, Form, ListGroup, Nav, Navbar, NavDropdown, Offcanvas } from 
 import JsonCity from '../../services/data/current.city.list.min.json';
 import SearchCityService from '../../services/script/searchCityService';
 import SearchResultsItem from './searchResultsItem';
-
 import { connect } from 'react-redux';
 import { setMeasurementUnit } from '../../services/redux/actions';
+import ISelectedCity from '../../models/ISelectedCity';
+import IMeasurementUnit from '../../models/MeasurementUnit';
+import { SetMeasurementUnitR } from '../../services/redux/types';
+import MeasurementUnitSystem from '../../types/MeasurementUnitSystem';
+import { ICurrentCityItem } from '../../models/ICurrentCityItem';
 
-// http://bulk.openweathermap.org/sample/
 
-function SideMenu(props: any) {
+interface IProps extends IMapStateToProps {
+    setMeasurementUnit: (unit: MeasurementUnitSystem) => SetMeasurementUnitR
+}
 
+function SideMenu(props: IProps) {
     const searchDelay: number = 1000;
-    const [searchTerm, setSearchTerm] = useState(props.selectedCity.name);
-    const [searchList, setSearchList] = useState([]);
-    const [showResults, setShowResults] = useState(false);
+    const [searchTerm, setSearchTerm] = useState<string>(props.selectedCity.name);
+    const [searchList, setSearchList] = useState<JSX.Element[]>([]);
+    const [showResults, setShowResults] = useState<boolean>(false);
 
-    function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
+    function handleSearch(e: React.ChangeEvent<HTMLInputElement>): void {
         e.preventDefault();
         setSearchTerm(e.target?.value);
         setShowResults(true);
     }
 
-    function clickHandler() {
+    function clickHandler(): void {
         setShowResults(true);
     }
 
     useEffect(() => {
-        const delaySearchTerm = setTimeout(() => {
+        const delaySearchTerm: NodeJS.Timeout = setTimeout(() => {
             searchCityList();
         }, searchDelay)
 
@@ -35,16 +41,16 @@ function SideMenu(props: any) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchTerm, props.selectedCity]);
 
-    function searchCityList() {
+    function searchCityList(): void {
 
         if (searchTerm === "" || searchTerm === props.selectedCity.name) {
             return
         }
 
         const searchCityService = new SearchCityService(JsonCity);
-        const results = searchCityService.cityList(searchTerm);
+        const results: ICurrentCityItem[] = searchCityService.cityList(searchTerm);
 
-        const _resultList = results.map((item: any, index: number) => {
+        const _resultList: JSX.Element[] = results.map((item: ICurrentCityItem, index: number) => {
             let listItem = <SearchResultsItem
                 key={index}
                 city={item}
@@ -54,12 +60,12 @@ function SideMenu(props: any) {
             return listItem;
 
         });
-
         setSearchList(_resultList);
     }
 
-    function handleSelect(e: any) {
-        props.setMeasurementUnit(e);
+    function handleSelect(e: any): void {
+        const selection: MeasurementUnitSystem = e.toString() === MeasurementUnitSystem.metric ? MeasurementUnitSystem.metric : MeasurementUnitSystem.imperial;
+        props.setMeasurementUnit(selection);
     }
 
     return (
@@ -109,7 +115,12 @@ function SideMenu(props: any) {
     );
 }
 
-const mapStateToProps = (state: any) => {
+interface IMapStateToProps {
+    selectedCity: ISelectedCity;
+    measurementUnit: IMeasurementUnit;
+}
+
+const mapStateToProps = (state: IMapStateToProps) => {
     return {
         measurementUnit: state.measurementUnit,
         selectedCity: state.selectedCity

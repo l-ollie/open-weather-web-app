@@ -2,14 +2,14 @@
 import { BsArrowDown, BsArrowUp } from 'react-icons/bs';
 import { connect } from 'react-redux';
 import '../../assets/css/shared.css';
+import MeasurementUnit from '../../models/MeasurementUnit';
 
-function mapStateToProps(state: any) {
-    return {
-        measurementUnit: state.measurementUnit
-    };
+interface IProps {
+    min: number;
+    max: number;
 }
 
-function MaxMin(props: any) {
+function MaxMin(props: IProps) {
     const max = Math.round(props.max);
     const min = Math.round(props.min);
 
@@ -25,6 +25,15 @@ function MaxMin(props: any) {
     );
 }
 
+interface MapStateToProps {
+    measurementUnit: MeasurementUnit
+}
+
+const mapStateToProps = (state: MapStateToProps) => {
+    return {
+        measurementUnit: state.measurementUnit
+    };
+}
 export default connect(
     mapStateToProps,
 )(MaxMin);

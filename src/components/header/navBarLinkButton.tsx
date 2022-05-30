@@ -1,16 +1,11 @@
-import React from 'react';
 import { NavLink } from "react-router-dom";
+import navBarLink from '../../models/navBarLink';
 
+interface IProps {
+    link: navBarLink
+}
 
-function NavBarLinkButton(props: any) {
-
-    // function setCurrentNav() {
-    //     // if (props.link.URL === "/")
-    //     // return props.setSelectedNav("current");
-
-
-    //     // return props.setSelectedNav(props.link.URL);
-    // }
+function NavBarLinkButton(props: IProps): JSX.Element {
 
     return (
         <div>

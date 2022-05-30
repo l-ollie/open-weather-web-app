@@ -10,13 +10,7 @@ import MeasurementUnitSystem from '../../types/MeasurementUnitSystem';
 import IWeather from '../../models/IWeather';
 const Compass = require("cardinal-direction");
 
-interface ITodayWindSection {
-    measurementUnit: MeasurementUnit;
-    timezone: string;
-    weather: IWeather
-}
-
-function TodayWindSection(props: ITodayWindSection) {
+function TodayWindSection(props: IMapStateToProps) {
     const windSpeed = Math.floor(props.measurementUnit.system === MeasurementUnitSystem.metric ? props.weather.dailyWeather![0].wind_speed * (18 / 5) : props.weather.dailyWeather![0].wind_speed);
     const beaufortScale = new BeaufortScale(props.weather.dailyWeather![0].wind_speed, props.measurementUnit.system)
     const windDescription = beaufortScale.description;
@@ -70,7 +64,13 @@ function TodayWindSection(props: ITodayWindSection) {
     );
 }
 
-function mapStateToProps(state: any) {
+interface IMapStateToProps {
+    measurementUnit: MeasurementUnit;
+    timezone: string;
+    weather: IWeather
+}
+
+const mapStateToProps = (state: IMapStateToProps) => {
     return {
         weather: state.weather,
         measurementUnit: state.measurementUnit,

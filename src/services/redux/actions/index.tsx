@@ -1,5 +1,5 @@
 import WeatherRepository from '../../data/weatherRepository';
-import { apiKey } from '../../data/data';
+import apiKey from '../../data/APIKey';
 import getTempColorForLeds from '../../script/tempToColor';
 import ActionType from '../actionTypes';
 
@@ -11,13 +11,12 @@ import MeasurementUnitSystem from '../../../types/MeasurementUnitSystem';
 import { Current } from '../../../models/ICurrentWeather';
 import IWeatherColors from '../../../models/IWeatherColor';
 import ISelectedCity from '../../../models/ISelectedCity';
-import IMeasurementUnit from '../../../models/MeasurementUnit';
 import IWeather from '../../../models/IWeather';
 import * as R from '../types';
 
 const weatherRepository = new WeatherRepository(apiKey);
 
-export const setMeasurementUnit = (unit: IMeasurementUnit): R.SetMeasurementUnitR => {
+export const setMeasurementUnit = (unit: MeasurementUnitSystem): R.SetMeasurementUnitR => {
 	return {
 		type: ActionType.setMeasurementUnit,
 		payload: unit
@@ -110,18 +109,16 @@ export const fetchWeather = (lat: number, lon: number, measurementUnitSystem: Me
 		try {
 			await weatherRepository.getCurrentWeather(lat, lon, measurementUnitSystem).then((response) => {
 				const currentWeather = response.data;
-
 				dispatch(fetchWeatherSave(currentWeather, 'currentWeather'));
 			});
 
 			await weatherRepository
 				.getForecasts(lat, lon, measurementUnitSystem)
 				.then((response) => {
-					const hourlyWeather = response.data.hourly;
-
+					const hourlyWeather: Hourly[] = response.data.hourly;
 					dispatch(fetchWeatherSave(hourlyWeather, 'hourlyWeather'));
-					const dailyWeather = response.data.daily;
 
+					const dailyWeather: Daily[] = response.data.daily;
 					dispatch(fetchWeatherSave(dailyWeather, 'dailyWeather'));
 
 					dispatch(saveTimezone(response.data.timezone));
