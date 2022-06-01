@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import IWeather from '../../models/IWeather';
 
 function LoaderSpinner(props: IMapStateToProps): JSX.Element {
-    const isLoading = props.weather.loading === true ? null : "d-none";
-    const hasError = props.weather.error !== null ? null : "d-none";
+    const isLoading: string | null = props.weather.loading === true ? null : "d-none";
+    const hasError: string | null = props.weather.error !== null ? null : "d-none";
 
     return (
         <Container fluid className='full-detail-page' >

@@ -1,8 +1,5 @@
-
 import { Hourly } from '../../models/IHourlyWeather';
 import moment from 'moment-timezone';
-
-
 
 interface IHourlyTempChart {
     data: Hourly[];
@@ -14,42 +11,42 @@ interface IHourlyTempChart {
 
 function HourlyTempChart(props: IHourlyTempChart): JSX.Element {
 
-    const findSevenHourStart: number = props.data?.findIndex((element: Hourly) => {
+    const findEightHourStart: number = props.data?.findIndex((element: Hourly) => {
         const time = moment(element.dt * 1000).tz(props.timezone).format('HH');
         if (Number(time) === 7)
             return true
         return false;
     });
 
-    const STROKE = 1;
-    const forecast: Hourly[] = props.data?.slice(findSevenHourStart, findSevenHourStart + 24)
+    const STROKE: number = 1;
+    const forecast: Hourly[] = props.data?.slice(findEightHourStart, findEightHourStart + 24)
 
     const maximumItems: number = forecast.length;
-    const maximumYFromData = Math.max(...forecast.map((e: Hourly) => e.temp));
-    const minimumYFromData = Math.min(...forecast.map((e: Hourly) => e.temp));
+    const maximumYFromData: number = Math.max(...forecast.map((e: Hourly) => e.temp));
+    const minimumYFromData: number = Math.min(...forecast.map((e: Hourly) => e.temp));
 
-    const chartWidth = props.itemWidth * maximumItems;
-    const chartHeight = props.height;
+    const chartWidth: number = props.itemWidth * maximumItems;
+    const chartHeight: number = props.height;
 
-    const FONT_SIZE = 12;
-    const fontMargin = FONT_SIZE * 1.2;
-    const heightPadding = FONT_SIZE * 0.8;
+    const FONT_SIZE: number = 12;
+    const fontMargin: number = FONT_SIZE * 1.2;
+    const heightPadding: number = FONT_SIZE * 0.8;
     const gradientColor: string = props.fontColor === 'light' ? '#fff' : '#000';
 
-    const iconYPos = 65;
-    const iconOffset = chartHeight - iconYPos;
-    const iconPadding = 5;
-    const iconWidth = props.itemWidth - iconPadding * 2;
-    const iconHeight = props.itemWidth - iconPadding * 2;
+    const iconYPos: number = 65;
+    const iconOffset: number = chartHeight - iconYPos;
+    const iconPadding: number = 5;
+    const iconWidth: number = props.itemWidth - iconPadding * 2;
+    const iconHeight: number = props.itemWidth - iconPadding * 2;
 
-    const lineHeight = chartHeight - 20;
-    const lineGraphBottomMargin = 20;
-    const minMaxDifference = maximumYFromData - minimumYFromData;
-    const lineGraphHeight = chartHeight - (heightPadding + fontMargin + iconYPos + lineGraphBottomMargin);
-    const lineGraphSteps = lineGraphHeight / minMaxDifference
+    const lineHeight: number = chartHeight - 20;
+    const lineGraphBottomMargin: number = 20;
+    const minMaxDifference: number = maximumYFromData - minimumYFromData;
+    const lineGraphHeight: number = chartHeight - (heightPadding + fontMargin + iconYPos + lineGraphBottomMargin);
+    const lineGraphSteps: number = lineGraphHeight / minMaxDifference
 
-    const lineCharOffsetYLeft = chartHeight - ((forecast[0]?.temp - minimumYFromData) * lineGraphSteps) + heightPadding - iconYPos - lineGraphBottomMargin;
-    const lineCharOffsetYRight = chartHeight - ((forecast[forecast.length - 1]?.temp - minimumYFromData) * lineGraphSteps) + heightPadding - iconYPos - lineGraphBottomMargin;
+    const lineCharOffsetYLeft: number = chartHeight - ((forecast[0]?.temp - minimumYFromData) * lineGraphSteps) + heightPadding - iconYPos - lineGraphBottomMargin;
+    const lineCharOffsetYRight: number = chartHeight - ((forecast[forecast.length - 1]?.temp - minimumYFromData) * lineGraphSteps) + heightPadding - iconYPos - lineGraphBottomMargin;
 
     const points: string[] = forecast.map((element: Hourly, index: number) => {
         const x = index * props.itemWidth + props.itemWidth / 2;
@@ -61,8 +58,8 @@ function HourlyTempChart(props: IHourlyTempChart): JSX.Element {
     const graph: string = points.join(' ');
 
     const accentuatedLine: string[] = forecast.map((element: Hourly, index: number) => {
-        const x = index * props.itemWidth + props.itemWidth / 2;
-        const y = chartHeight - ((element.temp - minimumYFromData) * lineGraphSteps) + heightPadding - iconYPos - lineGraphBottomMargin + (STROKE / 2);
+        const x: number = index * props.itemWidth + props.itemWidth / 2;
+        const y: number = chartHeight - ((element.temp - minimumYFromData) * lineGraphSteps) + heightPadding - iconYPos - lineGraphBottomMargin + (STROKE / 2);
         return `${x},${y}`;
     });
     accentuatedLine.unshift(`0,${lineCharOffsetYLeft + (STROKE / 2)}`);
@@ -90,17 +87,17 @@ function HourlyTempChart(props: IHourlyTempChart): JSX.Element {
     };
 
     function graphIcon(icon: string, index: number): JSX.Element {
-        const x = index * props.itemWidth + iconPadding;
-        const y = iconOffset;
-        const _icon = `http://openweathermap.org/img/wn/${icon}.png`
+        const x: number = index * props.itemWidth + iconPadding;
+        const y: number = iconOffset;
+        const _icon: string = `http://openweathermap.org/img/wn/${icon}.png`
         return (
             <image href={_icon} x={x} y={y} width={iconWidth} height={iconHeight} />
         );
     };
 
     function graphTime(time: number, index: number): JSX.Element {
-        const x = index * props.itemWidth + props.itemWidth / 2;
-        const y = chartHeight - 1;
+        const x: number = index * props.itemWidth + props.itemWidth / 2;
+        const y: number = chartHeight - 1;
         const forecastDate: string = moment(time * 1000).tz(props.timezone).format('HH:mm');
         return (
             <text fontSize={FONT_SIZE} fill={gradientColor} x={x} y={y} textAnchor={'middle'}>

@@ -6,9 +6,9 @@ import HourlyTempChart from './hourlyTempChart';
 import IWeatherColors from '../../models/IWeatherColor';
 import IWeather from '../../models/IWeather';
 
-function Hourly(props: IMapStateToProps) {
-    const gradientStep = 0.5;
-    const backgroundGradient = `linear-gradient(rgba(${props.weatherColors.tomorrow.r}, ${props.weatherColors.tomorrow.g}, ${props.weatherColors.tomorrow.b},${gradientStep}),rgba(${props.weatherColors.tomorrow.r}, ${props.weatherColors.tomorrow.g}, ${props.weatherColors.tomorrow.b} ,255))`;
+function Hourly(props: IMapStateToProps): JSX.Element {
+    const gradientStep: number = 0.5;
+    const backgroundGradient: string = `linear-gradient(rgba(${props.weatherColors.tomorrow.r}, ${props.weatherColors.tomorrow.g}, ${props.weatherColors.tomorrow.b},${gradientStep}),rgba(${props.weatherColors.tomorrow.r}, ${props.weatherColors.tomorrow.g}, ${props.weatherColors.tomorrow.b} ,255))`;
 
     return (
         <Container fluid style={{ backgroundImage: `${backgroundGradient}` }} className="full-detail-page d-flex flex-column" >

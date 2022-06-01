@@ -12,17 +12,17 @@ import { Current } from '../../models/ICurrentWeather';
 
 
 
-function CurrentSection(props: IProps) {
+function CurrentSection(props: IProps): JSX.Element {
     const _weather: Current | null = props.weather.currentWeather;
-    const dateToFormat = new Date();
+    const dateToFormat: Date = new Date();
     const temp: number = Math.round(_weather!.main.temp);
     const feelsLike: number = Math.round(_weather!.main.feels_like);
     const max: number = Math.round(props.weather.dailyWeather![0].temp.max);
     const min: number = Math.round(props.weather.dailyWeather![0].temp.min);
     const weatherIcon: string = `http://openweathermap.org/img/wn/${_weather!.weather[0].icon}.png`;
     const weatherDescription: string = new Capitalize(_weather!.weather[0].description).sentence;
-    const gradientStep = 0.5;
-    const backgroundGradient = `linear-gradient(rgba(${props.weatherColors.today.r}, ${props.weatherColors.today.g}, ${props.weatherColors.today.b},${gradientStep}),rgba(${props.weatherColors.today.r}, ${props.weatherColors.today.g}, ${props.weatherColors.today.b} ,255))`;
+    const gradientStep: number = 0.5;
+    const backgroundGradient: string = `linear-gradient(rgba(${props.weatherColors.today.r}, ${props.weatherColors.today.g}, ${props.weatherColors.today.b},${gradientStep}),rgba(${props.weatherColors.today.r}, ${props.weatherColors.today.g}, ${props.weatherColors.today.b} ,255))`;
 
     return (
         <Container fluid

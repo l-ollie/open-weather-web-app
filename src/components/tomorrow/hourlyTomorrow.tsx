@@ -6,7 +6,7 @@ import '../../assets/css/shared.css';
 import Capitalize from '../../services/script/capitalize';
 import IWeather from '../../models/IWeather';
 
-function HourlyTomorrow(props: IMapStateToProps) {
+function HourlyTomorrow(props: IMapStateToProps): JSX.Element {
     const tomorrowDate: number = new Date().setDate(new Date().getDate() + 1);
     const tomorrowMin: number = props.weather.dailyWeather![1].temp.min;
     const tomorrowMax: number = props.weather.dailyWeather![1].temp.max;

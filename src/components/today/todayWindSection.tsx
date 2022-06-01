@@ -10,12 +10,12 @@ import MeasurementUnitSystem from '../../types/MeasurementUnitSystem';
 import IWeather from '../../models/IWeather';
 const Compass = require("cardinal-direction");
 
-function TodayWindSection(props: IMapStateToProps) {
-    const windSpeed = Math.floor(props.measurementUnit.system === MeasurementUnitSystem.metric ? props.weather.dailyWeather![0].wind_speed * (18 / 5) : props.weather.dailyWeather![0].wind_speed);
-    const beaufortScale = new BeaufortScale(props.weather.dailyWeather![0].wind_speed, props.measurementUnit.system)
-    const windDescription = beaufortScale.description;
-    const deg = props.weather.dailyWeather![0].wind_deg + 180;
-    const windDirection = Compass.cardinalConverter(Compass.cardinalFromDegree(deg, Compass.CardinalSubset.Ordinal));
+function TodayWindSection(props: IMapStateToProps): JSX.Element {
+    const windSpeed: number = Math.floor(props.measurementUnit.system === MeasurementUnitSystem.metric ? props.weather.dailyWeather![0].wind_speed * (18 / 5) : props.weather.dailyWeather![0].wind_speed);
+    const beaufortScale: BeaufortScale = new BeaufortScale(props.weather.dailyWeather![0].wind_speed, props.measurementUnit.system)
+    const windDescription: string = beaufortScale.description;
+    const deg: number = props.weather.dailyWeather![0].wind_deg + 180;
+    const windDirection: string = Compass.cardinalConverter(Compass.cardinalFromDegree(deg - 180, Compass.CardinalSubset.Ordinal));
 
     const arrow = () => {
         return (

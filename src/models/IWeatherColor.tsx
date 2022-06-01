@@ -9,5 +9,5 @@ export interface IWeatherColor {
 export default interface IWeatherColors {
     today: IWeatherColor;
     tomorrow: IWeatherColor;
-    sevenDays: IWeatherColor;
+    eightDays: IWeatherColor;
 }

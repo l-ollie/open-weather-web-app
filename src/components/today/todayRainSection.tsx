@@ -10,7 +10,7 @@ interface props extends IMapStateToProps {
     showToday: boolean;
 }
 
-function HourlyRainSection(props: props) {
+function HourlyRainSection(props: props): JSX.Element {
     return (
         <>
             <Container className="mt-4">

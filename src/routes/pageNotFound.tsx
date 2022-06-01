@@ -1,7 +1,7 @@
 import { Button, Container } from 'react-bootstrap';
 import { NavLink } from "react-router-dom";
 
-function PageNotFound() {
+function PageNotFound(): JSX.Element {
     return (
         <Container fluid className='full-detail-page' >
             <div className="d-flex justify-content-center h-100">

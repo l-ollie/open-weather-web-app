@@ -15,7 +15,7 @@ interface IHourlyWindChart {
     timezone: string;
 }
 
-function HourlyWindChart(props: IHourlyWindChart) {
+function HourlyWindChart(props: IHourlyWindChart): JSX.Element {
 
     let forecast: Hourly[];
 
@@ -29,7 +29,7 @@ function HourlyWindChart(props: IHourlyWindChart) {
         forecast = props.data?.slice(0, findEndingHour)
     } else {
         const findStartingHour = props.data?.findIndex((element, index) => {
-            const time = moment(element.dt * 1000).tz(props.timezone).format('HH');
+            const time: string = moment(element.dt * 1000).tz(props.timezone).format('HH');
             if (Number(time) === 7)
                 return index;
             return 0
@@ -43,30 +43,30 @@ function HourlyWindChart(props: IHourlyWindChart) {
     const minimumYFromData: number = Math.min(...forecast.map((e: Hourly) => e.wind_speed));
     const minMaxDifference: number = maximumYFromData - minimumYFromData;
 
-    const charBarSidePadding = 15;
-    const itemWidth = 40;
+    const charBarSidePadding: number = 15;
+    const itemWidth: number = 40;
 
-    const infographicWidth = (itemWidth + charBarSidePadding) * maximumItems;
-    const infographicHeight = props.height;
+    const infographicWidth: number = (itemWidth + charBarSidePadding) * maximumItems;
+    const infographicHeight: number = props.height;
 
-    const fontSizeTime = 12;
-    const fontSizeBar = 15;
-    const fontHeight = fontSizeBar * 1.5;
+    const fontSizeTime: number = 12;
+    const fontSizeBar: number = 15;
+    const fontHeight: number = fontSizeBar * 1.5;
 
-    const iconHeight = itemWidth;
-    const iconScale = 0.4;
-    const iconMaxHeight = (itemWidth * 2 * iconScale) / Math.SQRT2;
-    const iconBottomMargin = 5;
+    const iconHeight: number = itemWidth;
+    const iconScale: number = 0.4;
+    const iconMaxHeight: number = (itemWidth * 2 * iconScale) / Math.SQRT2;
+    const iconBottomMargin: number = 5;
 
-    const charBarBase = 10;
-    const charBarNumberMargin = 5;
-    const charBarMinHeight = 10;
-    const charBarMaxHeight = infographicHeight - charBarBase - iconBottomMargin - charBarNumberMargin - charBarMinHeight - fontHeight - iconMaxHeight;
-    const charBarSteps = charBarMaxHeight / minMaxDifference;
+    const charBarBase: number = 10;
+    const charBarNumberMargin: number = 5;
+    const charBarMinHeight: number = 10;
+    const charBarMaxHeight: number = infographicHeight - charBarBase - iconBottomMargin - charBarNumberMargin - charBarMinHeight - fontHeight - iconMaxHeight;
+    const charBarSteps: number = charBarMaxHeight / minMaxDifference;
 
 
     const makeChart: JSX.Element[] = forecast.map((element: Hourly, index: number) => {
-        const x = index * (itemWidth + charBarSidePadding);
+        const x: number = index * (itemWidth + charBarSidePadding);
 
         return (
             <svg x={x} y={0} height={props.height} width={itemWidth} key={index}>
@@ -80,8 +80,8 @@ function HourlyWindChart(props: IHourlyWindChart) {
 
 
     function charBar(windSpeed: number): React.SVGProps<SVGRectElement> {
-        const height = ((windSpeed - minimumYFromData) * charBarSteps) + charBarMinHeight;
-        const y = (charBarMaxHeight - height) + iconBottomMargin + charBarNumberMargin + fontHeight + iconMaxHeight;
+        const height: number = ((windSpeed - minimumYFromData) * charBarSteps) + charBarMinHeight;
+        const y: number = (charBarMaxHeight - height) + iconBottomMargin + charBarNumberMargin + fontHeight + iconMaxHeight;
         const beaufortScale: BeaufortScale = new BeaufortScale(windSpeed, props.measurementUnit.system);
 
         return (
@@ -90,11 +90,11 @@ function HourlyWindChart(props: IHourlyWindChart) {
     };
 
     function charBarNum(windSpeed: number) {
-        const windSpeedKilometerH = windSpeed * (18 / 5);
-        const _windSpeed = props.measurementUnit.system === MeasurementUnitSystem.metric ? windSpeedKilometerH : windSpeed;
-        const height = ((windSpeed - minimumYFromData) * charBarSteps) + charBarMinHeight;
-        const x = itemWidth * 0.5;
-        const y = (charBarMaxHeight - height) + iconBottomMargin + fontHeight + iconMaxHeight;
+        const windSpeedKilometerH: number = windSpeed * (18 / 5);
+        const _windSpeed: number = props.measurementUnit.system === MeasurementUnitSystem.metric ? windSpeedKilometerH : windSpeed;
+        const height: number = ((windSpeed - minimumYFromData) * charBarSteps) + charBarMinHeight;
+        const x: number = itemWidth * 0.5;
+        const y: number = (charBarMaxHeight - height) + iconBottomMargin + fontHeight + iconMaxHeight;
 
         return (
             <text x={x} y={y} fill="black" textAnchor={'middle'}>
@@ -104,9 +104,9 @@ function HourlyWindChart(props: IHourlyWindChart) {
     };
 
     function graphTime(time: number) {
-        const x = itemWidth * 0.5;
-        const y = infographicHeight - 1;
-        const forecastDate = moment(time * 1000).tz(props.timezone).format('HH:mm');
+        const x: number = itemWidth * 0.5;
+        const y: number = infographicHeight - 1;
+        const forecastDate: string = moment(time * 1000).tz(props.timezone).format('HH:mm');
         return (
             <text fontSize={fontSizeTime} x={x} y={y} textAnchor={'middle'} className="meta-text-color">
                 {forecastDate}
@@ -115,8 +115,8 @@ function HourlyWindChart(props: IHourlyWindChart) {
     };
 
     function windDirection(windDeg: number) {
-        const y = -iconScale * iconHeight * 0.5;
-        const deg = windDeg + 180;
+        const y: number = -iconScale * iconHeight * 0.5;
+        const deg: number = windDeg + 180;
 
         return (
             <svg viewBox={`0 0 50 50`} x="0" y={y} height={iconHeight}>

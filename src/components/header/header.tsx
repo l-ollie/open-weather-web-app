@@ -21,8 +21,8 @@ function Header(props: IHeader): JSX.Element {
             setWeatherColor(props.weatherColors.today);
         else if (location.pathname === "/tomorrow")
             setWeatherColor(props.weatherColors.tomorrow);
-        else if (location.pathname === "/sevendays")
-            setWeatherColor(props.weatherColors.sevenDays);
+        else if (location.pathname === "/eightdays")
+            setWeatherColor(props.weatherColors.eightDays);
     }
 
     useEffect(() => {

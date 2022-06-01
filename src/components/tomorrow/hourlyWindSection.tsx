@@ -8,20 +8,20 @@ import BeaufortScale from '../../services/script/beaufortScale';
 import MeasurementUnitSystem from '../../types/MeasurementUnitSystem';
 import HourlyWindChart from '../shared/hourlyWindChart';
 
-function HourlyWindSection(props: IMapStateToProps) {
+function HourlyWindSection(props: IMapStateToProps): JSX.Element {
     const windSpeed: number = Math.floor(props.weather.dailyWeather![1].wind_speed);
     const windDescription: string = new BeaufortScale(windSpeed, props.measurementUnit.system).description;
     const findStartingHour: number = props.weather.hourlyWeather!.findIndex((element, index) => {
-        const time = moment(element.dt * 1000).tz(props.timezone).format('HH');
+        const time: string = moment(element.dt * 1000).tz(props.timezone).format('HH');
         if (Number(time) === 7)
             return index;
         return 0
     });
-    const forecast = props.weather.hourlyWeather!.slice(findStartingHour, findStartingHour + 24)
-    const maximumWindSpeed = Math.max(...forecast.map((e: Hourly) => e.wind_speed));
-    const minimumWindSpeed = Math.min(...forecast.map((e: Hourly) => e.wind_speed));
-    const maximumWindSpeedConverted = props.measurementUnit.system === MeasurementUnitSystem.metric ? Math.round(maximumWindSpeed * (18 / 5)) : Math.round(maximumWindSpeed);
-    const minimumWindSpeedConverted = props.measurementUnit.system === MeasurementUnitSystem.metric ? Math.round(minimumWindSpeed * (18 / 5)) : Math.round(minimumWindSpeed);
+    const forecast: Hourly[] = props.weather.hourlyWeather!.slice(findStartingHour, findStartingHour + 24)
+    const maximumWindSpeed: number = Math.max(...forecast.map((e: Hourly) => e.wind_speed));
+    const minimumWindSpeed: number = Math.min(...forecast.map((e: Hourly) => e.wind_speed));
+    const maximumWindSpeedConverted: number = props.measurementUnit.system === MeasurementUnitSystem.metric ? Math.round(maximumWindSpeed * (18 / 5)) : Math.round(maximumWindSpeed);
+    const minimumWindSpeedConverted: number = props.measurementUnit.system === MeasurementUnitSystem.metric ? Math.round(minimumWindSpeed * (18 / 5)) : Math.round(minimumWindSpeed);
 
     return (
         <>

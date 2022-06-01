@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 import Tomorrow from './routes/tomorrowPage';
 import Today from './routes/todayPage';
-import SevenDays from './routes/sevenDaysPage';
+import EightDays from './routes/eightDaysPage';
 import PageNotFound from './routes/pageNotFound';
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
         <Route element={<AppWrapper />} >
           <Route path="/" element={<Today />} />
           <Route path="tomorrow" element={<Tomorrow />} />
-          <Route path="sevendays" element={<SevenDays />} />
+          <Route path="eightdays" element={<EightDays />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>

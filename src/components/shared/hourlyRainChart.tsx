@@ -14,12 +14,12 @@ interface IHourlyRainChart {
     timezone: string;
 }
 
-function HourlyRainChart(props: IHourlyRainChart) {
+function HourlyRainChart(props: IHourlyRainChart): JSX.Element {
     let forecast: Hourly[];
 
     if (props.showToday) {
         const findEndingHour = props.data?.findIndex((element: Hourly, index: number) => {
-            const time = moment(element.dt * 1000).tz(props.timezone).format('HH');
+            const time: string = moment(element.dt * 1000).tz(props.timezone).format('HH');
             if (Number(time) === 7)
                 return index;
             return 0
@@ -27,7 +27,7 @@ function HourlyRainChart(props: IHourlyRainChart) {
         forecast = props.data?.slice(0, findEndingHour)
     } else {
         const findStartingHour: number = props.data?.findIndex((element: Hourly, index: number) => {
-            const time = moment(element.dt * 1000).tz(props.timezone).format('HH');
+            const time: string = moment(element.dt * 1000).tz(props.timezone).format('HH');
             if (Number(time) === 7)
                 return index;
             return 0
@@ -36,19 +36,19 @@ function HourlyRainChart(props: IHourlyRainChart) {
     }
 
     const maximumItems: number = forecast.length;
-    const itemWidth = 40;
-    const charBarSidePadding = 15;
+    const itemWidth: number = 40;
+    const charBarSidePadding: number = 15;
 
-    const infographicWidth = maximumItems * (itemWidth + charBarSidePadding);
-    const infographicHeight = 120;
+    const infographicWidth: number = maximumItems * (itemWidth + charBarSidePadding);
+    const infographicHeight: number = 120;
 
-    const fontSizeTime = 12;
+    const fontSizeTime: number = 12;
 
-    const iconWidth = itemWidth;
-    const iconHeight = 61;
+    const iconWidth: number = itemWidth;
+    const iconHeight: number = 61;
 
-    const rainfallCategory = [0, 0.40, 2.5, 7.6, 100];
-    const rainfallStep = 100 / rainfallCategory.length;
+    const rainfallCategory: number[] = [0, 0.40, 2.5, 7.6, 100];
+    const rainfallStep: number = 100 / rainfallCategory.length;
 
     const sideAxeMM = () => {
         const volumeY = infographicHeight - 53;
@@ -70,7 +70,7 @@ function HourlyRainChart(props: IHourlyRainChart) {
     }
 
     const sideAxeIN = () => {
-        const volumeY = infographicHeight - 48;
+        const volumeY: number = infographicHeight - 48;
         return (
             <>
                 <text fontSize={fontSizeTime} x={0} y={15} className="meta-text-color">
@@ -86,7 +86,7 @@ function HourlyRainChart(props: IHourlyRainChart) {
     }
 
     const makeChart = forecast.map((element: Hourly, index: number) => {
-        const x = index * (itemWidth + charBarSidePadding);
+        const x: number = index * (itemWidth + charBarSidePadding);
         const amountRainfall: number = element.rain?.["1h"] !== undefined ? element.rain?.["1h"] : 0;
 
         return (
@@ -136,8 +136,8 @@ function HourlyRainChart(props: IHourlyRainChart) {
     };
 
     function graphTime(time: number): React.SVGProps<SVGTextElement> {
-        const x = itemWidth * 0.5;
-        const y = infographicHeight - 1;
+        const x: number = itemWidth * 0.5;
+        const y: number = infographicHeight - 1;
         const forecastDate: string = moment(time * 1000).tz(props.timezone).format('HH:mm');
         return (
             <text fontSize={fontSizeTime} x={x} y={y} textAnchor={'middle'} className="meta-text-color">
@@ -159,9 +159,9 @@ function HourlyRainChart(props: IHourlyRainChart) {
         };
 
 
-        const blue = volume !== 0.000 ? "droplet-blue-text" : null;
-        const x = itemWidth * 0.5;
-        const y = infographicHeight - 30;
+        const blue: string | null = volume !== 0.000 ? "droplet-blue-text" : null;
+        const x: number = itemWidth * 0.5;
+        const y: number = infographicHeight - 30;
         return (
             <text fontSize={fontSizeTime} x={x} y={y} textAnchor={'middle'} className={`${blue} meta-text-color droplet-volume `}>
                 {_volume()}
@@ -170,10 +170,10 @@ function HourlyRainChart(props: IHourlyRainChart) {
     };
 
     function graphPercentage(percentage: number): React.SVGProps<SVGTextElement> {
-        const fontSize = 15;
-        const _percentage = Math.round(percentage * 10) * 10;
-        const x = itemWidth * 0.5;
-        const y = fontSize;
+        const fontSize: number = 15;
+        const _percentage: number = Math.round(percentage * 10) * 10;
+        const x: number = itemWidth * 0.5;
+        const y: number = fontSize;
         return (
             <text fontSize={fontSize} x={x} y={y} textAnchor={'middle'} color="black" >
                 {_percentage}%

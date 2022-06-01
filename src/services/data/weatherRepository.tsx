@@ -8,8 +8,8 @@ import { Daily } from "../../models/IDailyWeather";
 import { Hourly } from "../../models/IHourlyWeather";
 
 interface IWeatherRepository {
-    getCurrentWeather: (lat: number, lon: number, measurementUnitSystem: MeasurementUnitSystem) => Promise<AxiosResponse<Current, any>>;
-    getForecasts: (lat: number, lon: number, measurementUnitSystem: MeasurementUnitSystem) => Promise<AxiosResponse<IForecastResponse, any>>
+    getCurrentWeather: (lat: number, lon: number, measurementUnitSystem: MeasurementUnitSystem) => Promise<AxiosResponse<Current>>;
+    getForecasts: (lat: number, lon: number, measurementUnitSystem: MeasurementUnitSystem) => Promise<AxiosResponse<IForecastResponse>>
 }
 
 interface IForecastResponse {
@@ -33,9 +33,7 @@ export default class WeatherRepository implements IWeatherRepository {
     }
 
     async getForecasts(lat: number, lon: number, measurementUnitSystem: MeasurementUnitSystem) {
-        const temp = await api.get<IForecastResponse>(`onecall?lat=${lat}&lon=${lon}&exclude=minutely,current&appid=${this._apiKey}&units=${measurementUnitSystem}`)
-        console.log(temp);
-        return temp
+        return await api.get<IForecastResponse>(`onecall?lat=${lat}&lon=${lon}&exclude=minutely,current&appid=${this._apiKey}&units=${measurementUnitSystem}`)
     }
 
 }

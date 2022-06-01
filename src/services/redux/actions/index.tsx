@@ -51,18 +51,18 @@ export const generateBackgroundColor = (): AppThunk => {
 
 		const tempToColorToday = getTempColorForLeds(weather.currentWeather!.main.feels_like, measurementUnit.system);
 		const tempToColorTomorrow = getTempColorForLeds(weather.dailyWeather![1].feels_like.day, measurementUnit.system);
-		const tempToColorSevenDaysTemp = weather.dailyWeather!.reduce(
+		const tempToColorEightDaysTemp = weather.dailyWeather!.reduce(
 			(previousValue: number, currentValue: Daily) => previousValue + currentValue.feels_like.day,
 			0
 		);
-		const tempToColorSevenDaysAverage = tempToColorSevenDaysTemp / weather.dailyWeather!.length;
-		const tempToColorSevenDays = getTempColorForLeds(tempToColorSevenDaysAverage, measurementUnit.system);
+		const tempToColorEightDaysAverage = tempToColorEightDaysTemp / weather.dailyWeather!.length;
+		const tempToColorEightDays = getTempColorForLeds(tempToColorEightDaysAverage, measurementUnit.system);
 
 		dispatch(
 			saveBackgroundColors({
 				today: tempToColorToday,
 				tomorrow: tempToColorTomorrow,
-				sevenDays: tempToColorSevenDays
+				eightDays: tempToColorEightDays
 			})
 		);
 	};

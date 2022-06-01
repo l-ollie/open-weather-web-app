@@ -2,7 +2,7 @@ import moment from 'moment-timezone';
 import { useState } from 'react';
 import { Col, Container, Row, Image } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import "../../assets/css/sevenDays.css"
+import "../../assets/css/eightDays.css"
 import "../../assets/css/shared.css"
 import MeasurementUnit from '../../models/MeasurementUnit';
 import BeaufortScale from '../../services/script/beaufortScale'
@@ -35,18 +35,19 @@ interface IProps extends IMapState {
     sunset: number;
     measurementUnit: MeasurementUnit;
 }
-function SevenDayCard(props: IProps) {
-    const windDescription = new Capitalize(new BeaufortScale(props.windSpeed, props.measurementUnit.system).description).firstWord;
-    const [showDetails, setShowDetails] = useState(false);
-    const _date = moment(props.date * 1000).tz(props.timezone).format('dddd, D MMM');
-    const _today = moment(new Date()).format('dddd, D MMM');
-    const sunrise = moment(props.sunrise * 1000).tz(props.timezone).format('HH:mm');
-    const sunset = moment(props.sunset * 1000).tz(props.timezone).format('HH:mm');
-    const icon = `http://openweathermap.org/img/wn/${props.icon}.png`
-    const windDirection = Compass.cardinalFromDegree(props.windDirection + 180, Compass.CardinalSubset.Ordinal);
-    const _changeOfRain = props.changeOfRain === 0 ? null : `${Math.round(props.changeOfRain * 10) * 10}%`;
-    const _changeOfRainDetails = Math.round(props.changeOfRain * 10) * 10;
-    const _weatherDescription = new Capitalize(props.weatherDescription).sentence;
+function EightDayCard(props: IProps): JSX.Element {
+    const windDescription: string = new Capitalize(new BeaufortScale(props.windSpeed, props.measurementUnit.system).description).firstWord;
+    const [showDetails, setShowDetails] = useState<boolean>(false);
+    const _date: string = moment(props.date * 1000).tz(props.timezone).format('dddd, D MMM');
+    const _today: string = moment(new Date()).format('dddd, D MMM');
+    const sunrise: string = moment(props.sunrise * 1000).tz(props.timezone).format('HH:mm');
+    const sunset: string = moment(props.sunset * 1000).tz(props.timezone).format('HH:mm');
+    const icon: string = `http://openweathermap.org/img/wn/${props.icon}.png`
+    const windDirection: string = Compass.cardinalFromDegree(props.windDirection, Compass.CardinalSubset.Ordinal);
+    const _changeOfRain: string | null = props.changeOfRain === 0 ? null : `${Math.round(props.changeOfRain * 10) * 10}%`;
+    const _changeOfRainDetails: number = Math.round(props.changeOfRain * 10) * 10;
+    const _weatherDescription: string = new Capitalize(props.weatherDescription).sentence;
+    const fontWeight: string | null = showDetails === true ? "font-weight-500" : null;
 
     return (
         <div onClick={() => setShowDetails(!showDetails)}>
@@ -54,7 +55,7 @@ function SevenDayCard(props: IProps) {
                 <Row>
                     <Col xs={6} className="d-flex flex-column">
                         <ul>
-                            <li>
+                            <li className={`${fontWeight}`}>
                                 {_date === _today ? "Today" : _date}
                             </li>
                             <li className="meta-text-color">
@@ -103,4 +104,4 @@ function SevenDayCard(props: IProps) {
 
 export default connect(
     mapStateToProps,
-)(SevenDayCard);
+)(EightDayCard);

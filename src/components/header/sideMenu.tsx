@@ -16,7 +16,7 @@ interface IProps extends IMapStateToProps {
     setMeasurementUnit: (unit: MeasurementUnitSystem) => SetMeasurementUnitR
 }
 
-function SideMenu(props: IProps) {
+function SideMenu(props: IProps): JSX.Element {
     const searchDelay: number = 1000;
     const [searchTerm, setSearchTerm] = useState<string>(props.selectedCity.name);
     const [searchList, setSearchList] = useState<JSX.Element[]>([]);
@@ -76,7 +76,7 @@ function SideMenu(props: IProps) {
                         <Form.Control
                             size="lg"
                             type="search"
-                            placeholder="Search"
+                            placeholder="Search places"
                             className=""
                             aria-label="Search"
                             onChange={handleSearch}

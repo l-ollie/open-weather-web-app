@@ -6,7 +6,7 @@ import RainSection from '../components/shared/rainSection';
 import IWeather from '../models/IWeather';
 import LoaderSpinner from '../components/shared/loaderSpinnerAndErrorMsg';
 
-function TodayPage(props: IMapStateToProps) {
+function TodayPage(props: IMapStateToProps): JSX.Element {
 	return (
 		<>
 			{props.weather.dailyWeather !== null && props.weather.loading === false ?

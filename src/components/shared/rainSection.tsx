@@ -11,10 +11,14 @@ interface IProps extends IMapStateToProps {
     showToday: boolean;
 }
 
-function RainSection(props: IProps) {
+function RainSection(props: IProps): JSX.Element {
     const selectDay: number = props.showToday === true ? 0 : 1;
     const dailyVolume: number = props.weather.dailyWeather![selectDay].rain === undefined ? 0 : props.weather.dailyWeather![selectDay].rain;
-    const convertedDailyVolume = () => props.measurementUnit.system === MeasurementUnitSystem.metric ? dailyVolume.toFixed(1) : (dailyVolume / 25.4).toFixed(2);
+    const convertedDailyVolume = () => {
+        const _amount: number = props.measurementUnit.system === MeasurementUnitSystem.metric ? Number(dailyVolume.toFixed(1)) : Number((dailyVolume / 25.4).toFixed(2))
+        const roundUp: number = _amount === 0.0 || 0.00 ? 0 : _amount;
+        return roundUp;
+    };
     const unitAcronym: string = props.measurementUnit.system === MeasurementUnitSystem.metric ? "mm" : "in."
     return (
         <>

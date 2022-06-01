@@ -16,7 +16,7 @@ import IWeather from '../models/IWeather';
 const navLinks: Array<navBarLink> = [
 	new NavBarLink('Today', '/'),
 	new NavBarLink('Tomorrow', 'tomorrow'),
-	new NavBarLink('7 Days', 'sevendays')
+	new NavBarLink('8 Days', 'eightdays')
 ];
 
 

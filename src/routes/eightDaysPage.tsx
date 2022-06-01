@@ -1,15 +1,15 @@
 import { connect } from 'react-redux'
-import SevenDayCard from '../components/sevenDays/sevenDayCard';
+import EightDayCard from '../components/eightDays/eightDayCard';
 import LoaderSpinner from '../components/shared/loaderSpinnerAndErrorMsg';
 import IWeather from '../models/IWeather';
 import MeasurementUnit from '../models/MeasurementUnit';
 
-function SevenDays(props: IMapStateToProps) {
+function EightDays(props: IMapStateToProps): JSX.Element {
     let list: JSX.Element[] | null = null
     if (props.weather.dailyWeather !== null) {
         list = props.weather.dailyWeather.map((element, index) => {
             return (
-                <SevenDayCard
+                <EightDayCard
                     key={index}
                     date={element.dt}
                     max={element.temp.max} min={element.temp.min}
@@ -53,4 +53,4 @@ const mapStateToProps = (state: IMapStateToProps) => {
     };
 }
 
-export default connect(mapStateToProps)(SevenDays);
+export default connect(mapStateToProps)(EightDays);

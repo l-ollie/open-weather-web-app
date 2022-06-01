@@ -9,9 +9,9 @@ interface IProps {
     max: number;
 }
 
-function MaxMin(props: IProps) {
-    const max = Math.round(props.max);
-    const min = Math.round(props.min);
+function MaxMin(props: IProps): JSX.Element {
+    const max: number = Math.round(props.max);
+    const min: number = Math.round(props.min);
 
     return (
         <div className="d-flex">

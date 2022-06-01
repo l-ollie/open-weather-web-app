@@ -5,7 +5,7 @@ import HourlyWeatherSection from '../components/tomorrow/hourlyWeatherSection';
 import HourlyWindSection from '../components/tomorrow/hourlyWindSection';
 import IWeather from '../models/IWeather';
 
-function TomorrowPage(props: IMapStateToProps) {
+function TomorrowPage(props: IMapStateToProps): JSX.Element {
     return (
         <>
             {
